@@ -9,13 +9,18 @@
 
 @theme {
   /* text */
-  --color-primary: #ff3381; /* brand main */
-  --color-muted: #00000091; /* paragraphs / secondary text */
+  --color-primary: #ff3381;
+  /* brand main */
+  --color-muted: #00000091;
+  /* paragraphs / secondary text */
 
   /* backgrounds */
-  --color-background: #ffe5ef8c; /* main section background */
-  --color-surface: #cce6ff; /* cards / different section surfaces */
-  --color-accent: #ffc8dd; /* for buttons, highlights, badges etc */
+  --color-background: #ffe5ef8c;
+  /* main section background */
+  --color-surface: #cce6ff;
+  /* cards / different section surfaces */
+  --color-accent: #ffc8dd;
+  /* for buttons, highlights, badges etc */
 
   /* fonts */
   --font-brand: BrandFont;
