@@ -42,4 +42,7 @@
   --space-md: 16px;
   --space-lg: 32px;
   --space-xl: 64px;
+
+  /* breakpoint */
+  --breakpoint-md: 830px;
 }
