@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "BrandFont";
+  src: url("./assets/fonts/ScriptMTBold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: Regular;
+}
+
+@theme {
+  /* text */
+  --color-primary: #ff3381; /* brand main */
+  --color-muted: #00000091; /* paragraphs / secondary text */
+
+  /* backgrounds */
+  --color-background: #ffe5ef8c; /* main section background */
+  --color-surface: #cce6ff; /* cards / different section surfaces */
+  --color-accent: #ffc8dd; /* for buttons, highlights, badges etc */
+
+  /* fonts */
+  --font-brand: BrandFont;
+
+  /* shadow */
+  --shadow-md: 2px 2px 3px 0px #00000040;
+
+  /* font-sizes */
+  --text-h1: 48px;
+  --text-h2: 36px;
+  --text-normal: 24px;
+  --text-small: 20px;
+
+  /* radius */
+  --radius-lg: 64px;
+
+  /* transition */
+  --transition-fast: 0.2s ease-in-out;
+  --transition-medium: 0.4s ease-in-out;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+}
