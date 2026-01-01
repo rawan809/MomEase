@@ -21,11 +21,9 @@ const SupportItem = ({ title, description, image, reverse }: Props) => {
       <div className="flex-1 flex justify-center">
         <img src={image} alt={title} className="max-w-sm w-full" />
       </div>
-
       <div className="w-1 h-30 bg-primary" />
       <div className=" items-start gap-4">
         <h3 className="text-normal font-semibold leading-tight">{title}</h3>
-
         <p className="text-muted max-w-md ">{description}</p>
       </div>
     </motion.div>
