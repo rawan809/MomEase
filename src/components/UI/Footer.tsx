@@ -48,8 +48,9 @@ const Footer = () => {
             </ul>
           </div>
 
-          <div>
-            <h4 className="font-bold mb-2 text-small">Contact info</h4>
+          <div className="space-y-3">
+            <h4 className="font-semibold">Contact info</h4>
+            <p>Feel free to contact us</p>
             <p>1254 street, town</p>
             <p>(+20) 1146633258</p>
             <p>momease@gmail.com</p>
