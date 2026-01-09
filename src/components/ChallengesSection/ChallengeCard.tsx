@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
-import type { ReactNode } from "react";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 
 interface ChallengeCardProps {
   title: string;
   description: string;
-  icon?: ReactNode;
+  icon: string;
   index: number;
 }
 
@@ -37,24 +36,12 @@ const ChallengeCard = ({
       className="flex flex-col items-center text-center px-(--space-md)"
     >
       {/* Icon Placeholder */}
-      <motion.div
-        className="w-20 h-20 rounded-full bg-gray-200 mb-(--space-lg) flex items-center justify-center"
-        whileHover={{ scale: 1.1, rotate: 5 }}
-        transition={{ type: "spring", stiffness: 200 }}
-      >
-        {icon || (
-          <motion.div
-            className="w-full h-full rounded-full"
-            animate={isInView ? { rotate: 360 } : { rotate: 0 }}
-            transition={{ duration: 0.8, delay: index * 0.3 }}
-          ></motion.div>
-        )}
+      <motion.div className="w-20 h-20 rounded-full bg-gray-200 mb-(--space-lg) flex items-center justify-center">
+        <img src={icon} alt="" />
       </motion.div>
 
-      {/* Title */}
       <h3 className=" font-semibold mb-(--space-sm) text-normal">{title}</h3>
 
-      {/* Description */}
       <p className=" text-muted">{description}</p>
     </motion.div>
   );

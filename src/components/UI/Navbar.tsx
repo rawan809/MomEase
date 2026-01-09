@@ -26,7 +26,7 @@ function Navbar() {
   }, [isMenuOpen]);
   return (
     <div className="">
-      <div className=" px-5 z-50 fixed w-full bg-white">
+      <div className=" px-(--space-lg) z-50 fixed w-full bg-white">
         <div className="max-w-7xl flex justify-between mx-auto items-center h-20">
           <Mineuicon isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenueOpen} />
           <div>
