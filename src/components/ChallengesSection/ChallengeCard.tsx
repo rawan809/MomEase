@@ -35,7 +35,6 @@ const ChallengeCard = ({
       }}
       className="flex flex-col items-center text-center px-(--space-md)"
     >
-      {/* Icon Placeholder */}
       <motion.div className="w-20 h-20 rounded-full bg-gray-200 mb-(--space-lg) flex items-center justify-center">
         <img src={icon} alt="" />
       </motion.div>
