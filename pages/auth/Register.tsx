@@ -1,6 +1,7 @@
 import AuthLayout from "../../src/components/auth/AuthLayout";
 import AuthForm from "../../src/components/auth/AuthForm";
 import SocialLogin from "../../src/components/auth/SocialLogin";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   return (
@@ -25,7 +26,7 @@ const Register = () => {
             <SocialLogin />
             <p className="text-sm text-center">
               Already have an account?{" "}
-              <span className="text-primary cursor-pointer">Login</span>
+              <Link to={'/login'} className="text-primary cursor-pointer">Login</Link>
             </p>
           </>
         }

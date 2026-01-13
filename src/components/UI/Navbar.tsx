@@ -1,6 +1,7 @@
 import React from "react";
 import Mineuicon from "./Mineuicon";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
@@ -44,9 +45,9 @@ function Navbar() {
             </div>
           </div>
           <div>
-            <button className="bg-accent px-5 py-2 rounded-lg cursor-pointer">
+            <Link to={'/login'} className="bg-accent px-5 py-2 rounded-lg cursor-pointer">
               Login
-            </button>
+            </Link>
           </div>
         </div>
         <div
