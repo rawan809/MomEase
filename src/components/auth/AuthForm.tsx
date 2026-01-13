@@ -4,9 +4,11 @@ interface AuthFormProps {
   fields: React.ReactNode;
   buttonText: string;
   footer: React.ReactNode;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 const AuthForm = ({
+  onSubmit,
   title,
   subtitle,
   fields,
@@ -18,7 +20,7 @@ const AuthForm = ({
       <h2 className="text-3xl font-semibold">{title}</h2>
       <p className="text-muted">{subtitle}</p>
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={onSubmit}>
         {fields}
 
         <button className="w-full bg-accent py-2 rounded-full font-semibold">

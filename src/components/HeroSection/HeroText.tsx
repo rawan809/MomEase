@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const HeroText = () => {
   return (
@@ -18,7 +19,7 @@ const HeroText = () => {
         safe, supported, and in control.
       </p>
       <div className="flex gap-(--space-md)">
-        <button
+        <Link to='/login'
           className="
             bg-accent
             px-(--space-lg)
@@ -30,7 +31,7 @@ const HeroText = () => {
           "
         >
           Start now
-        </button>
+        </Link>
 
         <button
           className="
