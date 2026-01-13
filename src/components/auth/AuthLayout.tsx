@@ -1,4 +1,5 @@
 import heroImg from "../../assets/images/auth-hero.png";
+import { Link } from "react-router-dom";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -10,8 +11,11 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
       <div className="w-[90%] max-w-6xl  rounded-xl grid grid-cols-1 md:grid-cols-2 p-10 gap-10">
         <div className="space-y-8">
           {/* 🔴 Brand Title */}
-          <h1 className="text-3xl font-brand text-primary">MamEase</h1>
-
+          <h1>
+            <Link to={"/"} className="text-3xl font-brand text-primary">
+              MamEase
+            </Link>
+          </h1>
           {children}
         </div>
         <div className="hidden md:flex justify-center items-center">
