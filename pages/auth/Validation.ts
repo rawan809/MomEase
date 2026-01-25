@@ -7,7 +7,7 @@ const email = Yup.string()
     "Enter valid email or phone",
     (value) =>
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || // email
-      /^01[0-2,5]{1}[0-9]{8}$/.test(value) // egypt phone
+      /^01[0-2,5]{1}[0-9]{8}$/.test(value), // egypt phone
   );
 
 const password = Yup.string()
@@ -17,7 +17,7 @@ const password = Yup.string()
   .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
   .matches(
     /[!@#$%^&*(),.?":{}|<>]/,
-    "Password must contain at least one special character"
+    "Password must contain at least one special character",
   )
   .required("Required");
 
@@ -27,4 +27,13 @@ export const validationSchema = Yup.object({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "passwords must match")
     .required("Required"),
+});
+export const emailSchema = Yup.object({
+  email: Yup.string().required("Required").email("Enter a valid email"),
+});
+
+export const phoneSchema = Yup.object({
+  phone: Yup.string()
+    .required("Required")
+    .matches(/^01[0-2,5]{1}[0-9]{8}$/, "Enter valid Egyptian phone number"),
 });

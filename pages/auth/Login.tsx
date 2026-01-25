@@ -50,9 +50,12 @@ const Login = () => {
                 {formik.errors.password}
               </div>
             ) : null}
-            <p className="text-right text-primary text-sm cursor-pointer">
-              Forgot Password?
-            </p>
+            <Link to={"/forgetByEmail"}>
+              <p className="text-right text-primary text-sm cursor-pointer mb-2">
+                {" "}
+                Forgot Password?
+              </p>
+            </Link>
           </>
         }
         footer={

@@ -4,6 +4,8 @@ import MainLayout from "./components/layouts/MainLayout";
 import LandingPage from "../pages/LandingPage";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
+import ForgetByEmail from "../pages/auth/ForgetByEmail";
+import ForgetByPhone from "../pages/auth/ForgetByPhone";
 
 const touter = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const touter = createBrowserRouter([
   {
     path: "/signup",
     element: <Register />,
+  },
+  {
+    path: "/forgetByEmail",
+    element: <ForgetByEmail />,
+  },
+  {
+    path: "/forgetByPhone",
+    element: <ForgetByPhone />,
   },
 ]);
 
