@@ -29,7 +29,12 @@ export const validationSchema = Yup.object({
     .required("Required"),
 });
 export const emailSchema = Yup.object({
-  email: Yup.string().required("Required").email("Enter a valid email"),
+  email: Yup.string()
+    .required("Required")
+    .email("Enter a valid email")
+    .test("Enter valid email", (value) =>
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
+    ),
 });
 
 export const phoneSchema = Yup.object({

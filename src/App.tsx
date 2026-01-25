@@ -6,6 +6,7 @@ import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import ForgetByEmail from "../pages/auth/ForgetByEmail";
 import ForgetByPhone from "../pages/auth/ForgetByPhone";
+import CreateNewPassword from "../pages/auth/CreateNewPassword";
 
 const touter = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const touter = createBrowserRouter([
   {
     path: "/forgetByPhone",
     element: <ForgetByPhone />,
+  },
+  {
+    path: "/createNewPassword",
+    element: <CreateNewPassword />,
   },
 ]);
 
