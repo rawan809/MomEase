@@ -2,11 +2,13 @@ import { Link } from "react-router-dom";
 import Verifyimg from "../../src/assets/images/verify.png";
 import { useState, useEffect } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
+import Success from "../../src/components/UI/Success";
 
 function VerifyEmail() {
   const [resendTimer, setResendTimer] = useState(0);
   const [isResending, setIsResending] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
+  const [isVerified,setIsVerified]=useState(false)
   const [code, setCode] = useState(["", "", "", ""]);
   let content = "example@gmail.com";
 
@@ -55,15 +57,29 @@ function VerifyEmail() {
     newCode[index] = val;
     setCode(newCode);
   };
-  return (
-    <div className="p-10 min-h-screen flex flex-col justify-center">
+
+  if(isVerified) return  <div className="p-10 flex-col justify-center">
       <h1 className="mb-10">
         <Link to={"/"} className="text-3xl font-brand text-primary">
           MamEase
         </Link>
       </h1>
       <div className="flex items-center justify-center">
-        <div className="bg-white rounded-3xl p-8 max-w-md shadow-2xl text-center">
+        <div className="bg-white rounded-3xl shadow-2xl text-center w-full max-w-md min-h-130 p-6 sm:p-8 flex">
+         <Success title="Email Verified!" description="Your Email has been successfully verified. Now, You can start your journey!" btnText="Continue"/>
+        </div>
+      </div>
+    </div>
+
+  return (
+    <div className="p-10  flex flex-col justify-center">
+      <h1 className="mb-10">
+        <Link to={"/"} className="text-3xl font-brand text-primary">
+          MamEase
+        </Link>
+      </h1>
+      <div className="flex items-center justify-center">
+        <div className="bg-white rounded-3xl shadow-2xl text-center w-full max-w-md min-h-130 p-6 sm:p-8">
           <h2 className="text-lg font-semibold mb-4">Verify Your Email</h2>
 
           <div className="w-25 h-25 bg-blue-100 rounded-full mx-auto mb-4">
@@ -90,7 +106,7 @@ function VerifyEmail() {
                     e.preventDefault();
                   }
                 }}
-                className={`border border-gray-300 rounded-full w-15 h-15 text-center text-small 
+                className={`border border-gray-300 rounded-full w-17 h-17 text-center text-small 
               focus:border-primary focus:outline-none 
                ${code[i] ? "border-primary" : ""}
                ${isWrong ? "border-red-500" : ""}`}
@@ -115,6 +131,7 @@ function VerifyEmail() {
           <button
             type="submit"
             className="w-full bg-accent text-black py-2 mb-3 rounded-full cursor-pointer"
+            onClick={()=>{setIsVerified(true)}}
           >
             Verify Email
           </button>

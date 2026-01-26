@@ -2,8 +2,11 @@ import NewPass from "../../src/assets/images/newPass.png";
 import { useFormik } from "formik";
 import { validationSchema } from "./Validation";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import Success from "../../src/components/UI/Success";
 
 const CreateNewPassword = () => {
+  const [succsess, setSuccess] = useState(false);
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -16,16 +19,37 @@ const CreateNewPassword = () => {
     },
   });
 
+  if (succsess) {
+    return (
+      <div className="p-10 flex-col justify-center">
+        <h1 className="mb-10">
+          <Link to={"/"} className="text-3xl font-brand text-primary">
+            MamEase
+          </Link>
+        </h1>
+        <div className="flex items-center justify-center">
+          <div className="bg-white rounded-3xl shadow-2xl text-center w-full max-w-md min-h-130 p-6 sm:p-8 flex items-center justify-center">
+            <Success
+              title="Password reset successful!"
+              description="Your password has been changed successfully."
+              btnText="Go to login"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <h1 className="absolute z-0 top-10 left-40">
+    <div className="p-10 flex-col justify-center">
+      <h1 className="mb-10">
         {" "}
         <Link to={"/"} className="text-3xl font-brand text-primary">
           MamEase
         </Link>
       </h1>
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 mx-auto">
+      <div className="flex items-center justify-center">
+        <div className="bg-white rounded-3xl shadow-2xl text-center w-full max-w-md min-h-130 p-6 sm:p-8">
           <div className="text-center">
             {/* <Link to="/login" className="text-xl font-bold">
               ←
@@ -84,13 +108,16 @@ const CreateNewPassword = () => {
             <button
               type="submit"
               className="w-full bg-accent text-black py-3 rounded-full font-semibold mt-2 transition hover:opacity-90 cursor-pointer"
+              onClick={() => {
+                setSuccess(true);
+              }}
             >
               Save
             </button>
           </form>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

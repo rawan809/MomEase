@@ -7,14 +7,14 @@ type Props = {
 
 const ForgetPasswordLayout = ({ children }: Props) => {
   return (
-    <>
-      <h1 className="absolute z-0 top-10 left-40">
+    <div className="p-10 flex-col justify-center">
+      <h1 className="mb-10">
         <Link to={"/"} className="text-3xl font-brand text-primary">
           MamEase
         </Link>
       </h1>
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="bg-white rounded-3xl p-8 max-w-md shadow-2xl text-center">
+      <div className="flex items-center justify-center">
+        <div className="bg-white rounded-3xl shadow-2xl text-center w-full max-w-md min-h-130 p-6 sm:p-8">
           <h2 className="text-lg font-semibold mb-4">Forget Password</h2>
 
           <div className="w-25 h-25 bg-blue-100 rounded-full mx-auto mb-4">
@@ -24,7 +24,7 @@ const ForgetPasswordLayout = ({ children }: Props) => {
           {children}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

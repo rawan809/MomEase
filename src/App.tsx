@@ -10,7 +10,7 @@ import CreateNewPassword from "../pages/auth/CreateNewPassword";
 
 import VerifyEmail from "../pages/auth/VerifyEmail";
 
-const touter = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
@@ -48,7 +48,7 @@ const touter = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={touter} />;
+  return <RouterProvider router={router} />;
 }
 
 export default App;

@@ -2,10 +2,9 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { phoneSchema } from "./Validation";
 import ForgetPasswordLayout from "../../src/components/ForgetPassword/ForgetPasswordLayout";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ForgetByPhone = () => {
-  const navigate = useNavigate();
 
   return (
     <ForgetPasswordLayout>
@@ -37,12 +36,12 @@ const ForgetByPhone = () => {
         </Form>
       </Formik>
 
-      <button
-        onClick={() => navigate("/forgetByEmail")}
+      <Link
+        to={"/forgetByEmail"}
         className="text-primary text-sm mt-4 cursor-pointer underline"
       >
         Try another way
-      </button>
+      </Link>
     </ForgetPasswordLayout>
   );
 };
