@@ -7,7 +7,7 @@ import Register from "../pages/auth/Register";
 import ForgetByEmail from "../pages/auth/ForgetByEmail";
 import ForgetByPhone from "../pages/auth/ForgetByPhone";
 import CreateNewPassword from "../pages/auth/CreateNewPassword";
-
+import Notfound from "../pages/Notfound";
 import VerifyEmail from "../pages/auth/VerifyEmail";
 
 const router = createBrowserRouter([
@@ -41,9 +41,13 @@ const router = createBrowserRouter([
     path: "/createNewPassword",
     element: <CreateNewPassword />,
   },
-    {
+  {
     path: "/verifyEmail",
     element: <VerifyEmail />,
+  },
+  {
+    path: "*",
+    element: <Notfound />,
   },
 ]);
 
