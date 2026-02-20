@@ -23,7 +23,10 @@ const AuthForm = ({
       <form className="space-y-4" onSubmit={onSubmit}>
         {fields}
 
-        <button className="w-full bg-accent py-2 rounded-full font-semibold">
+        <button
+          type="submit"
+          className="w-full bg-accent py-2 rounded-full font-semibold cursor-pointer"
+        >
           {buttonText}
         </button>
       </form>

@@ -1,19 +1,123 @@
+// import AuthLayout from "../../src/components/auth/AuthLayout";
+// import AuthForm from "../../src/components/auth/AuthForm";
+// import SocialLogin from "../../src/components/auth/SocialLogin";
+// import { Link } from "react-router-dom";
+// import { useFormik } from "formik";
+// import { validationSchema } from "./Validation";
+
+// const Login = () => {
+//   const formik = useFormik({
+//     initialValues: {
+//       email: "",
+//       password: "",
+//     },
+//     onSubmit: () => {},
+//     validationSchema: validationSchema,
+//   });
+//   return (
+//     <AuthLayout>
+//       <AuthForm
+//         onSubmit={formik.handleSubmit}
+//         title="Welcome Back"
+//         subtitle="Login to continue your journey!"
+//         buttonText="Login"
+//         fields={
+//           <>
+//             <input
+//               name="email"
+//               onChange={formik.handleChange}
+//               value={formik.values.email}
+//               className="input"
+//               placeholder="Email / Phone"
+//               onBlur={formik.handleBlur}
+//             />
+//             {formik.touched.email && formik.errors.email ? (
+//               <div className="text-red-400 text-[12px] font-semibold">
+//                 {formik.errors.email}
+//               </div>
+//             ) : null}
+//             <input
+//               name="password"
+//               onChange={formik.handleChange}
+//               value={formik.values.password}
+//               onBlur={formik.handleBlur}
+//               className="input"
+//               type="password"
+//               placeholder="Password"
+//             />
+//             {formik.touched.password && formik.errors.password ? (
+//               <div className="text-red-400 text-[12px] font-semibold">
+//                 {formik.errors.password}
+//               </div>
+//             ) : null}
+//             <Link to={"/forgetByEmail"}>
+//               <p className="text-right text-primary text-sm cursor-pointer mb-2">
+//                 {" "}
+//                 Forgot Password?
+//               </p>
+//             </Link>
+//           </>
+//         }
+//         footer={
+//           <>
+//             <SocialLogin />
+//             <p className="text-sm text-center">
+//               Don’t have an account?{" "}
+//               <Link to={"/signup"} className="text-primary cursor-pointer">
+//                 Sign Up
+//               </Link>
+//             </p>
+//           </>
+//         }
+//       />
+//     </AuthLayout>
+//   );
+// };
+
+// export default Login;
 import AuthLayout from "../../src/components/auth/AuthLayout";
 import AuthForm from "../../src/components/auth/AuthForm";
 import SocialLogin from "../../src/components/auth/SocialLogin";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import { validationSchema } from "./Validation";
+import { loginSchema } from "./Validation";
+import { loginUser } from "../../services/auth";
+import axios from "axios";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    onSubmit: () => {},
-    validationSchema: validationSchema,
+    validationSchema: loginSchema,
+    onSubmit: async (values) => {
+      console.log("Form submitted", values);
+      try {
+        const data = await loginUser({
+          email: values.email,
+          password: values.password,
+        });
+
+        // لو السيرفر بيرجع token
+        if (data?.token) {
+          localStorage.setItem("token", data.token);
+        }
+
+        // redirect to home
+        navigate("/home");
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error)) {
+          console.log("Login error:", error.response?.data);
+        } else {
+          console.log("Unexpected error:", error);
+        }
+      }
+    },
   });
+
   return (
     <AuthLayout>
       <AuthForm
@@ -36,6 +140,7 @@ const Login = () => {
                 {formik.errors.email}
               </div>
             ) : null}
+
             <input
               name="password"
               onChange={formik.handleChange}
@@ -50,9 +155,9 @@ const Login = () => {
                 {formik.errors.password}
               </div>
             ) : null}
+
             <Link to={"/forgetByEmail"}>
               <p className="text-right text-primary text-sm cursor-pointer mb-2">
-                {" "}
                 Forgot Password?
               </p>
             </Link>

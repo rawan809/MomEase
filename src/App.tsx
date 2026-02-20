@@ -8,6 +8,7 @@ import ForgetByEmail from "../pages/auth/ForgetByEmail";
 import ForgetByPhone from "../pages/auth/ForgetByPhone";
 import CreateNewPassword from "../pages/auth/CreateNewPassword";
 import Notfound from "../pages/Notfound";
+import Home from "../pages/Home";
 import VerifyEmail from "../pages/auth/VerifyEmail";
 
 const router = createBrowserRouter([
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <LandingPage />,
+      },
+      {
+        path: "/home",
+        element: <Home />,
       },
     ],
   },

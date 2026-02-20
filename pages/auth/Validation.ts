@@ -43,3 +43,7 @@ export const phoneSchema = Yup.object({
     .matches(/^01[0-2,5]{1}[0-9]{8}$/, "Enter valid Egyptian phone number"),
 });
 
+export const loginSchema = Yup.object({
+  email,
+  password: Yup.string().required("Required"),
+});
