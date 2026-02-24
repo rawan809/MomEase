@@ -1,7 +1,7 @@
 import React from "react";
 import Mineuicon from "./Mineuicon";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link ,NavLink } from "react-router-dom";
 
 function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
@@ -31,13 +31,13 @@ function Navbar() {
         <div className="max-w-7xl flex justify-between mx-auto items-center h-20">
           <Mineuicon isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenueOpen} />
           <div>
-            <a href="" className="text-primary font-brand  text-h2 font-bold">
+            <Link to={'/'} className="text-primary font-brand  text-h2 font-bold">
               MomEase
-            </a>
+            </Link>
           </div>
           <div className="hidden md:block">
             <div className="flex gap-5 font-medium ">
-              <a href="">Home</a>
+              <NavLink to="/home">Home</NavLink>
               <a href="">Depression </a>
               <a href="">Crying analysis</a>
               <a href="">Baby tracking</a>

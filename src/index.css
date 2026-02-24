@@ -49,15 +49,17 @@
   --space-xl: 64px;
 
   /* breakpoint */
+  --breakpoint-sm: 640px;
   --breakpoint-md: 830px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
 }
 
 .input {
   width: 100%;
   padding: 10px 16px;
   border-radius: 999px;
-  background: #FFF0F6;
-  ;
+  background: #fff0f6;
   outline: none;
 }
 

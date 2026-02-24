@@ -10,6 +10,8 @@ import CreateNewPassword from "../pages/auth/CreateNewPassword";
 import Notfound from "../pages/Notfound";
 import Home from "../pages/Home";
 import VerifyEmail from "../pages/auth/VerifyEmail";
+import ArticlesCatigories from "../pages/ArticlesCatigories";
+import Articles from "../pages/Articles";
 
 const router = createBrowserRouter([
   {
@@ -23,6 +25,14 @@ const router = createBrowserRouter([
       {
         path: "/home",
         element: <Home />,
+      },
+      {
+        path: "/ExploreArticles",
+        element: <ArticlesCatigories />,
+      },
+      {
+        path: "/Articles",
+        element: <Articles />,
       },
     ],
   },
