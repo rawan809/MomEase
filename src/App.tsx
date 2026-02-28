@@ -12,6 +12,7 @@ import Home from "../pages/Home";
 import VerifyEmail from "../pages/auth/VerifyEmail";
 import ArticlesCatigories from "../pages/ArticlesCatigories";
 import Articles from "../pages/Articles";
+import ChatBot from "../pages/ChatBot";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
   {
     path: "/verifyEmail",
     element: <VerifyEmail />,
+  },
+  {
+    path: "/chatbot",
+    element: <ChatBot />,
   },
   {
     path: "*",

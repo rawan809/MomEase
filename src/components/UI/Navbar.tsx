@@ -31,7 +31,7 @@ function Navbar() {
         <div className="max-w-7xl flex justify-between mx-auto items-center h-20">
           <Mineuicon isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenueOpen} />
           <div>
-            <Link to={'/'} className="text-primary font-brand  text-h2 font-bold">
+            <Link to={'/'} className="text-primary font-brand  text-h2 font-bold outline-none">
               MomEase
             </Link>
           </div>
@@ -86,7 +86,7 @@ function Navbar() {
       </div>
       {/*  overlay */}
       <div
-        className={`fixed inset-0 bg-black transition-opacity duration-500 ${
+        className={`fixed inset-0 bg-black transition-opacity duration-500 z-40 ${
           isMenuOpen
             ? "opacity-50 pointer-events-auto"
             : "opacity-0 pointer-events-none"
