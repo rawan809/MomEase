@@ -81,7 +81,7 @@ import SocialLogin from "../../src/components/auth/SocialLogin";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { loginSchema } from "./Validation";
-import { loginUser } from "../../services/auth";
+import { loginUser, resendOtp } from "../../services/auth";
 import axios from "axios";
 
 const Login = () => {
@@ -105,12 +105,27 @@ const Login = () => {
         if (data?.token) {
           localStorage.setItem("token", data.token);
         }
-
-        // redirect to home
         navigate("/home");
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
-          console.log("Login error:", error.response?.data);
+          const message = error.response?.data?.message;
+
+          // لو الايميل مش متفعل
+          if (message === "Please verify your email before logging in.") {
+            try {
+              // نبعت كود جديد
+              await resendOtp(values.email);
+
+              localStorage.setItem("verifyEmail", values.email);
+
+              // نروح صفحة الفيريفاي
+              navigate("/VerifyEmail");
+            } catch (err) {
+              console.log("Resend OTP error:", err);
+            }
+          } else {
+            console.log("Login error:", error.response?.data);
+          }
         } else {
           console.log("Unexpected error:", error);
         }

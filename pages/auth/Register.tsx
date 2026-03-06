@@ -90,7 +90,7 @@ import SocialLogin from "../../src/components/auth/SocialLogin";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { validationSchema } from "./Validation";
-import { registerUser } from "../../services/auth";
+import { registerUser, resendOtp } from "../../services/auth";
 import axios from "axios";
 
 const Register = () => {
@@ -118,9 +118,18 @@ const Register = () => {
           phone: values.phone || "00000000000",
           age: values.age ? Number(values.age) : 18,
         });
-
         console.log("Registration successful");
-        navigate("/login");
+        try {
+          // نبعت كود جديد
+          await resendOtp(values.email);
+
+          localStorage.setItem("verifyEmail", values.email);
+
+          // نروح صفحة الفيريفاي
+          navigate("/VerifyEmail");
+        } catch (err) {
+          console.log("Resend OTP error:", err);
+        }
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           console.log("Backend error:", error.response?.data);

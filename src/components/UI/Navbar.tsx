@@ -1,10 +1,15 @@
 import React from "react";
 import Mineuicon from "./Mineuicon";
 import { useState, useEffect } from "react";
-import { Link ,NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import botIcon from "../../assets/images/ChatIcon.svg";
+import profileIcon from "../../assets/images/profileIcon.svg";
 
 function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
+  const authtoken = localStorage.getItem("userToken");
+  const [loggedIn, setLoggedIn] = useState(!!authtoken);
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 830) {
@@ -31,7 +36,10 @@ function Navbar() {
         <div className="max-w-7xl flex justify-between mx-auto items-center h-20">
           <Mineuicon isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenueOpen} />
           <div>
-            <Link to={'/'} className="text-primary font-brand  text-h2 font-bold outline-none">
+            <Link
+              to={"/"}
+              className="text-primary font-brand  text-h2 font-bold outline-none"
+            >
               MomEase
             </Link>
           </div>
@@ -45,9 +53,26 @@ function Navbar() {
             </div>
           </div>
           <div>
-            <Link to={'/login'} className="bg-accent px-5 py-2 rounded-lg cursor-pointer">
-              Login
-            </Link>
+            {loggedIn ? (
+              <div className="flex gap-3 items-end">
+                <Link
+                  to={"/chatbot"}
+                  className="bg-[#FFC8DD] aspect-square w-10 rounded-full "
+                >
+                  <img src={botIcon} alt="" className="rounded-full" />
+                </Link>
+                <div className="w-8">
+                  <img src={profileIcon} alt="" />
+                </div>
+              </div>
+            ) : (
+              <Link
+                to={"/login"}
+                className="bg-accent px-5 py-2 rounded-lg cursor-pointer"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
         <div

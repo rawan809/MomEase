@@ -25,3 +25,18 @@ export const loginUser = async (data: LoginPayload) => {
   const response = await axios.post(`${API_URL}/login`, data);
   return response.data;
 };
+
+export const resendOtp = async (email: string) => {
+  const response = await axios.post(`${API_URL}/resend-otp`, {
+    email,
+  });
+  return response.data;
+};
+ 
+export const verifyEmail = async (email: string, otpCode: string) => {
+  const response = await axios.post(`${API_URL}/verify-email`, {
+    email,
+    otpCode,
+  });
+  return response.data;
+};
