@@ -105,7 +105,7 @@ const Login = () => {
         if (data?.token) {
           localStorage.setItem("token", data.token);
         }
-        navigate("/home");
+        navigate("/home", { state: { firstName: data.data.firstName } });
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           const message = error.response?.data?.message;

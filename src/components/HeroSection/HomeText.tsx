@@ -1,5 +1,8 @@
 import { motion } from "framer-motion";
-const HeroText = () => {
+interface HeroTextProps {
+  firstName?: string;
+}
+const HeroText = ({ firstName }: HeroTextProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, x: -40 }}
@@ -8,7 +11,7 @@ const HeroText = () => {
       className="flex-1 space-y-(--space-lg)"
     >
       <h1 className="font-(--font-brand) text-h1 leading-tight">
-        Welcome again, <span className="text-primary">Rana!.</span>
+        Welcome again, <span className="text-primary">{firstName}</span>
       </h1>
 
       <p className=" text-muted max-w-xl">How can we help you today?</p>

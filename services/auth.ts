@@ -32,11 +32,18 @@ export const resendOtp = async (email: string) => {
   });
   return response.data;
 };
- 
+
 export const verifyEmail = async (email: string, otpCode: string) => {
   const response = await axios.post(`${API_URL}/verify-email`, {
     email,
     otpCode,
   });
+  return response.data;
+};
+export const googleLogin = async (idToken: string) => {
+  const response = await axios.post(`${API_URL}/google-login`, {
+    idToken: idToken,
+  });
+
   return response.data;
 };

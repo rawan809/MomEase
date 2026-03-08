@@ -1,19 +1,57 @@
-import GoogleIcon from "../../assets/icons/Facebook";
-import FacebookIcon from "../../assets/icons/Google";
+import { GoogleLogin } from "@react-oauth/google";
+import { googleLogin } from "../../../services/auth";
+
+import GoogleIcon from "../../assets/icons/Google";
+import FacebookIcon from "../../assets/icons/Facebook";
+import { useNavigate } from "react-router-dom";
 
 const SocialLogin = () => {
+  const navigate = useNavigate();
+
+  const handleSuccess = async (credentialResponse: any) => {
+    try {
+      const idToken = credentialResponse?.credential;
+      const data = await googleLogin(idToken);
+
+      console.log("FULL DATA:", data);
+
+      const token = data?.token || data?.data?.token;
+
+      if (data?.success && data?.data?.accessToken) {
+        localStorage.setItem("token", token);
+        navigate("/home", { state: { firstName: data.data.firstName } });
+      }
+    } catch (error) {
+      console.error("Google login error:", error);
+    }
+  };
+
   return (
     <div className="mt-6">
-      {/* OR Divider */}
       <div className="flex items-center gap-4 mb-6 w-64 mx-auto">
         <div className="flex-1 h-px bg-muted" />
         <span className="text-small text-muted">or</span>
         <div className="flex-1 h-px bg-muted" />
       </div>
 
-      {/* Icons */}
+      <div style={{ display: "none" }}>
+        <GoogleLogin
+          onSuccess={handleSuccess}
+          onError={() => console.log("Google Login Failed")}
+        />
+      </div>
+
       <div className="flex gap-6 justify-center">
-        <div className="cursor-pointer hover:scale-110 transition">
+        <div
+          onClick={() => {
+            const googleButton = document.querySelector(
+              '[role="button"]',
+            ) as HTMLElement;
+
+            googleButton?.click();
+          }}
+          className="cursor-pointer hover:scale-110 transition"
+        >
           <GoogleIcon />
         </div>
 
