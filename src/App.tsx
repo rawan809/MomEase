@@ -13,6 +13,7 @@ import VerifyEmail from "../pages/auth/VerifyEmail";
 import ArticlesCatigories from "../pages/ArticlesCatigories";
 import Articles from "../pages/Articles";
 import ChatBot from "../pages/ChatBot";
+import Depression from "../pages/dep/depression";
 
 const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
   {
     path: "/chatbot",
     element: <ChatBot />,
+  },
+  {
+    path: "/depression",
+    element: <Depression />,
   },
   {
     path: "*",

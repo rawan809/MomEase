@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
-interface HeroTextProps {
-  firstName?: string;
-}
-const HeroText = ({ firstName }: HeroTextProps) => {
+
+const DepText = () => {
   return (
     <motion.div
       initial={{ opacity: 0, x: -40 }}
@@ -10,12 +8,15 @@ const HeroText = ({ firstName }: HeroTextProps) => {
       transition={{ duration: 0.6 }}
       className="flex-1 space-y-(--space-lg)"
     >
-      <h1 className="font-(--font-brand) text-h1 leading-tight">
-        Welcome again, <span className="text-primary">{firstName}</span>
-      </h1>
+      <h2 className="font-(--font-brand) text-h1 leading-tight text-bold">
+        Let's Check In Together
+      </h2>
 
-      <p className=" text-muted max-w-xl">How can we help you today?</p>
-      <div className="flex gap-(--space-md)">
+      <p className=" text-muted max-w-xl">
+        This is a safe, private space to reflect on how you've been feeling.
+        There are no wrong answers.
+      </p>
+      <div className="flex gap-(--space-md) justify-center">
         <button
           className="
             border-2 border-primary
@@ -28,11 +29,11 @@ const HeroText = ({ firstName }: HeroTextProps) => {
             hover:text-white
           "
         >
-          Join Our Community{" "}
+          Start Check-in{" "}
         </button>
       </div>
     </motion.div>
   );
 };
 
-export default HeroText;
+export default DepText;

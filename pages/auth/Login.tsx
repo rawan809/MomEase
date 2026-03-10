@@ -83,9 +83,11 @@ import { useFormik } from "formik";
 import { loginSchema } from "./Validation";
 import { loginUser, resendOtp } from "../../services/auth";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { setUserData } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -102,8 +104,14 @@ const Login = () => {
         });
 
         // لو السيرفر بيرجع token
-        if (data?.token) {
-          localStorage.setItem("token", data.token);
+        if (data?.success && data?.data?.accessToken) {
+          setUserData({
+            token: data.data.accessToken,
+            firstName: data.data.firstName,
+            role: data.data.role,
+            userId: data.data.userId.toString(),
+          });
+          navigate("/home");
         }
         navigate("/home", { state: { firstName: data.data.firstName } });
       } catch (error: unknown) {

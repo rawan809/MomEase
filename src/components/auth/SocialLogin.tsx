@@ -4,9 +4,11 @@ import { googleLogin } from "../../../services/auth";
 import GoogleIcon from "../../assets/icons/Google";
 import FacebookIcon from "../../assets/icons/Facebook";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../pages/auth/AuthContext";
 
 const SocialLogin = () => {
   const navigate = useNavigate();
+  const { setUserData } = useAuth();
 
   const handleSuccess = async (credentialResponse: any) => {
     try {
@@ -15,11 +17,14 @@ const SocialLogin = () => {
 
       console.log("FULL DATA:", data);
 
-      const token = data?.token || data?.data?.token;
-
       if (data?.success && data?.data?.accessToken) {
-        localStorage.setItem("token", token);
-        navigate("/home", { state: { firstName: data.data.firstName } });
+        setUserData({
+          token: data.data.accessToken,
+          firstName: data.data.firstName,
+          role: data.data.role,
+          userId: data.data.userId.toString(),
+        });
+        navigate("/home");
       }
     } catch (error) {
       console.error("Google login error:", error);
