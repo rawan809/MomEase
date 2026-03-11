@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const DepText = () => {
+  const navigate = useNavigate();
   return (
     <motion.div
       initial={{ opacity: 0, x: -40 }}
@@ -18,6 +20,7 @@ const DepText = () => {
       </p>
       <div className="flex gap-(--space-md) justify-center">
         <button
+          onClick={() => navigate("/assessments")}
           className="
             border-2 border-primary
             text-primary

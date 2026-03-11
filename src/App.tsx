@@ -14,6 +14,9 @@ import ArticlesCatigories from "../pages/ArticlesCatigories";
 import Articles from "../pages/Articles";
 import ChatBot from "../pages/ChatBot";
 import Depression from "../pages/dep/depression";
+import Assessments from "../pages/dep/Assessments";
+import AssessmentQuestions from "../pages/dep/AssessmentQuestions";
+import AssessmentResult from "../pages/dep/AssessmentResult";
 
 const router = createBrowserRouter([
   {
@@ -69,6 +72,18 @@ const router = createBrowserRouter([
   {
     path: "/depression",
     element: <Depression />,
+  },
+  {
+    path: "/assessments",
+    element: <Assessments />,
+  },
+  {
+    path: "/assessment/:id",
+    element: <AssessmentQuestions />,
+  },
+  {
+    path: "//assessment/:id/result",
+    element: <AssessmentResult />,
   },
   {
     path: "*",

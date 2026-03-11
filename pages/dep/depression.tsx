@@ -1,4 +1,3 @@
-import React from "react";
 import Navbar from "../../src/components/UI/Navbar";
 import DepSection from "../../src/components/Depression/DepSection";
 import DepCards from "../../src/components/Depression/DepCards";
