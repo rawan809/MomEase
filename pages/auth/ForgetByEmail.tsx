@@ -3,8 +3,25 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { emailSchema } from "./Validation";
 import ForgetPasswordLayout from "../../src/components/ForgetPassword/ForgetPasswordLayout";
 import { Link } from "react-router-dom";
+import { forgetPassword } from "../../services/auth";
+import { useNavigate } from "react-router-dom";
 
 const ForgetByEmail = () => {
+  const navigate = useNavigate();
+  const handleSubmit = async (
+    values: { email: string },
+    { setFieldError }: any,
+  ) => {
+    try {
+      const res = await forgetPassword(values.email);
+      navigate(`/createNewPassword/:${values.email}`);
+      console.log(res);
+    } catch (error: any) {
+      if (error?.response?.data?.message === "User not found") {
+        setFieldError("email", "User not found");
+      }
+    }
+  };
   return (
     <ForgetPasswordLayout>
       <p className="text-muted text-sm mb-4">
@@ -14,9 +31,7 @@ const ForgetByEmail = () => {
       <Formik
         initialValues={{ email: "" }}
         validationSchema={emailSchema}
-        onSubmit={(values) => {
-          console.log(values);
-        }}
+        onSubmit={handleSubmit}
       >
         <Form className="space-y-4">
           <Field
@@ -25,6 +40,7 @@ const ForgetByEmail = () => {
             placeholder="Email Address"
             className="input"
           />
+
           <ErrorMessage
             name="email"
             component="div"

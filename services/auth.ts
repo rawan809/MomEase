@@ -47,3 +47,22 @@ export const googleLogin = async (idToken: string) => {
 
   return response.data;
 };
+
+export const forgetPassword = async (email: string) => {
+  const response = await axios.post(`${API_URL}/forgot-password`, { email });
+  return response.data;
+};
+
+export const resetPassword = async (
+  email: string,
+  otpCode: string,
+  newPassword: string,
+) => {
+  const response = await axios.post(`${API_URL}/reset-password`, {
+    email,
+    otpCode,
+    newPassword,
+  });
+  return response.data;
+};
+

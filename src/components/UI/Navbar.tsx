@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import botIcon from "../../assets/images/ChatIcon.svg";
 import profileIcon from "../../assets/images/profileIcon.svg";
+// import { useAuth } from "../../pages/auth/AuthContext";
 
 function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
   const authtoken = localStorage.getItem("userToken");
-  const [loggedIn, setLoggedIn] = useState(!!authtoken);
+  const authtoken2 = localStorage.getItem("token");
+  const [loggedIn, setLoggedIn] = useState(!!authtoken||!!authtoken2);
 
   useEffect(() => {
     const handleResize = () => {
@@ -62,7 +64,14 @@ function Navbar() {
                   <img src={botIcon} alt="" className="rounded-full" />
                 </Link>
                 <div className="w-8">
-                  <img src={profileIcon} alt="" />
+                  <img
+                    src={profileIcon}
+                    alt=""
+                    onClick={() => {
+                      localStorage.clear();
+                      setLoggedIn(false);
+                    }}
+                  />
                 </div>
               </div>
             ) : (

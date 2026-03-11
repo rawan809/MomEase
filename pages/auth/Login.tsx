@@ -84,10 +84,13 @@ import { loginSchema } from "./Validation";
 import { loginUser, resendOtp } from "../../services/auth";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
+import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
   const { setUserData } = useAuth();
+
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -97,6 +100,7 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       console.log("Form submitted", values);
+      setLoading(true);
       try {
         const data = await loginUser({
           email: values.email,
@@ -137,6 +141,8 @@ const Login = () => {
         } else {
           console.log("Unexpected error:", error);
         }
+      } finally {
+        setLoading(false);
       }
     },
   });
@@ -144,6 +150,7 @@ const Login = () => {
   return (
     <AuthLayout>
       <AuthForm
+        loading={loading}
         onSubmit={formik.handleSubmit}
         title="Welcome Back"
         subtitle="Login to continue your journey!"

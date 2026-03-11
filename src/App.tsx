@@ -58,7 +58,7 @@ const router = createBrowserRouter([
     element: <ForgetByPhone />,
   },
   {
-    path: "/createNewPassword",
+    path: "/createNewPassword/:email",
     element: <CreateNewPassword />,
   },
   {

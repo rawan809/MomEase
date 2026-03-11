@@ -2,11 +2,27 @@ import React from "react";
 import Heading from "../src/components/UI/Heading";
 import CatigoryCards from "../src/components/Articles/CatigoryCards";
 import { FaBookmark } from "react-icons/fa6";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { ArticlesCategories } from "../services/articles";
+
 
 function ArticlesCatigories() {
   // selected button
   const [SelectedBtn, setSelectedBtn] = useState("Categories");
+  // categories State
+  const [categories, setCategories] = useState<Array<{name: string; description: string; imageUrl: string; articlesCount: number}>>([]);
+
+  // call categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await ArticlesCategories();
+        setCategories(res.data);
+        console.log(res.data);
+      } catch (error) {}
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <div>
@@ -39,12 +55,15 @@ function ArticlesCatigories() {
               Saved Articles
             </button>
           </div>
-          <div className="grid md:grid-cols-2 gap-(--space-lg)">
-            <CatigoryCards />
-            <CatigoryCards />
-            <CatigoryCards />
-            <CatigoryCards />
-            <CatigoryCards />
+          <div className="grid md:grid-cols-2 gap-(--space-lg) w-full">
+            {categories.map((cat) => (
+              <CatigoryCards
+                name={cat.name}
+                description={cat.description}
+                imageUrl={cat.imageUrl}
+                articlesCount={cat.articlesCount}
+              />
+            ))}
           </div>
         </div>
       </section>

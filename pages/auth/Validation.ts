@@ -28,6 +28,18 @@ export const validationSchema = Yup.object({
     .oneOf([Yup.ref("password")], "passwords must match")
     .required("Required"),
 });
+export const resetPasswordSchema = Yup.object({
+  otpCode: Yup.string()
+    .required("Required")
+    .matches(/^[0-9]{4}$/, "Code must be 4 digits"),
+
+  password,
+
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "passwords must match")
+    .required("Required"),
+});
+
 export const emailSchema = Yup.object({
   email: Yup.string()
     .required("Required")

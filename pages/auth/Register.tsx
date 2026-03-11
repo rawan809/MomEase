@@ -92,9 +92,11 @@ import { useFormik } from "formik";
 import { validationSchema } from "./Validation";
 import { registerUser, resendOtp } from "../../services/auth";
 import axios from "axios";
+import { useState } from "react";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -108,6 +110,7 @@ const Register = () => {
     },
     validationSchema,
     onSubmit: async (values) => {
+      setLoading(true);
       try {
         await registerUser({
           firstName: values.firstName,
@@ -136,6 +139,8 @@ const Register = () => {
         } else {
           console.log("Unexpected error:", error);
         }
+      }finally{
+        setLoading(false);
       }
     },
   });
@@ -143,6 +148,7 @@ const Register = () => {
   return (
     <AuthLayout>
       <AuthForm
+        loading={loading}
         onSubmit={formik.handleSubmit}
         title="Create an account"
         subtitle="Join us to start your journey"
