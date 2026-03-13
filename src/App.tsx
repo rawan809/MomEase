@@ -36,7 +36,7 @@ const router = createBrowserRouter([
         element: <ArticlesCatigories />,
       },
       {
-        path: "/Articles",
+        path: "/Articles/:categoryID",
         element: <Articles />,
       },
     ],

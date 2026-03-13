@@ -1,60 +1,135 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { use } from "react";
+import { Link, useParams } from "react-router-dom";
 import InputSearch from "../src/components/Articles/InputSearch";
 import ArticleCard from "../src/components/Articles/ArticleCard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  CategoryInfo,
+  ArticlesAPI,
+  AddSavedArticle,
+  DeleteSavedArticle,
+} from "../services/articles";
+import LoadingState from "../src/components/UI/LoadingState";
+import EmptyResponse from "../src/components/UI/EmptyResponse";
+import { div } from "framer-motion/client";
+
+interface Category {
+  name: string;
+  description: string;
+  [key: string]: any;
+}
+interface Article {
+  articleId: number;
+  isSaved: boolean;
+  title: string;
+  imageUrl: string;
+  shortDescription: string;
+  readingTimeMinutes: number;
+}
 
 function Articles() {
-  const [articles, setArticles] = useState([
-    { id: 1, saved: false },
-    { id: 2, saved: true },
-    { id: 3, saved: false },
-    { id: 4, saved: false },
-    { id: 5, saved: false },
-    { id: 6, saved: false },
-    { id: 7, saved: false },
-  ]);
+  const params = useParams();
+  let idstring = params.categoryID;
+  let id = Number(idstring?.slice(1));
+  const [category, setCategory] = useState<Category | null>(null);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  const toggleSave = (id: number) => {
-    setArticles((prev) =>
-      prev.map((article) =>
-        article.id === id ? { ...article, saved: !article.saved } : article,
-      ),
-    );
+  // api cals
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const catRes = await CategoryInfo(id);
+        setCategory(catRes.data);
+
+        const artRes = await ArticlesAPI(id);
+        console.log(artRes);
+        setArticles(artRes.data);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchData();
+  }, [id]);
+
+  // save & unsave
+  const toggleSaveArticle = async (articleId: number, isSaved: boolean) => {
+    try {
+      if (isSaved) {
+        await DeleteSavedArticle(articleId);
+      } else {
+        await AddSavedArticle(articleId);
+      }
+
+      setArticles((prev) =>
+        prev.map((article) =>
+          article.articleId === articleId
+            ? { ...article, isSaved: !isSaved }
+            : article,
+        ),
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <section className="py-20">
       <div className="max-w-7xl mx-auto px-(--space-lg) flex flex-col items-center ">
-        <div className="mt-5">
-          <div className="mb-5">
-            <p className="text-primary font-semibold">
-              <Link to={"/ExploreArticles"} className="text-muted">
-                Categories/{" "}
-              </Link>
-              PostPartum Recovery
-            </p>
+        {loading ? (
+          <div className="h-[70vh]">
+            <LoadingState />
           </div>
-          <div className=" pb-5">
-            <h1 className="md:text-h2 text-3xl font-semibold pb-(--space-sm)">
-              Postpartum Recovery
-            </h1>
-            <p className="text-muted text-small lg:w-1/2">
-              Supportive articles and expert guidance to help you navigate this
-              important aspect of your motherhood journey
-            </p>
+        ) : category === null ? (
+          <div className="h-[80vh]">
+            <EmptyResponse title="No Category Found" />
           </div>
-          <InputSearch />
-
-          <div className="mt-10 grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2  gap-(--space-lg)">
-            {articles.map((article) => (
-              <ArticleCard
-                key={article.id}
-                saved={article.saved}
-                onToggleSave={() => toggleSave(article.id)}
-              />
-            ))}
+        ) : (
+          <div className="mt-5 w-full">
+            <div className="mb-5">
+              <p className="text-primary font-semibold">
+                <Link to={"/ExploreArticles"} className="text-muted">
+                  Categories/{" "}
+                </Link>
+                {category?.name}
+              </p>
+            </div>
+            <div className=" pb-5">
+              <h1 className="md:text-h2 text-3xl font-semibold pb-(--space-sm)">
+                {category?.name}
+              </h1>
+              <p className="text-muted text-small lg:w-1/2">
+                {category?.description}
+              </p>
+            </div>
+            <InputSearch />
+            {Articles.length === 0 ? (
+              <div className="h-[50vh]">
+                <EmptyResponse title="No Articles Found" />
+              </div>
+            ) : (
+              <div className="mt-10 grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2  gap-(--space-lg)">
+                {articles.map((article) => (
+                  <ArticleCard
+                    key={article.articleId}
+                    savedArticlesPage={false}
+                    articleId={article.articleId}
+                    isSaved={article.isSaved}
+                    title={article.title}
+                    imageUrl={article.imageUrl}
+                    shortDescription={article.shortDescription}
+                    readingTimeMinutes={article.readingTimeMinutes}
+                    onToggleSave={toggleSaveArticle}
+                  />
+                ))}
+              </div>
+            )}
           </div>
-        </div>
+        )}
       </div>
     </section>
   );

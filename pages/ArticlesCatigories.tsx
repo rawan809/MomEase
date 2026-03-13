@@ -3,26 +3,88 @@ import Heading from "../src/components/UI/Heading";
 import CatigoryCards from "../src/components/Articles/CatigoryCards";
 import { FaBookmark } from "react-icons/fa6";
 import { useState, useEffect } from "react";
-import { ArticlesCategories } from "../services/articles";
-
+import {
+  ArticlesCategories,
+  getSavedArticlesAPI,
+  DeleteSavedArticle,
+} from "../services/articles";
+import ArticleCard from "../src/components/Articles/ArticleCard";
+import LoadingState from "../src/components/UI/LoadingState";
 
 function ArticlesCatigories() {
+  // loding
+  const [loading, setLoading] = useState(false);
   // selected button
   const [SelectedBtn, setSelectedBtn] = useState("Categories");
   // categories State
-  const [categories, setCategories] = useState<Array<{name: string; description: string; imageUrl: string; articlesCount: number}>>([]);
+  const [categories, setCategories] = useState<
+    Array<{
+      name: string;
+      description: string;
+      imageUrl: string;
+      articlesCount: number;
+      categoryId: number;
+    }>
+  >([]);
+  // saved Articles state
+  const [savedArticles, setSavedArticles] = useState<
+    Array<{
+      articleId: number;
+      title: string;
+      imageUrl: string;
+      readingTimeMinutes: number;
+      categoryName: string;
+      savedAt: string;
+    }>
+  >([]);
 
   // call categories
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchCat = async () => {
+      setLoading(true);
       try {
-        const res = await ArticlesCategories();
-        setCategories(res.data);
-        console.log(res.data);
-      } catch (error) {}
+        const catRes = await ArticlesCategories();
+        setCategories(catRes.data);
+      } catch (error) {
+        console.log("categories error", error);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchCategories();
+    fetchCat();
   }, []);
+  // call saved articles
+  useEffect(() => {
+    if (SelectedBtn === "Saved") {
+      const fetchSaved = async () => {
+        setLoading(true);
+        try {
+          const savedRes = await getSavedArticlesAPI();
+          setSavedArticles(savedRes.data);
+          console.log(savedRes);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchSaved();
+    }
+  }, [SelectedBtn]);
+
+  // unsave
+  const deleteSavedArticle = async (articleId: number) => {
+    try {
+      await DeleteSavedArticle(articleId);
+
+      setSavedArticles((prev) =>
+        prev.filter((article) => article.articleId !== articleId),
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
@@ -55,16 +117,52 @@ function ArticlesCatigories() {
               Saved Articles
             </button>
           </div>
-          <div className="grid md:grid-cols-2 gap-(--space-lg) w-full">
-            {categories.map((cat) => (
-              <CatigoryCards
-                name={cat.name}
-                description={cat.description}
-                imageUrl={cat.imageUrl}
-                articlesCount={cat.articlesCount}
-              />
+          {SelectedBtn === "Saved" &&
+            (loading ? (
+              <div className="h-[40vh]">
+                <LoadingState />
+              </div>
+            ) : savedArticles.length === 0 ? (
+              <p className="text-muted text-center w-full">No saved articles</p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-(--space-lg) w-full">
+                {savedArticles.map((article) => (
+                  <ArticleCard
+                    key={article.articleId}
+                    articleId={article.articleId}
+                    isSaved={true}
+                    title={article.title}
+                    imageUrl={article.imageUrl}
+                    readingTimeMinutes={article.readingTimeMinutes}
+                    savedArticlesPage={true}
+                    onDeleteSave={deleteSavedArticle}
+                    categoryName={article.categoryName}
+                    savedAt={article.savedAt}
+                  />
+                ))}
+              </div>
             ))}
-          </div>
+
+          {SelectedBtn === "Categories" ? (
+            loading ? (
+              <div className="h-[40vh]">
+                <LoadingState />
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 gap-(--space-lg) w-full">
+                {categories.map((cat, i) => (
+                  <CatigoryCards
+                    key={i}
+                    id={cat.categoryId}
+                    name={cat.name}
+                    description={cat.description}
+                    imageUrl={cat.imageUrl}
+                    articlesCount={cat.articlesCount}
+                  />
+                ))}
+              </div>
+            )
+          ) : null}
         </div>
       </section>
     </div>

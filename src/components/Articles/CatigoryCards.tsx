@@ -3,6 +3,7 @@ import articleImg from "../../assets/images/articleImg.jpg";
 import { Link } from "react-router-dom";
 
 interface CatigoryCardsProps {
+  id: number;
   name: string;
   description: string;
   imageUrl: string;
@@ -10,13 +11,14 @@ interface CatigoryCardsProps {
 }
 
 function CatigoryCards({
+  id,
   name,
   description,
   imageUrl,
   articlesCount,
 }: CatigoryCardsProps) {
   return (
-    <div className="relative overflow-hidden rounded-2xl shadow-lg group ">
+    <div className="relative overflow-hidden rounded-2xl shadow-lg group hover:-translate-y-1 transition-transform duration-300">
       <div
         className="relative bg-cover bg-center h-64"
         style={{
@@ -33,7 +35,7 @@ function CatigoryCards({
 
       <div className="relative z-20 p-4 bg-white">
         <Link
-          to={"/Articles"}
+          to={`/Articles/:${id}`}
           className="font-semibold group-hover:text-primary transition-colors duration-300"
         >
           {name}

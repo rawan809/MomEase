@@ -10,7 +10,7 @@ function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
   const authtoken = localStorage.getItem("userToken");
   const authtoken2 = localStorage.getItem("token");
-  const [loggedIn, setLoggedIn] = useState(!!authtoken||!!authtoken2);
+  const [loggedIn, setLoggedIn] = useState(!!authtoken || !!authtoken2);
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,7 +48,7 @@ function Navbar() {
           <div className="hidden md:block">
             <div className="flex gap-5 font-medium ">
               <NavLink to="/home">Home</NavLink>
-              <a href="">Depression </a>
+              <NavLink to="/depression">Depression </NavLink>
               <a href="">Crying analysis</a>
               <a href="">Baby tracking</a>
               <a href="">Community</a>
@@ -93,28 +93,38 @@ function Navbar() {
                   }`}
         >
           {/* menu */}
-          <div className="flex flex-col gap-3 font-medium">
-            {[
-              "Home",
-              "Depression",
-              "Crying analysis",
-              "Baby tracking",
-              "Community",
-            ].map((link, index) => (
-              <div
-                className={`font-bold transform transition-all duration-300 
-                  ${
-                    isMenuOpen
-                      ? "translate-x-0 opacity-100"
-                      : "-translate-x-10 opacity-0"
-                  }`}
-                style={{ transitionDelay: `${index * 100}ms` }}
-              >
-                <a key={link} href="" className="hover:bg-accent rounded p-1">
-                  {link}
-                </a>
-              </div>
-            ))}
+          <div className="">
+            <div className="flex flex-col gap-3 font-medium">
+              {[
+                { to: "/home", label: "Home", isNav: true },
+                { to: "/depression", label: "Depression", isNav: true },
+                { to: "", label: "Crying analysis", isNav: false },
+                { to: "", label: "Baby tracking", isNav: false },
+                { to: "", label: "Community", isNav: false },
+              ].map((item, index) =>
+                item.isNav ? (
+                  <NavLink
+                    key={item.label}
+                    to={item.to}
+                    className={`font-bold transform transition-all duration-300 hover:bg-accent rounded p-1
+            ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
+                    style={{ transitionDelay: `${index * 100}ms` }}
+                  >
+                    {item.label}
+                  </NavLink>
+                ) : (
+                  <a
+                    key={item.label}
+                    href={item.to}
+                    className={`font-bold transform transition-all duration-300 hover:bg-accent rounded p-1
+            ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
+                    style={{ transitionDelay: `${index * 100}ms` }}
+                  >
+                    {item.label}
+                  </a>
+                ),
+              )}
+            </div>
           </div>
         </div>
       </div>

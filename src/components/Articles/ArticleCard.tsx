@@ -4,11 +4,33 @@ import { FaBookmark } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
 
 interface ArticleCardProps {
-  saved: boolean;
-  onToggleSave?: () => void;
+  articleId: number;
+  isSaved: boolean;
+  onToggleSave?: (id: number, isSaved: boolean) => void;
+  onDeleteSave?: (id: number) => void;
+  title: string;
+  imageUrl: string;
+  shortDescription?: string;
+  readingTimeMinutes: number;
+  savedArticleId?: string;
+  savedArticlesPage: boolean;
+  savedAt?: string;
+  categoryName?: string;
 }
 
-function ArticleCard({ saved, onToggleSave }: ArticleCardProps) {
+function ArticleCard({
+  articleId,
+  isSaved,
+  title,
+  imageUrl,
+  onDeleteSave,
+  shortDescription,
+  readingTimeMinutes,
+  onToggleSave,
+  savedArticlesPage,
+  savedAt,
+  categoryName,
+}: ArticleCardProps) {
   return (
     <div className="relative overflow-hidden rounded-2xl shadow-lg hover:-translate-y-1.25 transition-transform duration-300">
       <div
@@ -20,16 +42,43 @@ function ArticleCard({ saved, onToggleSave }: ArticleCardProps) {
       `,
         }}
       >
-        <p className="absolute bottom-4 left-4 text-white z-20">14 mins</p>
+        <p className="absolute bottom-4 left-4 text-white z-20">
+          {readingTimeMinutes} mins
+        </p>
       </div>
 
       <div className="relative z-20 p-4 bg-white">
-        <p className="font-semibold">
-          Your Healing Journey After Birth: A Gentle Guide for New Mothers
-        </p>
+        <p className="font-semibold">{title}</p>
+
+        {savedArticlesPage ? (
+          <>
+            {" "}
+            <p className="text-muted mt-1">
+              category:{" "}
+              <span className="bg-accent w-fit px-2 py-1 rounded-lg text-black">
+                {categoryName}
+              </span>
+            </p>
+            <p className="text-muted mt-1">
+              Saved at:{" "}
+              {savedAt ? new Date(savedAt).toLocaleDateString() : "N/A"}
+            </p>
+          </>
+        ) : null}
+
+        <p className="text-muted">{shortDescription}</p>
         <div className="mt-2 flex justify-end">
-          <button onClick={onToggleSave}>
-            {saved ? (
+          <button
+            className="cursor-pointer"
+            onClick={() => {
+              if (savedArticlesPage) {
+                onDeleteSave?.(articleId);
+              } else {
+                onToggleSave?.(articleId, isSaved);
+              }
+            }}
+          >
+            {isSaved ? (
               <FaBookmark className="text-primary" />
             ) : (
               <FaRegBookmark className="text-primary" />
