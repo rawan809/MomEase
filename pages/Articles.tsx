@@ -107,7 +107,7 @@ function Articles() {
               </p>
             </div>
             <InputSearch />
-            {Articles.length === 0 ? (
+            {articles.length === 0 ? (
               <div className="h-[50vh]">
                 <EmptyResponse title="No Articles Found" />
               </div>
