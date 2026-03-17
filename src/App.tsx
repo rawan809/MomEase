@@ -17,6 +17,9 @@ import Depression from "../pages/dep/depression";
 import Assessments from "../pages/dep/Assessments";
 import AssessmentQuestions from "../pages/dep/AssessmentQuestions";
 import AssessmentResult from "../pages/dep/AssessmentResult";
+import SkinDiagnoses from "../pages/skin/SkinDiagnosis";
+import SkinUpload from "../pages/skin/SkinUpload";
+import SkinResult from "../pages/skin/SkinResult";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +42,12 @@ const router = createBrowserRouter([
         path: "/Articles/:categoryID",
         element: <Articles />,
       },
+      {
+        path: "SkinDiagnoses",
+        element: <SkinDiagnoses />,
+      },
+      { path: "/skin-diagnosis/upload", element: <SkinUpload /> },
+      { path: "/skin-diagnosis/result", element: <SkinResult /> },
     ],
   },
   {
