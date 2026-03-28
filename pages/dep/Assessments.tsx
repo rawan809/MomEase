@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Timer from "../../src/assets/icons/timer";
 import ShieldCheck from "../../src/assets/icons/shieldCheck";
 import Lock from "../../src/assets/icons/lock";
+import {getAssessments} from "../../services/dep"
 
 interface Assessment {
   assessmentId: number;
@@ -28,9 +29,8 @@ const AssessmentList = () => {
   useEffect(() => {
     const fetchAssessments = async () => {
       try {
-        const res = await fetch("http://momease.runasp.net/api/assessments");
-        const data = await res.json();
-        setAssessments(data);
+        const res = await getAssessments();
+        setAssessments(res);
       } catch (err) {
         console.error("Failed to fetch assessments:", err);
       } finally {

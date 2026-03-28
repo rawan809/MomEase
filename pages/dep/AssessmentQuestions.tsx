@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router-dom";
+import {
+  getAssessmentQuestions,
+  getQuestionOptions,
+  submitAssessment,
+} from "../../services/dep";
 
 interface Question {
   questionId: number;
@@ -39,11 +44,8 @@ const AssessmentQuestions = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const res = await fetch(
-          `http://momease.runasp.net/api/assessments/${id}/questions`,
-        );
-        const data = await res.json();
-        const sorted = data.sort(
+        const res = await getAssessmentQuestions(id);
+        const sorted = res.sort(
           (a: Question, b: Question) => a.questionOrder - b.questionOrder,
         );
         setQuestions(sorted);
@@ -61,11 +63,8 @@ const AssessmentQuestions = () => {
     const fetchOptions = async () => {
       try {
         const questionId = questions[currentIndex].questionId;
-        const res = await fetch(
-          `http://momease.runasp.net/api/questions/${questionId}/options`,
-        );
-        const data = await res.json();
-        const sorted = data.sort(
+        const res = await getQuestionOptions(questionId);
+        const sorted = res.sort(
           (a: Option, b: Option) => a.optionOrder - b.optionOrder,
         );
         setOptions(sorted);
@@ -107,22 +106,11 @@ const AssessmentQuestions = () => {
           })),
         };
 
-        const res = await fetch(
-          `http://momease.runasp.net/api/assessments/${id}/submit`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(payload),
-          },
-        );
+        const res = await submitAssessment(id, newAnswers);
 
-        const result = await res.json();
-        console.log("SUBMIT RESULT:", result);
+        console.log("SUBMIT RESULT:", res);
 
-        navigate(`/assessment/${id}/result`, { state: { result } });
+        navigate(`/assessment/${id}/result`, { state: { res } });
       } catch (err) {
         console.error("Submit failed:", err);
       } finally {

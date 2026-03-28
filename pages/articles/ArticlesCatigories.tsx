@@ -1,15 +1,16 @@
 import React from "react";
-import Heading from "../src/components/UI/Heading";
-import CatigoryCards from "../src/components/Articles/CatigoryCards";
+import Heading from "../../src/components/UI/Heading";
+import CatigoryCards from "../../src/components/Articles/CatigoryCards";
 import { FaBookmark } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import {
   ArticlesCategories,
   getSavedArticlesAPI,
   DeleteSavedArticle,
-} from "../services/articles";
-import ArticleCard from "../src/components/Articles/ArticleCard";
-import LoadingState from "../src/components/UI/LoadingState";
+} from "../../services/articles";
+import ArticleCard from "../../src/components/Articles/ArticleCard";
+import LoadingState from "../../src/components/UI/LoadingState";
+import EmptyResponse from "../../src/components/UI/EmptyResponse";
 
 function ArticlesCatigories() {
   // loding
@@ -123,7 +124,9 @@ function ArticlesCatigories() {
                 <LoadingState />
               </div>
             ) : savedArticles.length === 0 ? (
-              <p className="text-muted text-center w-full">No saved articles</p>
+              <div className="h-[40vh]">
+                <EmptyResponse title="No saved articles" />
+              </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-(--space-lg) w-full">
                 {savedArticles.map((article) => (
@@ -147,6 +150,10 @@ function ArticlesCatigories() {
             loading ? (
               <div className="h-[40vh]">
                 <LoadingState />
+              </div>
+            ) : categories.length === 0 ? (
+              <div className="h-[40vh]">
+                <EmptyResponse title="No category found" />
               </div>
             ) : (
               <div className="grid md:grid-cols-2 gap-(--space-lg) w-full">

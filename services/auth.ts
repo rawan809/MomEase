@@ -1,6 +1,21 @@
 import axios from "axios";
 
-const API_URL = "http://momease.runasp.net/api/Auth";
+const api = axios.create({
+  baseURL: "/api/Auth",
+  headers: {
+    "Accept-Language": "en",
+  },
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
 
 export interface RegisterPayload {
   firstName: string;
@@ -13,7 +28,7 @@ export interface RegisterPayload {
 }
 
 export const registerUser = async (data: RegisterPayload) => {
-  const response = await axios.post(`${API_URL}/register`, data);
+  const response = await api.post(`/register`, data);
   return response.data;
 };
 export interface LoginPayload {
@@ -22,26 +37,26 @@ export interface LoginPayload {
 }
 
 export const loginUser = async (data: LoginPayload) => {
-  const response = await axios.post(`${API_URL}/login`, data);
+  const response = await api.post(`/login`, data);
   return response.data;
 };
 
 export const resendOtp = async (email: string) => {
-  const response = await axios.post(`${API_URL}/resend-otp`, {
+  const response = await api.post(`/resend-otp`, {
     email,
   });
   return response.data;
 };
 
 export const verifyEmail = async (email: string, otpCode: string) => {
-  const response = await axios.post(`${API_URL}/verify-email`, {
+  const response = await api.post(`/verify-email`, {
     email,
     otpCode,
   });
   return response.data;
 };
 export const googleLogin = async (idToken: string) => {
-  const response = await axios.post(`${API_URL}/google-login`, {
+  const response = await api.post(`/google-login`, {
     idToken: idToken,
   });
 
@@ -49,7 +64,7 @@ export const googleLogin = async (idToken: string) => {
 };
 
 export const forgetPassword = async (email: string) => {
-  const response = await axios.post(`${API_URL}/forgot-password`, { email });
+  const response = await api.post(`/forgot-password`, { email });
   return response.data;
 };
 
@@ -58,11 +73,10 @@ export const resetPassword = async (
   otpCode: string,
   newPassword: string,
 ) => {
-  const response = await axios.post(`${API_URL}/reset-password`, {
+  const response = await api.post(`/reset-password`, {
     email,
     otpCode,
     newPassword,
   });
   return response.data;
 };
-

@@ -1,8 +1,11 @@
 import axios from "axios";
 
-const API_URL = "http://momease.runasp.net/api";
+const API_URL = "/api";
 const api = axios.create({
   baseURL: API_URL,
+  headers: {
+    "Accept-Language": "en",
+  },
 });
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
@@ -17,22 +20,24 @@ api.interceptors.request.use((config) => {
 // categories
 
 export const ArticlesCategories = async () => {
-  const response = await api.get(`${API_URL}/articles/categories`);
+  const response = await api.get(`/articles/categories`);
   return response.data;
 };
 
 export const CategoryInfo = async (id: number) => {
-  const response = await api.get(`${API_URL}/articles/categories/${id}`);
+  const response = await api.get(`/articles/categories/${id}`);
   return response.data;
 };
 
 // articles
+// /api/Articles/category/{categoryId}
 export const ArticlesAPI = async (categoryId: number) => {
-  const response = await api.get(`${API_URL}/Articles`, {
-    params: {
-      categoryId: categoryId,
-    },
-  });
+  const response = await api.get(`/Articles/category/${categoryId}`);
+
+  return response.data;
+};
+export const ArticleAPI = async (articleId: number) => {
+  const response = await api.get(`/Articles/${articleId}`);
 
   return response.data;
 };
@@ -40,20 +45,18 @@ export const ArticlesAPI = async (categoryId: number) => {
 // saved
 
 export const getSavedArticlesAPI = async () => {
-  const response = await api.get(`${API_URL}/saved-articles`, {});
+  const response = await api.get(`/saved-articles`, {});
 
   return response.data;
 };
 
 export const AddSavedArticle = async (articleId: number) => {
-  const response = await api.post(`${API_URL}/saved-articles`, {
+  const response = await api.post(`/saved-articles`, {
     articleId,
   });
   return response.data;
 };
 export const DeleteSavedArticle = async (articleId: number) => {
-  const response = await api.delete(
-    `${API_URL}/saved-articles/${articleId}`
-  );
+  const response = await api.delete(`/saved-articles/${articleId}`);
   return response.data;
 };

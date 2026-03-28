@@ -10,8 +10,9 @@ import CreateNewPassword from "../pages/auth/CreateNewPassword";
 import Notfound from "../pages/Notfound";
 import Home from "../pages/Home";
 import VerifyEmail from "../pages/auth/VerifyEmail";
-import ArticlesCatigories from "../pages/ArticlesCatigories";
-import Articles from "../pages/Articles";
+import ArticlesCatigories from "../pages/articles/ArticlesCatigories";
+import Articles from "../pages/articles/Articles";
+import Article from "../pages/articles/Article";
 import ChatBot from "../pages/ChatBot";
 import Depression from "../pages/dep/depression";
 import Assessments from "../pages/dep/Assessments";
@@ -43,11 +44,17 @@ const router = createBrowserRouter([
         element: <Articles />,
       },
       {
+<<<<<<< Updated upstream
         path: "SkinDiagnoses",
         element: <SkinDiagnoses />,
       },
       { path: "/skin-diagnosis/upload", element: <SkinUpload /> },
       { path: "/skin-diagnosis/result", element: <SkinResult /> },
+=======
+        path: "/Article/:articleID",
+        element: <Article />,
+      },
+>>>>>>> Stashed changes
     ],
   },
   {

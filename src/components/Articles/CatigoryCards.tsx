@@ -19,31 +19,36 @@ function CatigoryCards({
 }: CatigoryCardsProps) {
   return (
     <div className="relative overflow-hidden rounded-2xl shadow-lg group hover:-translate-y-1 transition-transform duration-300">
-      <div
-        className="relative bg-cover bg-center h-64"
-        style={{
-          backgroundImage: `
-        linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(255,102,161,0.25)),
-        url(${imageUrl || articleImg})
-      `,
-        }}
-      >
-        <p className="absolute bottom-4 left-4 text-white z-20">
-          {articlesCount} Article
-        </p>
-      </div>
-
-      <div className="relative z-20 p-4 bg-white">
-        <Link
-          to={`/Articles/:${id}`}
-          className="font-semibold group-hover:text-primary transition-colors duration-300"
+      <Link to={`/Articles/:${id}`}>
+        <div
+          className="relative bg-cover bg-center h-64"
+          style={{
+            backgroundImage: `
+              linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(255,102,161,0.25)),
+              url(${imageUrl || articleImg})
+            `,
+          }}
         >
-          {name}
-        </Link>
-        <p>
+          <p className="absolute bottom-4 left-4 text-white z-20">
+            {articlesCount} Articles
+          </p>
+        </div>
+      </Link>
+
+      <div className="p-4 bg-white">
+        <h3 className="font-semibold text-lg">{name}</h3>
+
+        <p className="text-sm text-gray-600 mt-1">
           {description ||
             "Find supportive articles, expert guidance, and caring resources for every stage of your motherhood journey"}
         </p>
+
+        <Link
+          to={`/Articles/:${id}`}
+          className="inline-block mt-3 text-sm font-medium text-primary hover:underline"
+        >
+          View Articles →
+        </Link>
       </div>
     </div>
   );

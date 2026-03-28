@@ -2,6 +2,7 @@ import React from "react";
 import articleImg from "../../assets/images/articleImg.jpg";
 import { FaBookmark } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 interface ArticleCardProps {
   articleId: number;
@@ -32,23 +33,31 @@ function ArticleCard({
   categoryName,
 }: ArticleCardProps) {
   return (
-    <div className="relative overflow-hidden rounded-2xl shadow-lg hover:-translate-y-1.25 transition-transform duration-300">
-      <div
-        className="relative bg-cover bg-center h-64"
-        style={{
-          backgroundImage: `
+    <div className="relative overflow-hidden rounded-2xl shadow-lg hover:-translate-y-1.25 transition-transform duration-300 group cursor-auto">
+      <Link to={`/Article/:${articleId}`}>
+        {" "}
+        <div
+          className="relative bg-cover bg-center h-64"
+          style={{
+            backgroundImage: `
         linear-gradient(to bottom, rgba(0,0,0,0.25), rgba(255,102,161,0.25)),
-        url(${articleImg})
+        url(${imageUrl})
       `,
-        }}
-      >
-        <p className="absolute bottom-4 left-4 text-white z-20">
-          {readingTimeMinutes} mins
-        </p>
-      </div>
+          }}
+        >
+          <p className="absolute bottom-4 left-4 text-white z-20">
+            {readingTimeMinutes} mins
+          </p>
+        </div>
+      </Link>
 
       <div className="relative z-20 p-4 bg-white">
-        <p className="font-semibold">{title}</p>
+        <Link
+          to={`/Article/:${articleId}`}
+          className="font-semibold group-hover:text-primary transition-all duration-300"
+        >
+          {title}
+        </Link>
 
         {savedArticlesPage ? (
           <>

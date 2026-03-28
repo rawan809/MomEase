@@ -1,17 +1,16 @@
 import React, { use } from "react";
 import { Link, useParams } from "react-router-dom";
-import InputSearch from "../src/components/Articles/InputSearch";
-import ArticleCard from "../src/components/Articles/ArticleCard";
+import InputSearch from "../../src/components/Articles/InputSearch";
+import ArticleCard from "../../src/components/Articles/ArticleCard";
 import { useState, useEffect } from "react";
 import {
   CategoryInfo,
   ArticlesAPI,
   AddSavedArticle,
   DeleteSavedArticle,
-} from "../services/articles";
-import LoadingState from "../src/components/UI/LoadingState";
-import EmptyResponse from "../src/components/UI/EmptyResponse";
-import { div } from "framer-motion/client";
+} from "../../services/articles";
+import LoadingState from "../../src/components/UI/LoadingState";
+import EmptyResponse from "../../src/components/UI/EmptyResponse";
 
 interface Category {
   name: string;
@@ -58,22 +57,28 @@ function Articles() {
 
   // save & unsave
   const toggleSaveArticle = async (articleId: number, isSaved: boolean) => {
+    setArticles((prev) =>
+      prev.map((article) =>
+        article.articleId === articleId
+          ? { ...article, isSaved: !isSaved }
+          : article,
+      ),
+    );
+
     try {
       if (isSaved) {
         await DeleteSavedArticle(articleId);
       } else {
         await AddSavedArticle(articleId);
       }
-
+    } catch (error) {
       setArticles((prev) =>
         prev.map((article) =>
           article.articleId === articleId
-            ? { ...article, isSaved: !isSaved }
+            ? { ...article, isSaved: isSaved }
             : article,
         ),
       );
-    } catch (error) {
-      console.log(error);
     }
   };
 

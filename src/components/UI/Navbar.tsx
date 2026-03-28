@@ -47,11 +47,25 @@ function Navbar() {
           </div>
           <div className="hidden md:block">
             <div className="flex gap-5 font-medium ">
-              <NavLink to="/home">Home</NavLink>
-              <NavLink to="/depression">Depression </NavLink>
-              <a href="">Crying analysis</a>
-              <a href="">Baby tracking</a>
-              <a href="">Community</a>
+              <NavLink
+                to="/home"
+                className={({ isActive, isPending }) =>
+                  isPending ? "text-gray-400" : isActive ? "text-primary" : ""
+                }
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/depression"
+                className={({ isActive, isPending }) =>
+                  isPending ? "text-gray-400" : isActive ? "text-primary" : ""
+                }
+              >
+                Depression{" "}
+              </NavLink>
+              <NavLink to="">Crying analysis</NavLink>
+              <NavLink to="">Baby tracking</NavLink>
+              <NavLink to="">Community</NavLink>
             </div>
           </div>
           <div>
@@ -106,8 +120,9 @@ function Navbar() {
                   <NavLink
                     key={item.label}
                     to={item.to}
-                    className={`font-bold transform transition-all duration-300 hover:bg-accent rounded p-1
-            ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
+                    className={({ isActive, isPending }) =>
+                      `${isPending ? "text-gray-400" : isActive ? "text-primary" : ""} font-bold transform transition-all duration-300 hover:bg-accent rounded p-1 ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`
+                    }
                     style={{ transitionDelay: `${index * 100}ms` }}
                   >
                     {item.label}
