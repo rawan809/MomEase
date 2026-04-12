@@ -5,7 +5,7 @@ import { useAuth } from "./auth/AuthContext";
 
 export default function Home() {
   const { user } = useAuth();
-  const firstName = user.firstName;
+  const firstName = user?.firstName ?? undefined;
 
   return (
     <>

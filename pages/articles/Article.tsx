@@ -3,7 +3,7 @@ import {
   ArticleAPI,
   AddSavedArticle,
   DeleteSavedArticle,
-  ArticlesAPI
+  ArticlesAPI,
 } from "../../services/articles";
 import { useState } from "react";
 import LoadingState from "../../src/components/UI/LoadingState";
@@ -14,8 +14,11 @@ import { GoLinkExternal } from "react-icons/go";
 import EmptyResponse from "../../src/components/UI/EmptyResponse";
 import { FaBookmark } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
+import ArticleCard from "../../src/components/Articles/ArticleCard";
 
 interface ArticleType {
+  articleId: number; 
+  shortDescription: string; 
   title: string;
   content: string;
   categoryName: string;
@@ -35,6 +38,7 @@ function Article() {
   const [loading, setLoading] = useState(true);
   const [articleData, setArticleData] = useState<ArticleType | null>(null);
   const [saved, setSaved] = useState<boolean>(false);
+  const [relatedArticles, setRelatedArticles] = useState<ArticleType[]>([]);
 
   //   formate time
   const formatDate = (createdAt: string) => {
@@ -66,6 +70,23 @@ function Article() {
 
     if (!isNaN(id)) fetchData();
   }, [id]);
+  useEffect(() => {
+    const fetchRelatedArticles = async () => {
+      try {
+        const relatedArticlesRes = await ArticlesAPI(articleData?.categoryId!);
+        setRelatedArticles(
+          relatedArticlesRes.data.filter(
+            (a: ArticleType) => a.title !== articleData?.title,
+          ).slice(0,4),
+        );
+        console.log(relatedArticlesRes.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (articleData) fetchRelatedArticles();
+  }, [articleData]);
 
   // save & unsave
   const toggleSaveArticle = async (articleId: number) => {
@@ -180,7 +201,21 @@ function Article() {
             </div>
             <div>
               <p className="font-semibold text-xl mb-5">Related Articles</p>
-              <div></div>
+              <div className="mt-10 grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2  gap-(--space-lg)">
+                {relatedArticles.map((article) => (
+                  <ArticleCard
+                    key={article.articleId}
+                    savedArticlesPage={false}
+                    articleId={article.articleId}
+                    isSaved={article.isSaved}
+                    title={article.title}
+                    imageUrl={article.imageUrl}
+                    shortDescription={article.shortDescription}
+                    readingTimeMinutes={article.readingTimeMinutes}
+                    onToggleSave={toggleSaveArticle}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         )}

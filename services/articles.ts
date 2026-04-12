@@ -30,7 +30,6 @@ export const CategoryInfo = async (id: number) => {
 };
 
 // articles
-// /api/Articles/category/{categoryId}
 export const ArticlesAPI = async (categoryId: number) => {
   const response = await api.get(`/Articles/category/${categoryId}`);
 
@@ -41,6 +40,11 @@ export const ArticleAPI = async (articleId: number) => {
 
   return response.data;
 };
+export const AllarticlesApi = async () => {
+  const response = await api.get(`/Articles`);
+
+  return response.data;
+}
 
 // saved
 

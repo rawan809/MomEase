@@ -44,17 +44,15 @@ const router = createBrowserRouter([
         element: <Articles />,
       },
       {
-<<<<<<< Updated upstream
-        path: "SkinDiagnoses",
+        path: "/Article/:articleID",
+        element: <Article />,
+      },
+      {
+        path: "/SkinDiagnoses",
         element: <SkinDiagnoses />,
       },
       { path: "/skin-diagnosis/upload", element: <SkinUpload /> },
       { path: "/skin-diagnosis/result", element: <SkinResult /> },
-=======
-        path: "/Article/:articleID",
-        element: <Article />,
-      },
->>>>>>> Stashed changes
     ],
   },
   {

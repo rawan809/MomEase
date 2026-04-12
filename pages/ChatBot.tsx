@@ -24,6 +24,17 @@ function ChatBot() {
   // send and reply
   const send = async (text: string) => {
     if (!text.trim()) return;
+    const prompt = `
+You MUST format your response using Markdown.
+
+Rules:
+- ALWAYS use bullet points if listing items
+- ALWAYS use headings (##) for explanations
+- NEVER return plain text only
+
+User message:
+${text}
+`;
 
     setMessages((prev) => [
       ...prev,
@@ -33,7 +44,7 @@ function ChatBot() {
     setLoading(true);
     try {
       if (typeof userId === "number" && !isNaN(userId)) {
-        const res = await sendMessage(userId, text);
+        const res = await sendMessage(userId, prompt);
         setMessages((prev) => [
           ...prev,
           {

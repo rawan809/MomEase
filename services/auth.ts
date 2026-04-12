@@ -41,6 +41,21 @@ export const loginUser = async (data: LoginPayload) => {
   return response.data;
 };
 
+export const refreshToken = async (refreshToken: string) => {
+  const response = await api.post(`/refresh-token`, { refreshToken });
+  return response.data;
+};
+
+export const revokeToken = async (refreshToken: string) => {
+  const response = await api.post(`/revoke-token`, { refreshToken });
+  return response.data;
+};
+
+export const logoutUser = async (refreshToken: string) => {
+  const response = await api.post(`/logout`, { refreshToken });
+  return response.data;
+};
+
 export const resendOtp = async (email: string) => {
   const response = await api.post(`/resend-otp`, {
     email,
