@@ -3,8 +3,8 @@ import Mineuicon from "./Mineuicon";
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import botIcon from "../../assets/images/ChatIcon.svg";
-import profileIcon from "../../assets/images/profileIcon.svg";
-// import { useAuth } from "../../pages/auth/AuthContext";
+import { BsFillPersonFill } from "react-icons/bs";
+import NotificationDropDown from "../notifications/NotificationDropDown";
 
 function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
@@ -70,22 +70,18 @@ function Navbar() {
           </div>
           <div>
             {loggedIn ? (
-              <div className="flex gap-3 items-end">
+              <div className="flex gap-2 items-center">
+                <div className="text-xl text-primary aspect-square w-7 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all cursor-pointer">
+                  <NotificationDropDown />
+                </div>
                 <Link
                   to={"/chatbot"}
-                  className="bg-[#FFC8DD] aspect-square w-10 rounded-full "
+                  className="hidden aspect-square w-7 rounded-full hover:bg-gray-200 transition-all md:block"
                 >
                   <img src={botIcon} alt="" className="rounded-full" />
                 </Link>
-                <div className="w-8">
-                  <img
-                    src={profileIcon}
-                    alt=""
-                    onClick={() => {
-                      localStorage.clear();
-                      setLoggedIn(false);
-                    }}
-                  />
+                <div className="hidden text-xl text-primary bg-[#FFC8DD] aspect-square w-7 rounded-full md:flex items-center justify-center">
+                  <BsFillPersonFill />
                 </div>
               </div>
             ) : (
@@ -128,17 +124,35 @@ function Navbar() {
                     {item.label}
                   </NavLink>
                 ) : (
-                  <a
+                  <Link
                     key={item.label}
-                    href={item.to}
+                    to={item.to}
                     className={`font-bold transform transition-all duration-300 hover:bg-accent rounded p-1
             ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"}`}
                     style={{ transitionDelay: `${index * 100}ms` }}
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 ),
               )}
+              <NavLink
+                to={"/profile"}
+                className={({ isActive, isPending }) =>
+                  `${isPending ? "text-gray-400" : isActive ? "text-primary" : ""} font-bold transform transition-all duration-300 hover:bg-accent rounded p-1 ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"} border-t-2 border-t-accent mt-2 pt-2 flex items-center gap-2`
+                }
+              >
+                <BsFillPersonFill className="w-7 text-primary" size={25} />{" "}
+                Profile
+              </NavLink>
+              <NavLink
+                to={"/chatbot"}
+                className={({ isActive, isPending }) =>
+                  `${isPending ? "text-gray-400" : isActive ? "text-primary" : ""} font-bold transform transition-all duration-300 hover:bg-accent rounded p-1 ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"} pt-2 flex items-center gap-2`
+                }
+              >
+                <img src={botIcon} alt="" className="w-7 " />
+                Chat bot
+              </NavLink>
             </div>
           </div>
         </div>

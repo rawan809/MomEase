@@ -21,6 +21,8 @@ import AssessmentResult from "../pages/dep/AssessmentResult";
 import SkinDiagnoses from "../pages/skin/SkinDiagnosis";
 import SkinUpload from "../pages/skin/SkinUpload";
 import SkinResult from "../pages/skin/SkinResult";
+import { NotificationProvider } from "./contexts/NotificationContext";
+import Notifications from "../pages/Notifications";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "/Article/:articleID",
         element: <Article />,
+      },
+      {
+        path: "/notifications",
+        element: <Notifications />,
       },
       {
         path: "/SkinDiagnoses",
@@ -106,7 +112,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <NotificationProvider>
+      <RouterProvider router={router} />{" "}
+    </NotificationProvider>
+  );
 }
 
 export default App;

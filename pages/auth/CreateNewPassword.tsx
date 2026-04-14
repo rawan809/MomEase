@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import { resetPasswordSchema } from "./Validation";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
-import Success from "../../src/components/UI/Success";
+import Success from "../../src/components/ui/Success";
 import { resetPassword } from "../../services/auth";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -76,7 +76,9 @@ const CreateNewPassword = () => {
         <div className="bg-white rounded-3xl shadow-2xl text-center w-full max-w-md min-h-130 p-6 sm:p-8">
           <div className="relative flex items-center justify-center mb-2">
             <button
-              onClick={() => {navigate(-1)}}
+              onClick={() => {
+                navigate(-1);
+              }}
               className="absolute left-0 text-3xl font-bold text-primary cursor-pointer"
             >
               <MdOutlineKeyboardArrowLeft />
