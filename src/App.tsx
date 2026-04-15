@@ -21,13 +21,9 @@ import AssessmentResult from "../pages/dep/AssessmentResult";
 import SkinDiagnoses from "../pages/skin/SkinDiagnosis";
 import SkinUpload from "../pages/skin/SkinUpload";
 import SkinResult from "../pages/skin/SkinResult";
-<<<<<<< HEAD
-import AdminGuard from "./guards/AdminGuard";
 import AdminLayout from "./components/Admin/AdminLayout";
-=======
 import { NotificationProvider } from "./contexts/NotificationContext";
 import Notifications from "../pages/Notifications";
->>>>>>> new-main-work
 
 const router = createBrowserRouter([
   {
