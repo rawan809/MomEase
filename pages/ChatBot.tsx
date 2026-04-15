@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import Navbar from "../src/components/UI/Navbar";
+import Navbar from "../src/components/ui/Navbar";
 import StartScreen from "../src/components/ChatBot/StartScreen";
 import Input from "../src/components/ChatBot/Input";
 import Chat from "../src/components/ChatBot/Chat";

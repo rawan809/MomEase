@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Verifyimg from "../../src/assets/images/verify.png";
 import { useState, useEffect } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
-import Success from "../../src/components/UI/Success";
+import Success from "../../src/components/ui/Success";
 import { verifyEmail, resendOtp } from "../../services/auth";
 
 function VerifyEmail() {

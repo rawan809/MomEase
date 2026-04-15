@@ -1,6 +1,6 @@
 import React from "react";
 import FeatureCard from "./FeatureCard";
-import Heading from "../UI/Heading";
+import Heading from "../ui/Heading";
 import { FeatureData } from "./FeatureData";
 import { motion } from "framer-motion";
 

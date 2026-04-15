@@ -6,19 +6,19 @@ import {
   ArticlesAPI,
 } from "../../services/articles";
 import { useState } from "react";
-import LoadingState from "../../src/components/UI/LoadingState";
+import LoadingState from "../../src/components/ui/LoadingState";
 import { useParams, Link } from "react-router-dom";
 import { MdOutlineDateRange } from "react-icons/md";
 import { FaRegClock } from "react-icons/fa";
 import { GoLinkExternal } from "react-icons/go";
-import EmptyResponse from "../../src/components/UI/EmptyResponse";
+import EmptyResponse from "../../src/components/ui/EmptyResponse";
 import { FaBookmark } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
 import ArticleCard from "../../src/components/Articles/ArticleCard";
 
 interface ArticleType {
-  articleId: number; 
-  shortDescription: string; 
+  articleId: number;
+  shortDescription: string;
   title: string;
   content: string;
   categoryName: string;
@@ -75,9 +75,9 @@ function Article() {
       try {
         const relatedArticlesRes = await ArticlesAPI(articleData?.categoryId!);
         setRelatedArticles(
-          relatedArticlesRes.data.filter(
-            (a: ArticleType) => a.title !== articleData?.title,
-          ).slice(0,4),
+          relatedArticlesRes.data
+            .filter((a: ArticleType) => a.title !== articleData?.title)
+            .slice(0, 4),
         );
         console.log(relatedArticlesRes.data);
       } catch (error) {

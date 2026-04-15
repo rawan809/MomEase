@@ -1,5 +1,5 @@
 import React from "react";
-import Heading from "../UI/Heading";
+import Heading from "../ui/Heading";
 import { LockIcon, CheckIcon, HeartIcon } from "../../assets/icons/icons";
 import { motion } from "framer-motion";
 

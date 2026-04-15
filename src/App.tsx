@@ -21,8 +21,13 @@ import AssessmentResult from "../pages/dep/AssessmentResult";
 import SkinDiagnoses from "../pages/skin/SkinDiagnosis";
 import SkinUpload from "../pages/skin/SkinUpload";
 import SkinResult from "../pages/skin/SkinResult";
+<<<<<<< HEAD
 import AdminGuard from "./guards/AdminGuard";
 import AdminLayout from "./components/Admin/AdminLayout";
+=======
+import { NotificationProvider } from "./contexts/NotificationContext";
+import Notifications from "../pages/Notifications";
+>>>>>>> new-main-work
 
 const router = createBrowserRouter([
   {
@@ -48,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/Article/:articleID",
         element: <Article />,
+      },
+      {
+        path: "/notifications",
+        element: <Notifications />,
       },
       {
         path: "/SkinDiagnoses",
@@ -146,7 +155,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <NotificationProvider>
+      <RouterProvider router={router} />{" "}
+    </NotificationProvider>
+  );
 }
 
 export default App;

@@ -9,8 +9,8 @@ import {
   AddSavedArticle,
   DeleteSavedArticle,
 } from "../../services/articles";
-import LoadingState from "../../src/components/UI/LoadingState";
-import EmptyResponse from "../../src/components/UI/EmptyResponse";
+import LoadingState from "../../src/components/ui/LoadingState";
+import EmptyResponse from "../../src/components/ui/EmptyResponse";
 
 interface Category {
   name: string;
