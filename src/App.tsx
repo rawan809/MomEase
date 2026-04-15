@@ -21,6 +21,8 @@ import AssessmentResult from "../pages/dep/AssessmentResult";
 import SkinDiagnoses from "../pages/skin/SkinDiagnosis";
 import SkinUpload from "../pages/skin/SkinUpload";
 import SkinResult from "../pages/skin/SkinResult";
+import AdminGuard from "./guards/AdminGuard";
+import AdminLayout from "./components/Admin/AdminLayout";
 
 const router = createBrowserRouter([
   {
@@ -102,6 +104,44 @@ const router = createBrowserRouter([
   {
     path: "*",
     element: <Notfound />,
+  },
+  {
+    path: "/admin",
+    element: (
+      //<AdminGuard> //هنرجعها لما نظبط ال auth
+      <AdminLayout />
+      // </AdminGuard>
+    ),
+    children: [
+      {
+        index: true,
+        element: <div className="p-4">Dashboard — coming soon</div>,
+      },
+      {
+        path: "users",
+        element: <div className="p-4">Users — coming soon</div>,
+      },
+      {
+        path: "posts",
+        element: <div className="p-4">Posts — coming soon</div>,
+      },
+      {
+        path: "articles",
+        element: <div className="p-4">Articles — coming soon</div>,
+      },
+      {
+        path: "moderation",
+        element: <div className="p-4">Moderation — coming soon</div>,
+      },
+      {
+        path: "analytics",
+        element: <div className="p-4">Analytics — coming soon</div>,
+      },
+      {
+        path: "settings",
+        element: <div className="p-4">Settings — coming soon</div>,
+      },
+    ],
   },
 ]);
 

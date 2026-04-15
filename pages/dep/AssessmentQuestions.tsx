@@ -110,7 +110,7 @@ const AssessmentQuestions = () => {
 
         console.log("SUBMIT RESULT:", res);
 
-        navigate(`/assessment/${id}/result`, { state: { res } });
+        navigate(`/assessment/${id}/result`, { state: { result: res } });
       } catch (err) {
         console.error("Submit failed:", err);
       } finally {
