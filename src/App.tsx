@@ -22,12 +22,16 @@ import SkinDiagnoses from "../pages/skin/SkinDiagnosis";
 import SkinUpload from "../pages/skin/SkinUpload";
 import SkinResult from "../pages/skin/SkinResult";
 import { NotificationProvider } from "./contexts/NotificationContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import Notifications from "../pages/Notifications";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import PublicRoute from "./routes/PublicRoutes";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
+    
     children: [
       {
         index: true,
@@ -113,9 +117,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <NotificationProvider>
-      <RouterProvider router={router} />{" "}
-    </NotificationProvider>
+    <AuthProvider>
+      <NotificationProvider>
+        <RouterProvider router={router} />{" "}
+      </NotificationProvider>
+    </AuthProvider>
   );
 }
 

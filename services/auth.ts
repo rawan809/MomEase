@@ -1,21 +1,4 @@
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "/api/Auth",
-  headers: {
-    "Accept-Language": "en",
-  },
-});
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
+import api from "./instance";
 
 export interface RegisterPayload {
   firstName: string;
@@ -28,7 +11,7 @@ export interface RegisterPayload {
 }
 
 export const registerUser = async (data: RegisterPayload) => {
-  const response = await api.post(`/register`, data);
+  const response = await api.post(`/Auth/register`, data);
   return response.data;
 };
 export interface LoginPayload {
@@ -37,41 +20,46 @@ export interface LoginPayload {
 }
 
 export const loginUser = async (data: LoginPayload) => {
-  const response = await api.post(`/login`, data);
+  const response = await api.post(`/Auth/login`, data);
+  return response.data;
+};
+
+export const userData = async () => {
+  const response = await api.get(`/Auth/me`);
   return response.data;
 };
 
 export const refreshToken = async (refreshToken: string) => {
-  const response = await api.post(`/refresh-token`, { refreshToken });
+  const response = await api.post(`/Auth/refresh-token`, { refreshToken });
   return response.data;
 };
 
 export const revokeToken = async (refreshToken: string) => {
-  const response = await api.post(`/revoke-token`, { refreshToken });
+  const response = await api.post(`/Auth/revoke-token`, { refreshToken });
   return response.data;
 };
 
 export const logoutUser = async (refreshToken: string) => {
-  const response = await api.post(`/logout`, { refreshToken });
+  const response = await api.post(`/Auth/logout`, { refreshToken });
   return response.data;
 };
 
 export const resendOtp = async (email: string) => {
-  const response = await api.post(`/resend-otp`, {
+  const response = await api.post(`/Auth/resend-otp`, {
     email,
   });
   return response.data;
 };
 
 export const verifyEmail = async (email: string, otpCode: string) => {
-  const response = await api.post(`/verify-email`, {
+  const response = await api.post(`/Auth/verify-email`, {
     email,
     otpCode,
   });
   return response.data;
 };
 export const googleLogin = async (idToken: string) => {
-  const response = await api.post(`/google-login`, {
+  const response = await api.post(`/Auth/google-login`, {
     idToken: idToken,
   });
 
@@ -79,7 +67,7 @@ export const googleLogin = async (idToken: string) => {
 };
 
 export const forgetPassword = async (email: string) => {
-  const response = await api.post(`/forgot-password`, { email });
+  const response = await api.post(`/Auth/forgot-password`, { email });
   return response.data;
 };
 
@@ -88,7 +76,7 @@ export const resetPassword = async (
   otpCode: string,
   newPassword: string,
 ) => {
-  const response = await api.post(`/reset-password`, {
+  const response = await api.post(`/Auth/reset-password`, {
     email,
     otpCode,
     newPassword,
