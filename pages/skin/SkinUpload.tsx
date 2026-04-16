@@ -40,16 +40,13 @@ const SkinUpload = () => {
       const formData = new FormData();
       formData.append("image", file);
 
-      const res = await fetch(
-        "http://momease.runasp.net/api/SkinAnalysis/quick-test",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
+      const res = await fetch("/api/skin-analysis/analyze", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+        body: formData,
+      });
 
       const data = await res.json();
       console.log("SKIN RESULT:", data);
@@ -72,7 +69,6 @@ const SkinUpload = () => {
       className="min-h-screen flex flex-col items-center justify-center px-(--space-lg) py-(--space-xl)"
       style={{ background: "var(--color-background)" }}
     >
-      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -88,7 +84,6 @@ const SkinUpload = () => {
         <h1 className="font-bold text-h2">Analyze Baby's Skin</h1>
       </motion.div>
 
-      {/* Upload area */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}

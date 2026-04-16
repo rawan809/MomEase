@@ -4,58 +4,61 @@ import { useLocation, useNavigate } from "react-router-dom";
 const getSkinConditionInfo = (prediction: string) => {
   const p = prediction?.toLowerCase();
 
-  if (p?.includes("diaper"))
+  if (p.includes("diaper") || p.includes("insect"))
     return {
       description:
-        "A common skin irritation in the diaper area caused by prolonged exposure to moisture. Appears as red, inflamed skin.",
+        "Skin irritation caused by moisture or insect bites. Appears as redness or small bumps.",
       tips: [
-        "Change diapers frequently to keep skin dry",
-        "Use fragrance-free baby wipes",
-        "Apply a zinc oxide barrier cream at each change",
-        "Allow baby some diaper-free time to air out",
+        "Keep the area clean and dry",
+        "Use gentle baby products",
+        "Avoid scratching",
+        "Consult doctor if swelling increases",
       ],
     };
-  if (p?.includes("eczema"))
+
+  if (p.includes("impetigo"))
     return {
       description:
-        "Yellowish, greasy, scaly patches on the scalp. May also appear on eyebrows or behind ears. Very common in infants.",
+        "A contagious bacterial skin infection causing red sores or blisters.",
       tips: [
-        "Gently massage baby's scalp with your fingers",
-        "Wash hair regularly with gentle baby shampoo",
-        "Use a soft brush to loosen flakes",
-        "Apply baby oil before washing if very crusty",
+        "Keep skin clean",
+        "Avoid touching the sores",
+        "Use prescribed antibiotic cream",
+        "Wash hands frequently",
       ],
     };
-  if (p?.includes("acne"))
+
+  if (p.includes("hand") || p.includes("mouth"))
     return {
       description:
-        "Small red or white bumps on baby's face caused by maternal hormones. Usually clears up on its own within weeks.",
+        "A viral infection causing sores in the mouth and rash on hands and feet.",
       tips: [
-        "Gently wash the area with warm water daily",
-        "Avoid squeezing or scrubbing the bumps",
-        "Do not apply lotions or oils to affected area",
-        "Consult your doctor if it worsens",
+        "Give plenty of fluids",
+        "Keep child comfortable",
+        "Avoid spicy foods",
+        "Consult doctor if fever is high",
       ],
     };
-  if (p?.includes("ringworm"))
+
+  if (p.includes("chicken"))
     return {
       description:
-        "A fungal infection that appears as a circular, scaly rash. It is contagious and requires antifungal treatment.",
+        "A viral infection causing itchy red blisters that spread across the body.",
       tips: [
-        "Keep the affected area clean and dry",
-        "Consult your doctor for antifungal cream",
-        "Wash hands thoroughly after touching the area",
-        "Avoid sharing towels or clothing",
+        "Avoid scratching",
+        "Keep nails short",
+        "Use soothing lotions",
+        "Consult doctor if symptoms worsen",
       ],
     };
+
   return {
-    description:
-      "A skin condition detected by AI analysis. Please consult your healthcare provider for a proper diagnosis.",
+    description: "General skin condition detected.",
     tips: [
-      "Keep the affected area clean and dry",
-      "Avoid harsh soaps or fragrances",
-      "Monitor the condition over the next few days",
-      "Consult your doctor if it worsens or spreads",
+      "Keep skin clean",
+      "Avoid irritation",
+      "Monitor symptoms",
+      "Consult doctor if needed",
     ],
   };
 };
@@ -65,8 +68,10 @@ const SkinResult = () => {
   const navigate = useNavigate();
 
   const result = state?.result;
-  const prediction = result?.prediction;
-  const confidence = result?.confidence;
+  const prediction = result?.data?.diseaseName || "Unknown";
+  const confidence = result?.data?.confidence
+    ? `${result.data.confidence}%`
+    : "0%";
   const info = getSkinConditionInfo(prediction);
 
   return (
