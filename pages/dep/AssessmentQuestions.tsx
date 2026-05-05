@@ -150,7 +150,6 @@ const AssessmentQuestions = () => {
       className="min-h-screen flex flex-col"
       style={{ background: "var(--color-background)" }}
     >
-      {/* Progress bar */}
       <div className="w-full h-1.5 bg-gray-200">
         <motion.div
           className="h-full"
@@ -161,7 +160,6 @@ const AssessmentQuestions = () => {
         />
       </div>
 
-      {/* Header */}
       <div className="flex items-center justify-between px-(--space-lg) py-(--space-md)">
         <button
           onClick={handleBack}
@@ -174,7 +172,6 @@ const AssessmentQuestions = () => {
         </span>
       </div>
 
-      {/* Card */}
       <div className="flex-1 flex items-start justify-center px-(--space-lg) py-(--space-md)">
         <AnimatePresence mode="wait">
           <motion.div
@@ -186,12 +183,10 @@ const AssessmentQuestions = () => {
             className="bg-white rounded-3xl p-(--space-lg) w-full max-w-xl flex flex-col gap-(--space-lg)"
             style={{ boxShadow: "var(--shadow-md)" }}
           >
-            {/* Question text */}
             <h2 className="font-bold text-(--text-normal) text-center leading-snug">
               {currentQuestion?.questionText}
             </h2>
 
-            {/* Options */}
             <div className="flex flex-col gap-(--space-sm)">
               {options.map((option) => (
                 <button
@@ -223,7 +218,6 @@ const AssessmentQuestions = () => {
               ))}
             </div>
 
-            {/* Next / Submit button */}
             <button
               onClick={handleNext}
               disabled={selectedOptionId === null || submitting}

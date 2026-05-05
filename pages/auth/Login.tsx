@@ -115,9 +115,13 @@ const Login = () => {
             role: data.data.role,
             userId: data.data.userId.toString(),
           });
-          navigate("/home");
+          if (data.data.role === "ADMIN") {
+            navigate("/admin");
+          } else {
+            navigate("/home");
+          }
         }
-        navigate("/home", { state: { firstName: data.data.firstName } });
+        // navigate("/home", { state: { firstName: data.data.firstName } });
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           const message = error.response?.data?.message;

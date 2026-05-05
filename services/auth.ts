@@ -77,6 +77,14 @@ export const googleLogin = async (idToken: string) => {
 
   return response.data;
 };
+export const facebookLogin = async (accessToken: string) => {
+  const res = await axios.post(
+    "/api/Auth/facebook",
+    { accessToken },
+    { headers: { "Accept-Language": "en" } },
+  );
+  return res.data;
+};
 
 export const forgetPassword = async (email: string) => {
   const response = await api.post(`/forgot-password`, { email });

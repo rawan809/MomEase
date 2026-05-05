@@ -17,7 +17,7 @@ const cards = [
   {
     icon: <Timer />,
     title: "Quick",
-    desc: "It takes about 2 minutes and includes 5 gentle questions",
+    desc: "It takes about 2 minutes ",
   },
 ];
 

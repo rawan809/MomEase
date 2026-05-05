@@ -1,6 +1,7 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { googleLogin } from "../../../services/auth";
-
+import FacebookLogin from "@greatsumini/react-facebook-login";
+import { facebookLogin } from "../../../services/auth";
 import GoogleIcon from "../../assets/icons/Google";
 import FacebookIcon from "../../assets/icons/Facebook";
 import { useNavigate } from "react-router-dom";
@@ -24,13 +25,39 @@ const SocialLogin = () => {
           role: data.data.role,
           userId: data.data.userId.toString(),
         });
-        navigate("/home");
+        if (data.data.role === "ADMIN") {
+          navigate("/admin");
+        } else {
+          navigate("/home");
+        }
       }
     } catch (error) {
       console.error("Google login error:", error);
     }
   };
+  const handleFacebookSuccess = async (response: any) => {
+    try {
+      const accessToken = response.accessToken;
+      const data = await facebookLogin(accessToken);
+      console.log("FACEBOOK RESPONSE:", data);
 
+      if (data?.success && data?.data?.accessToken) {
+        setUserData({
+          token: data.data.accessToken,
+          firstName: data.data.firstName,
+          role: data.data.role,
+          userId: data.data.userId.toString(),
+        });
+        if (data.data.role === "ADMIN") {
+          navigate("/admin");
+        } else {
+          navigate("/home");
+        }
+      }
+    } catch (error) {
+      console.error("Facebook login error:", error);
+    }
+  };
   return (
     <div className="mt-6">
       <div className="flex items-center gap-4 mb-6 w-64 mx-auto">
@@ -60,7 +87,29 @@ const SocialLogin = () => {
           <GoogleIcon />
         </div>
 
-        <div className="cursor-pointer hover:scale-110 transition">
+        {/* <div className="cursor-pointer hover:scale-110 transition">
+          <FacebookIcon />
+        </div> */}
+        <div style={{ display: "none" }}>
+          <FacebookLogin
+            appId="847227575059401"
+            onSuccess={handleFacebookSuccess}
+            onFail={(error) => console.error("Facebook login failed:", error)}
+            render={({ onClick }) => (
+              <div id="facebook-login-btn" onClick={onClick} />
+            )}
+          />
+        </div>
+
+        <div
+          onClick={() => {
+            const facebookButton = document.getElementById(
+              "facebook-login-btn",
+            ) as HTMLElement;
+            facebookButton?.click();
+          }}
+          className="cursor-pointer hover:scale-110 transition"
+        >
           <FacebookIcon />
         </div>
       </div>

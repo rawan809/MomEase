@@ -10,26 +10,23 @@ import {
   Settings,
   LogOut,
   Menu,
-  Bell,
   ShieldCheck,
 } from "lucide-react";
+import NotificationDropDown from "../notifications/NotificationDropDown";
 
 const navItems = [
-  { label: "Dashboard Overview", icon: LayoutDashboard, path: "/admin" },
-  { label: "Manage Accounts", icon: Users, path: "/admin/users" },
+  { label: "Manage Accounts", icon: LayoutDashboard, path: "/admin" },
   {
     label: "Manage Community Posts",
     icon: MessageSquare,
-    path: "/admin/posts",
+    path: "/admin/ManageCommunityPosts",
   },
-  { label: "Manage Articles", icon: FileText, path: "/admin/articles" },
+  { label: "Manage Articles", icon: FileText, path: "/admin/ManageArtical" },
   {
     label: "Reports & Moderation",
     icon: ShieldCheck,
-    path: "/admin/moderation",
+    path: "/admin/ReportsModeration",
   },
-  { label: "Analytics", icon: BarChart2, path: "/admin/analytics" },
-  { label: "Settings", icon: Settings, path: "/admin/settings" },
 ];
 
 const AdminLayout = () => {
@@ -43,7 +40,6 @@ const AdminLayout = () => {
       className="flex h-screen overflow-hidden"
       style={{ background: "var(--color-background)" }}
     >
-      {/* Sidebar */}
       <aside
         className="flex flex-col transition-all duration-300 hide-scrollbar"
         style={{
@@ -53,7 +49,6 @@ const AdminLayout = () => {
           zIndex: 10,
         }}
       >
-        {/* Logo */}
         <div
           className="flex items-center gap-3 px-(--space-md) border-b"
           style={{ height: 64, borderColor: "#ffe5ef" }}
@@ -96,7 +91,6 @@ const AdminLayout = () => {
           )}
         </div>
 
-        {/* Nav items */}
         <nav className="flex-1 py-(--space-sm) flex flex-col gap-1 px-(--space-xs) overflow-y-auto hide-scrollbar">
           {navItems.map((item) => {
             const active = location.pathname === item.path;
@@ -133,7 +127,6 @@ const AdminLayout = () => {
           })}
         </nav>
 
-        {/* Logout */}
         <div
           className="p-(--space-xs) border-t"
           style={{ borderColor: "#ffe5ef" }}
@@ -156,9 +149,7 @@ const AdminLayout = () => {
         </div>
       </aside>
 
-      {/* Main area */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Topbar */}
         <header
           className="flex items-center justify-between bg-white border-b"
           style={{
@@ -168,7 +159,6 @@ const AdminLayout = () => {
             boxShadow: "0 1px 4px #ff338110",
           }}
         >
-          {/* Left */}
           <div className="flex items-center gap-(--space-md)">
             <button
               onClick={() => setCollapsed(!collapsed)}
@@ -176,30 +166,12 @@ const AdminLayout = () => {
             >
               <Menu size={18} style={{ color: "var(--color-muted)" }} />
             </button>
-            <div className="relative">
-              <input
-                placeholder="Search..."
-                className="pl-4 pr-4 py-2 rounded-full text-sm outline-none"
-                style={{
-                  background: "var(--color-background)",
-                  border: "1px solid #ffc8dd",
-                  width: 240,
-                  fontSize: 13,
-                  color: "var(--color-muted)",
-                }}
-              />
-            </div>
           </div>
 
-          {/* Right */}
           <div className="flex items-center gap-(--space-md)">
-            <button className="p-(--space-sm) rounded-xl hover:bg-pink-50 transition relative">
-              <Bell size={18} style={{ color: "var(--color-muted)" }} />
-              <span
-                className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full"
-                style={{ background: "var(--color-primary)" }}
-              />
-            </button>
+            <div className="text-xl text-primary aspect-square w-7 rounded-full flex items-center justify-center hover:bg-gray-200 transition-all cursor-pointer">
+              <NotificationDropDown />
+            </div>
 
             <div
               className="flex items-center gap-(--space-sm) px-(--space-sm) py-1 rounded-full"
@@ -232,7 +204,6 @@ const AdminLayout = () => {
           </div>
         </header>
 
-        {/* Page content */}
         <main
           className="flex-1 overflow-y-auto hide-scrollbar"
           style={{ padding: "var(--space-lg)" }}

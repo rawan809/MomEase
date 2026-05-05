@@ -24,6 +24,11 @@ import SkinResult from "../pages/skin/SkinResult";
 import AdminLayout from "./components/Admin/AdminLayout";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import Notifications from "../pages/Notifications";
+import ManageAccounts from "../pages/admin/ManageAccounts";
+import ManageArtical from "../pages/admin/ManageArtical";
+import ManageCommunityPosts from "../pages/admin/ManageCommunityPosts";
+import ReportsModeration from "../pages/admin/ReportsModeration";
+import AdminGuard from "./guards/AdminGuard";
 
 const router = createBrowserRouter([
   {
@@ -113,38 +118,26 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: (
-      //<AdminGuard> //هنرجعها لما نظبط ال auth
-      <AdminLayout />
-      // </AdminGuard>
+      <AdminGuard>
+        <AdminLayout />
+      </AdminGuard>
     ),
     children: [
       {
         index: true,
-        element: <div className="p-4">Dashboard — coming soon</div>,
+        element: <ManageAccounts />,
       },
       {
-        path: "users",
-        element: <div className="p-4">Users — coming soon</div>,
+        path: "manageArtical",
+        element: <ManageArtical />,
       },
       {
-        path: "posts",
-        element: <div className="p-4">Posts — coming soon</div>,
+        path: "manageCommunityPosts",
+        element: <ManageCommunityPosts />,
       },
       {
-        path: "articles",
-        element: <div className="p-4">Articles — coming soon</div>,
-      },
-      {
-        path: "moderation",
-        element: <div className="p-4">Moderation — coming soon</div>,
-      },
-      {
-        path: "analytics",
-        element: <div className="p-4">Analytics — coming soon</div>,
-      },
-      {
-        path: "settings",
-        element: <div className="p-4">Settings — coming soon</div>,
+        path: "ReportsModeration",
+        element: <ReportsModeration />,
       },
     ],
   },

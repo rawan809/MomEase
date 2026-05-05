@@ -81,7 +81,6 @@ const AssessmentResult = () => {
         className="bg-white rounded-3xl p-(--space-md) w-full max-w-md flex flex-col gap-(--space-sm)"
         style={{ boxShadow: "var(--shadow-md)" }}
       >
-        {/* Score card */}
         <div
           className="rounded-2xl p-(--space-sm) text-center"
           style={{ background: `${severityColor}18` }}
