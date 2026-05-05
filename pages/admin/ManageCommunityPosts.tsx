@@ -273,7 +273,6 @@ const ManageCommunityPosts = () => {
               className="bg-white rounded-2xl p-(--space-md) flex flex-col gap-(--space-sm)"
               style={{ boxShadow: "var(--shadow-md)" }}
             >
-              {/* User + status */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-(--space-sm)">
                   <UserAvatar name={post.userName} photo={post.userPhoto} />
@@ -317,7 +316,7 @@ const ManageCommunityPosts = () => {
                   {post.media.slice(0, 3).map((m, idx) => (
                     <img
                       key={idx}
-                      src={`http://momease.runasp.net${m.mediaUrl}`}
+                      src={m.mediaUrl}
                       alt="media"
                       className="rounded-xl object-cover"
                       style={{ width: 64, height: 48 }}
@@ -449,7 +448,7 @@ const ManageCommunityPosts = () => {
                   {selectedPost.media.map((m, idx) => (
                     <img
                       key={idx}
-                      src={`http://momease.runasp.net${m.mediaUrl}`}
+                      src={m.mediaUrl}
                       alt="media"
                       className="rounded-xl object-cover"
                       style={{ width: 100, height: 80 }}
