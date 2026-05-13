@@ -4,11 +4,11 @@ import { googleLogin } from "../../../services/auth";
 import GoogleIcon from "../../assets/icons/Google";
 import FacebookIcon from "../../assets/icons/Facebook";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../pages/auth/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 const SocialLogin = () => {
   const navigate = useNavigate();
-  const { setUserData } = useAuth();
+  const { loginWithGoogle } = useAuth();
 
   const handleSuccess = async (credentialResponse: any) => {
     try {
@@ -18,11 +18,16 @@ const SocialLogin = () => {
       console.log("FULL DATA:", data);
 
       if (data?.success && data?.data?.accessToken) {
-        setUserData({
-          token: data.data.accessToken,
-          firstName: data.data.firstName,
-          role: data.data.role,
-          userId: data.data.userId.toString(),
+        loginWithGoogle({
+          accessToken: data.data.accessToken,
+          refreshToken: data.data.refreshToken ?? "",
+          user: {
+            userId: data.data.userId,
+            firstName: data.data.firstName,
+            lastName: data.data.lastName ?? "",
+            email: data.data.email ?? "",
+            role: data.data.role,
+          },
         });
         navigate("/home");
       }

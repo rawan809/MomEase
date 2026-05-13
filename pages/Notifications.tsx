@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { IoMdNotifications } from "react-icons/io";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import Notification from "@/components/notifications/Notification";
 import { useNotifs } from "../src/contexts/NotificationContext";
 import EmptyResponse from "@/components/ui/EmptyResponse";
-import LoadingState from "@/components/ui/LoadingState";
+// import LoadingState from "@/components/ui/LoadingState";
 
 function Notifications() {
   const [filter, setFilter] = useState("all");

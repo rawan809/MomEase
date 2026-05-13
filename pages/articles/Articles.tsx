@@ -1,4 +1,3 @@
-import React, { use } from "react";
 import { Link, useParams } from "react-router-dom";
 import InputSearch from "../../src/components/Articles/InputSearch";
 import ArticleCard from "../../src/components/Articles/ArticleCard";
@@ -11,6 +10,7 @@ import {
 } from "../../services/articles";
 import LoadingState from "../../src/components/ui/LoadingState";
 import EmptyResponse from "../../src/components/ui/EmptyResponse";
+
 
 interface Category {
   name: string;
@@ -33,6 +33,14 @@ function Articles() {
   const [category, setCategory] = useState<Category | null>(null);
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // filter on search item
+  const filteredArticles = articles.filter(
+    (article) =>
+      article.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      article.shortDescription.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   // api cals
   useEffect(() => {
@@ -111,14 +119,14 @@ function Articles() {
                 {category?.description}
               </p>
             </div>
-            <InputSearch />
-            {articles.length === 0 ? (
+            <InputSearch value={searchTerm} onChange={setSearchTerm} />
+            {articles.length === 0 || filteredArticles.length === 0 ? (
               <div className="h-[50vh]">
                 <EmptyResponse title="No Articles Found" />
               </div>
             ) : (
               <div className="mt-10 grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2  gap-(--space-lg)">
-                {articles.map((article) => (
+                {filteredArticles.map((article) => (
                   <ArticleCard
                     key={article.articleId}
                     savedArticlesPage={false}

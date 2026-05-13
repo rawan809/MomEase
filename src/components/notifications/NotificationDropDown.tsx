@@ -16,7 +16,7 @@ function NotificationDropDown() {
   if (!notifContext) return null; 
 
   const { notifications, unreadCount, markedAsRead } = notifContext;
-  console.log(notifications);
+  // console.log(notifications);
 
   return (
     <Popover>

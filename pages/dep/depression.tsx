@@ -5,7 +5,6 @@ export default function Depression() {
   return (
     <>
       <div className="flex flex-col">
-        <Navbar />
         <DepSection />
         <DepCards />
       </div>

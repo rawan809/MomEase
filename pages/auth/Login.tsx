@@ -83,13 +83,12 @@ import { useFormik } from "formik";
 import { loginSchema } from "./Validation";
 import { loginUser, resendOtp } from "../../services/auth";
 import axios from "axios";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../../src/contexts/AuthContext";
 import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUserData } = useAuth();
-
+  const { login } = useAuth();
   const [loading, setLoading] = useState(false);
 
   const formik = useFormik({
@@ -102,22 +101,10 @@ const Login = () => {
       console.log("Form submitted", values);
       setLoading(true);
       try {
-        const data = await loginUser({
-          email: values.email,
-          password: values.password,
-        });
-
-        // لو السيرفر بيرجع token
-        if (data?.success && data?.data?.accessToken) {
-          setUserData({
-            token: data.data.accessToken,
-            firstName: data.data.firstName,
-            role: data.data.role,
-            userId: data.data.userId.toString(),
-          });
+        const res = await login(values);
+        if (res?.success || res?.token) {
           navigate("/home");
         }
-        navigate("/home", { state: { firstName: data.data.firstName } });
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           const message = error.response?.data?.message;

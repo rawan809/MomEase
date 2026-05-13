@@ -79,7 +79,7 @@ export const NotificationProvider = ({
       (n) => n.notificationId !== id,
     );
     const isUnread = notifications.find(
-      (n) => n.notificationId === id && !n.read,
+      (n) => n.notificationId === id && !n.isRead,
     );
     setNotifications(filteredNotifications);
     if (isUnread) {
@@ -96,6 +96,9 @@ export const NotificationProvider = ({
   };
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return; // ✅ لو مفيش توكن متعملش request
+
     refreshNotifications();
   }, []);
 

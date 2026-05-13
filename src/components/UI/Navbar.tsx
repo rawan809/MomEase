@@ -1,16 +1,19 @@
-import React from "react";
 import Mineuicon from "./Mineuicon";
 import { useState, useEffect } from "react";
 import { Link, NavLink } from "react-router-dom";
 import botIcon from "../../assets/images/ChatIcon.svg";
 import { BsFillPersonFill } from "react-icons/bs";
 import NotificationDropDown from "../notifications/NotificationDropDown";
+import ProfileDropDown from "./ProfileDropDown";
+import { useAuth } from "@/contexts/AuthContext";
+import { CiLogout } from "react-icons/ci";
 
 function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
   const authtoken = localStorage.getItem("userToken");
   const authtoken2 = localStorage.getItem("token");
   const [loggedIn, setLoggedIn] = useState(!!authtoken || !!authtoken2);
+  const { logout } = useAuth();
 
   useEffect(() => {
     const handleResize = () => {
@@ -45,7 +48,7 @@ function Navbar() {
               MomEase
             </Link>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:block w-140">
             <div className="flex gap-5 font-medium ">
               <NavLink
                 to="/home"
@@ -63,9 +66,30 @@ function Navbar() {
               >
                 Depression{" "}
               </NavLink>
-              <NavLink to="">Crying analysis</NavLink>
-              <NavLink to="">Baby tracking</NavLink>
-              <NavLink to="">Community</NavLink>
+              <NavLink
+                to="jhjh"
+                className={({ isActive, isPending }) =>
+                  isPending ? "text-gray-400" : isActive ? "text-primary" : ""
+                }
+              >
+                Crying analysis
+              </NavLink>
+              <NavLink
+                to="/babytracking"
+                className={({ isActive, isPending }) =>
+                  isPending ? "text-gray-400" : isActive ? "text-primary" : ""
+                }
+              >
+                Baby tracking
+              </NavLink>
+              <NavLink
+                to="/community"
+                className={({ isActive, isPending }) =>
+                  isPending ? "text-gray-400" : isActive ? "text-primary" : ""
+                }
+              >
+                Community
+              </NavLink>
             </div>
           </div>
           <div>
@@ -80,8 +104,8 @@ function Navbar() {
                 >
                   <img src={botIcon} alt="" className="rounded-full" />
                 </Link>
-                <div className="hidden text-xl text-primary bg-[#FFC8DD] aspect-square w-7 rounded-full md:flex items-center justify-center">
-                  <BsFillPersonFill />
+                <div className=" hidden text-xl text-primary aspect-square w-7 rounded-full md:flex items-center justify-center hover:bg-gray-200 transition-all cursor-pointer">
+                  <ProfileDropDown />
                 </div>
               </div>
             ) : (
@@ -109,8 +133,8 @@ function Navbar() {
                 { to: "/home", label: "Home", isNav: true },
                 { to: "/depression", label: "Depression", isNav: true },
                 { to: "", label: "Crying analysis", isNav: false },
-                { to: "", label: "Baby tracking", isNav: false },
-                { to: "", label: "Community", isNav: false },
+                { to: "/babytracking", label: "Baby tracking", isNav: false },
+                { to: "/community", label: "Community", isNav: false },
               ].map((item, index) =>
                 item.isNav ? (
                   <NavLink
@@ -136,7 +160,7 @@ function Navbar() {
                 ),
               )}
               <NavLink
-                to={"/profile"}
+                to={"/myprofile"}
                 className={({ isActive, isPending }) =>
                   `${isPending ? "text-gray-400" : isActive ? "text-primary" : ""} font-bold transform transition-all duration-300 hover:bg-accent rounded p-1 ${isMenuOpen ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"} border-t-2 border-t-accent mt-2 pt-2 flex items-center gap-2`
                 }
@@ -153,6 +177,13 @@ function Navbar() {
                 <img src={botIcon} alt="" className="w-7 " />
                 Chat bot
               </NavLink>
+              <div
+                className="text-red-600 font-semibold text-[12px] hover:bg-gray-100 transition-all rounded-xl px-2 flex items-center gap-1 cursor-pointer pt-2"
+                onClick={logout}
+              >
+                <CiLogout size={20} />
+                Log Out
+              </div>
             </div>
           </div>
         </div>

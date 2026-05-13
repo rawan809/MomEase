@@ -22,9 +22,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/Auth/refresh-token")
+    ) {
       originalRequest._retry = true;
-
       const refreshToken = localStorage.getItem("refreshToken");
 
       if (refreshToken) {
@@ -32,12 +35,13 @@ api.interceptors.response.use(
           const res = await axios.post("/api/Auth/refresh-token", {
             refreshToken,
           });
+          const newToken = res.data.data.accessToken;
+          const newRefresh = res.data.data.refreshToken;
 
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("refreshToken", res.data.refreshToken);
+          localStorage.setItem("token", newToken);
+          localStorage.setItem("refreshToken", newRefresh);
 
-          originalRequest.headers.Authorization = `Bearer ${res.data.token}`;
-
+          originalRequest.headers.Authorization = `Bearer ${newToken}`;
           return api(originalRequest);
         } catch (err) {
           localStorage.clear();
@@ -45,7 +49,6 @@ api.interceptors.response.use(
         }
       }
     }
-
     return Promise.reject(error);
   },
 );

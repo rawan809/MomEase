@@ -1,4 +1,5 @@
 import api from "./instance";
+import axios from "axios";
 
 export interface RegisterPayload {
   firstName: string;
@@ -30,10 +31,12 @@ export const userData = async () => {
 };
 
 export const refreshToken = async (refreshToken: string) => {
-  const response = await api.post(`/Auth/refresh-token`, { refreshToken });
+  const response = await axios.post("/api/Auth/refresh-token", {
+    refreshToken,
+  });
+
   return response.data;
 };
-
 export const revokeToken = async (refreshToken: string) => {
   const response = await api.post(`/Auth/revoke-token`, { refreshToken });
   return response.data;

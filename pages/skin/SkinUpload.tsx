@@ -66,7 +66,7 @@ const SkinUpload = () => {
 
   return (
     <section
-      className="min-h-screen flex flex-col items-center justify-center px-(--space-lg) py-(--space-xl)"
+      className="min-h-screen flex flex-col items-center justify-center px-(--space-lg) py-(--space-xl) pt-20"
       style={{ background: "var(--color-background)" }}
     >
       <motion.div

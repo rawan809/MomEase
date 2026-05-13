@@ -1,22 +1,4 @@
-import axios from "axios";
-
-const API_URL = "/api";
-const api = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Accept-Language": "en",
-  },
-});
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-
-  return config;
-});
-
+import api from "./instance";
 // categories
 
 export const ArticlesCategories = async () => {
@@ -44,7 +26,7 @@ export const AllarticlesApi = async () => {
   const response = await api.get(`/Articles`);
 
   return response.data;
-}
+};
 
 // saved
 
@@ -62,5 +44,26 @@ export const AddSavedArticle = async (articleId: number) => {
 };
 export const DeleteSavedArticle = async (articleId: number) => {
   const response = await api.delete(`/saved-articles/${articleId}`);
+  return response.data;
+};
+
+// search
+export const searchArticles = async ({ query }: { query: string }) => {
+  const response = await api.get(`/Articles/search`, { params: { query } });
+  return response.data;
+};
+
+// search history
+export const getSearchHistory = async () => {
+  const response = await api.get(`/search/history`);
+  return response.data;
+};
+export const deleteTerm = async (term: string) => {
+  const response = await api.delete(`/search/history/${term}`);
+  return response.data;
+};
+
+export const clearAllSearchHistory = async () => {
+  const response = await api.delete(`/search/history`);
   return response.data;
 };

@@ -1,4 +1,3 @@
-import React from "react";
 import Heading from "../../src/components/ui/Heading";
 import CatigoryCards from "../../src/components/Articles/CatigoryCards";
 import { FaBookmark } from "react-icons/fa6";
@@ -11,6 +10,7 @@ import {
 import ArticleCard from "../../src/components/Articles/ArticleCard";
 import LoadingState from "../../src/components/ui/LoadingState";
 import EmptyResponse from "../../src/components/ui/EmptyResponse";
+import Search from "../../src/components/Articles/Search"
 
 function ArticlesCatigories() {
   // loding
@@ -97,6 +97,7 @@ function ArticlesCatigories() {
               discription="Find supportive articles, expert guidance, and caring resources for every stage of your motherhood journey"
             />
           </div>
+          <div className="mb-5 w-full flex justify-center"><Search/></div>
           <div className="flex items-center justify-center gap-5 mb-10">
             <button
               className={`text-[12px] rounded-lg px-5 py-2 cursor-pointer border border-primary

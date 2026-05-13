@@ -27,100 +27,73 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Notifications from "../pages/Notifications";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoutes";
+import MotherProfile from "../pages/profile/MotherProfile";
+import BabyTracking from "../pages/babyTracking/BabyTracking";
+import Community from "../pages/Community";
+import { Toaster } from "sonner";
+import ChildrenPage from "../pages/profile/ChildrenPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    
     children: [
+      { index: true, element: <LandingPage /> },
+
+      //  protected routes
       {
-        index: true,
-        element: <LandingPage />,
+        element: <ProtectedRoute />,
+        children: [
+          { path: "/home", element: <Home /> },
+          { path: "/notifications", element: <Notifications /> },
+          { path: "/ExploreArticles", element: <ArticlesCatigories /> },
+          { path: "/Articles/:categoryID", element: <Articles /> },
+          { path: "/Article/:articleID", element: <Article /> },
+          { path: "/SkinDiagnoses", element: <SkinDiagnoses /> },
+          { path: "/skin-diagnosis/upload", element: <SkinUpload /> },
+          { path: "/skin-diagnosis/result", element: <SkinResult /> },
+          { path: "/depression", element: <Depression /> },
+          { path: "/myprofile", element: <MotherProfile /> },
+          { path: "/myprofile/children", element: <ChildrenPage /> },
+        ],
       },
-      {
-        path: "/home",
-        element: <Home />,
-      },
-      {
-        path: "/ExploreArticles",
-        element: <ArticlesCatigories />,
-      },
-      {
-        path: "/Articles/:categoryID",
-        element: <Articles />,
-      },
-      {
-        path: "/Article/:articleID",
-        element: <Article />,
-      },
-      {
-        path: "/notifications",
-        element: <Notifications />,
-      },
-      {
-        path: "/SkinDiagnoses",
-        element: <SkinDiagnoses />,
-      },
-      { path: "/skin-diagnosis/upload", element: <SkinUpload /> },
-      { path: "/skin-diagnosis/result", element: <SkinResult /> },
     ],
   },
   {
-    path: "/login",
-    element: <Login />,
+    element: <ProtectedRoute />,
+    children: [
+      { path: "/chatbot", element: <ChatBot /> },
+
+      { path: "/assessments", element: <Assessments /> },
+      { path: "/assessment/:id", element: <AssessmentQuestions /> },
+      { path: "/assessment/:id/result", element: <AssessmentResult /> },
+      { path: "/babytracking", element: <BabyTracking /> },
+      { path: "/community", element: <Community /> },
+    ],
   },
+
+  //  auth pages
   {
-    path: "/signup",
-    element: <Register />,
+    element: <PublicRoute />,
+    children: [
+      { path: "/login", element: <Login /> },
+      { path: "/signup", element: <Register /> },
+    ],
   },
-  {
-    path: "/forgetByEmail",
-    element: <ForgetByEmail />,
-  },
-  {
-    path: "/forgetByPhone",
-    element: <ForgetByPhone />,
-  },
-  {
-    path: "/createNewPassword/:email",
-    element: <CreateNewPassword />,
-  },
-  {
-    path: "/verifyEmail",
-    element: <VerifyEmail />,
-  },
-  {
-    path: "/chatbot",
-    element: <ChatBot />,
-  },
-  {
-    path: "/depression",
-    element: <Depression />,
-  },
-  {
-    path: "/assessments",
-    element: <Assessments />,
-  },
-  {
-    path: "/assessment/:id",
-    element: <AssessmentQuestions />,
-  },
-  {
-    path: "//assessment/:id/result",
-    element: <AssessmentResult />,
-  },
-  {
-    path: "*",
-    element: <Notfound />,
-  },
+
+  //  public pages (متاحة بدون login)
+  { path: "/forgetByEmail", element: <ForgetByEmail /> },
+  { path: "/forgetByPhone", element: <ForgetByPhone /> },
+  { path: "/createNewPassword/:email", element: <CreateNewPassword /> },
+  { path: "/verifyEmail", element: <VerifyEmail /> },
+
+  //  Not Found
+  { path: "*", element: <Notfound /> },
+
+  //   زي ما هو
   {
     path: "/admin",
-    element: (
-      //<AdminGuard> //هنرجعها لما نظبط ال auth
-      <AdminLayout />
-      // </AdminGuard>
-    ),
+    element: <AdminLayout />,
     children: [
       {
         index: true,
@@ -158,6 +131,7 @@ function App() {
   return (
     <AuthProvider>
       <NotificationProvider>
+        <Toaster richColors position="top-right" />
         <RouterProvider router={router} />{" "}
       </NotificationProvider>
     </AuthProvider>

@@ -89,7 +89,7 @@ const SkinResult = () => {
         transition={{ duration: 0.5 }}
         className="flex flex-col h-full max-w-2xl mx-auto w-full gap-(--space-md)"
       >
-        <div className="flex flex-col items-center text-center gap-(--space-xs)">
+        <div className="flex flex-col items-center text-center gap-(--space-xs) ">
           <div
             className="flex items-center justify-center rounded-full mb-(--space-xs)"
             style={{ width: 52, height: 52, background: "#f0fdf4" }}
