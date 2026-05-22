@@ -26,6 +26,11 @@ interface AuthContextType {
     refreshToken: string;
     user: UserType;
   }) => void;
+  loginWithFacebook: (data: {
+    accessToken: string;
+    refreshToken: string;
+    user: UserType;
+  }) => void;
   isAuthenticated: boolean;
 }
 
@@ -91,11 +96,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const authData = res.data;
     const userData = mapUserData(authData);
 
-    saveAuthData(
-      authData.accessToken,
-      authData.refreshToken,
-      userData,
-    );
+    saveAuthData(authData.accessToken, authData.refreshToken, userData);
 
     return res;
   };
@@ -107,11 +108,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const authData = res.data;
     const userData = mapUserData(authData);
 
-    saveAuthData(
-      authData.accessToken,
-      authData.refreshToken,
-      userData,
-    );
+    saveAuthData(authData.accessToken, authData.refreshToken, userData);
   };
 
   // Refresh token
@@ -129,11 +126,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const authData = res.data;
       const userData = mapUserData(authData);
 
-      saveAuthData(
-        authData.accessToken,
-        authData.refreshToken,
-        userData,
-      );
+      saveAuthData(authData.accessToken, authData.refreshToken, userData);
     } catch (err: any) {
       console.log("refresh failed", err.response?.data);
       clearAuth();
@@ -157,6 +150,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Google login — stores tokens + user in context & localStorage
   const loginWithGoogle = (data: {
+    accessToken: string;
+    refreshToken: string;
+    user: UserType;
+  }) => {
+    saveAuthData(data.accessToken, data.refreshToken, data.user);
+  };
+
+  const loginWithFacebook = (data: {
     accessToken: string;
     refreshToken: string;
     user: UserType;
@@ -245,10 +246,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () =>
-      document.removeEventListener(
-        "visibilitychange",
-        handleVisibilityChange,
-      );
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
 
   return (
@@ -262,6 +260,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         logout,
         loginWithGoogle,
         isAuthenticated,
+        loginWithFacebook,
       }}
     >
       {children}

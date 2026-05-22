@@ -68,6 +68,10 @@ export const googleLogin = async (idToken: string) => {
 
   return response.data;
 };
+export const facebookLogin = async (accessToken: string) => {
+  const res = await api.post("/Auth/facebook", { accessToken });
+  return res.data;
+};
 
 export const forgetPassword = async (email: string) => {
   const response = await api.post(`/Auth/forgot-password`, { email });

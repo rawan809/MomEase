@@ -1,10 +1,17 @@
-import { useAuth } from "../../pages/auth/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 
 const AdminGuard = ({ children }: { children: React.ReactNode }) => {
-  const { user } = useAuth();
-  if (!user?.token) return <Navigate to="/login" />;
-  if (user?.role !== "ADMIN") return <Navigate to="/home" />;
+  const { user, token } = useAuth();
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (user?.role !== "ADMIN") {
+    return <Navigate to="/home" replace />;
+  }
+
   return <>{children}</>;
 };
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import {
   ArticleAPI,
   AddSavedArticle,
@@ -15,6 +15,8 @@ import EmptyResponse from "../../src/components/ui/EmptyResponse";
 import { FaBookmark } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
 import ArticleCard from "../../src/components/Articles/ArticleCard";
+import { ImageOff } from "lucide-react";
+// <ImageOff size={45} />
 
 interface ArticleType {
   articleId: number;
@@ -39,6 +41,7 @@ function Article() {
   const [articleData, setArticleData] = useState<ArticleType | null>(null);
   const [saved, setSaved] = useState<boolean>(false);
   const [relatedArticles, setRelatedArticles] = useState<ArticleType[]>([]);
+  const [isError, setIsError] = useState(false);
 
   //   formate time
   const formatDate = (createdAt: string) => {
@@ -56,10 +59,15 @@ function Article() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+
+      setIsError(false);
+
       try {
         const articleRes = await ArticleAPI(id);
+
         setArticleData(articleRes.data);
         setSaved(articleRes.data.isSaved);
+
         console.log(articleRes.data);
       } catch (error) {
         console.log(error);
@@ -132,11 +140,24 @@ function Article() {
               </p>
             </div>
             <div className="w-full h-75 md:h-100 lg:h-120 overflow-hidden rounded-xl mb-5">
-              <img
-                src={articleData?.imageUrl}
-                alt=""
-                className="w-full h-full object-cover"
-              />
+              {!isError ? (
+                <img
+                  src={articleData?.imageUrl}
+                  alt=""
+                  className="w-full h-full object-cover"
+                  onError={() => setIsError(true)}
+                />
+              ) : (
+                <>
+                  <div className="bg-slate-200 w-full h-full flex flex-col items-center justify-center  text-slate-400 relative">
+                    <ImageOff size={45} />
+                    <span className="text-xs font-medium">
+                      No image available
+                    </span>
+                    <div className="absolute w-full h-full bg-[linear-gradient(180deg,rgba(0,0,0,0.25)_0%,rgba(255,102,161,0.25)_100%)]"></div>
+                  </div>
+                </>
+              )}
             </div>
             <div className="flex justify-between mb-5 md:items-center items-end">
               <h1 className="md:text-h2 text-2xl">{articleData?.title}</h1>

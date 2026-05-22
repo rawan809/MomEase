@@ -12,6 +12,7 @@
   "dependencies": {
     "@base-ui/react": "^1.4.0",
     "@fontsource-variable/geist": "^5.2.8",
+    "@greatsumini/react-facebook-login": "^3.4.0",
     "@react-oauth/google": "^0.13.4",
     "axios": "^1.13.5",
     "class-variance-authority": "^0.7.1",
@@ -44,6 +45,7 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.23",
     "eslint": "^9.39.1",
