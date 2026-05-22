@@ -93,7 +93,8 @@ const PostCard: React.FC<PostCardProps> = ({
         <div className="flex items-center gap-3">
           {post.userPhoto ? (
             <img
-              src={`http://momease.runasp.net${post.userPhoto}`}
+              // src={`http://momease.runasp.net${post.userPhoto}`}
+              src={post.userPhoto}
               className="w-12 aspect-square rounded-full object-cover border"
             />
           ) : (

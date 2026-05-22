@@ -8,6 +8,7 @@ import { formatDate } from "@/utils/formatDate";
 import { useCommunityInteractions } from "@/hooks/useCommunityInteractions";
 import CommentOptions from "./CommentOptions";
 import { useAuth } from "@/contexts/AuthContext";
+import { toRelativeUrl } from "@/utils/imgBaseURL";
 
 interface CommentProps {
   postId: number;
@@ -109,7 +110,7 @@ function Comment({
                   <div>
                     {comment.userPhoto ? (
                       <img
-                        src={comment.userPhoto}
+                        src={toRelativeUrl(comment.userPhoto)}
                         className="w-12 aspect-square rounded-full object-cover border"
                       />
                     ) : (

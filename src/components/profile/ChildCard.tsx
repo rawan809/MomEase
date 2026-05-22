@@ -49,7 +49,7 @@ function ChildCard({
         <div>
           {child.photoUrl ? (
             <img
-              src={`http://momease.runasp.net${child.photoUrl}`}
+              src={child.photoUrl}
               alt={child.fullName}
               className={`w-20 h-20 rounded-full object-cover border-2 ${
                 isBoy ? "border-blue-500" : "border-pink-500"

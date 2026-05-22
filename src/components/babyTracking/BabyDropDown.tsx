@@ -8,10 +8,8 @@ import { useChild } from "@/contexts/ChildContext";
 import formatBabyAge from "@/utils/formatBabyAge";
 import { useState } from "react";
 
-
 function BabyDropDown() {
-  const { children, selectedChildId, setSelectedChildId } =
-    useChild();
+  const { children, selectedChildId, setSelectedChildId } = useChild();
   const [open, setOpen] = useState(false);
   const currentChild =
     children.find((child) => child.childId === selectedChildId) || children[0];
@@ -31,7 +29,7 @@ function BabyDropDown() {
           <div className="flex gap-2 items-center bg-accent/50 rounded-xl p-2  cursor-ponter hover:bg-accent/70 transition-all border-primary border">
             {currentChild.photoUrl ? (
               <img
-                src={`http://momease.runasp.net${currentChild.photoUrl}`}
+                src={currentChild.photoUrl}
                 alt={currentChild.fullName}
                 className={`w-10 aspect-square rounded-full object-cover border-2 ${
                   currentChild.gender === "Boy"
@@ -78,7 +76,7 @@ function BabyDropDown() {
               >
                 {child.photoUrl ? (
                   <img
-                    src={`http://momease.runasp.net${child.photoUrl}`}
+                    src={child.photoUrl}
                     alt={child.fullName}
                     className={`w-10 aspect-square rounded-full object-cover border-2 ${
                       child.gender === "Boy"
@@ -105,7 +103,6 @@ function BabyDropDown() {
                 </div>
               </div>
             ))}
-
           </div>
         </PopoverContent>
       </Popover>

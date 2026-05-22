@@ -14,6 +14,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+      "/uploads": {
+        target: "http://momease.runasp.net",
+        changeOrigin: true,
+        secure: false,
+      },
     },
     port: 5174,
   },

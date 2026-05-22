@@ -32,7 +32,7 @@ function Children() {
             <div className="shrink-0">
               {child.photoUrl ? (
                 <img
-                  src={`http://momease.runasp.net${child.photoUrl}`}
+                  src={child.photoUrl}
                   alt={""}
                   className={`w-16 h-16 rounded-full object-cover border-2 ${child.gender === "Boy" ? "border-blue-600" : "border-primary"}`}
                 />

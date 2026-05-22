@@ -36,7 +36,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
   const [photo, setPhoto] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(
-    child?.photoUrl ? `http://momease.runasp.net${child.photoUrl}` : null,
+    child?.photoUrl ? child.photoUrl : null,
   );
 
   // Reset form fields whenever the dialog opens
@@ -49,7 +49,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
       setFeedingTypeForBaby(child?.feedingTypeForBaby ?? "Breastfeeding");
       setPhoto(null);
       setPreview(
-        child?.photoUrl ? `http://momease.runasp.net${child.photoUrl}` : null,
+        child?.photoUrl ? `${child.photoUrl}` : null,
       );
     }
     setOpen(o);

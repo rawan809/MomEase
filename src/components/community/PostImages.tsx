@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { toRelativeUrl } from "@/utils/imgBaseURL";
 
 interface PostMedia {
   mediaId: number;
@@ -40,7 +41,7 @@ function PostImages({ media }: PostImagesProps) {
         {/* صورة واحدة */}
         {count === 1 && (
           <img
-            src={images[0].mediaUrl}
+            src={toRelativeUrl(images[0].mediaUrl)}
             onClick={() => openPreview(0)}
             className="w-full max-h-125 object-cover cursor-pointer hover:scale-[1.01] transition"
           />
@@ -52,7 +53,7 @@ function PostImages({ media }: PostImagesProps) {
             {images.map((img, index) => (
               <img
                 key={img.mediaId}
-                src={img.mediaUrl}
+                src={toRelativeUrl(img.mediaUrl)}
                 onClick={() => openPreview(index)}
                 className="h-80 w-full object-cover cursor-pointer hover:opacity-90 transition"
               />
@@ -64,7 +65,7 @@ function PostImages({ media }: PostImagesProps) {
         {count === 3 && (
           <div className="grid grid-cols-2 gap-1">
             <img
-              src={images[0].mediaUrl}
+              src={toRelativeUrl(images[0].mediaUrl)}
               onClick={() => openPreview(0)}
               className="h-100 w-full object-cover cursor-pointer"
             />
@@ -73,7 +74,7 @@ function PostImages({ media }: PostImagesProps) {
               {images.slice(1).map((img, index) => (
                 <img
                   key={img.mediaId}
-                  src={img.mediaUrl}
+                  src={toRelativeUrl(img.mediaUrl)}
                   onClick={() => openPreview(index + 1)}
                   className="h-49.75 w-full object-cover cursor-pointer"
                 />
@@ -88,7 +89,7 @@ function PostImages({ media }: PostImagesProps) {
             {images.map((img, index) => (
               <img
                 key={img.mediaId}
-                src={img.mediaUrl}
+                src={toRelativeUrl(img.mediaUrl)}
                 onClick={() => openPreview(index)}
                 className="h-55 w-full object-cover cursor-pointer"
               />
@@ -102,7 +103,7 @@ function PostImages({ media }: PostImagesProps) {
             {images.slice(0, 4).map((img, index) => (
               <div key={img.mediaId} className="relative">
                 <img
-                  src={img.mediaUrl}
+                  src={toRelativeUrl(img.mediaUrl)}
                   onClick={() => openPreview(index)}
                   className="h-40 w-full object-cover cursor-pointer"
                 />
@@ -127,7 +128,7 @@ function PostImages({ media }: PostImagesProps) {
         <DialogContent className="max-w-5xl p-0 overflow-hidden  border-none">
           <div className="relative flex items-center justify-center">
             <img
-              src={images[selectedIndex]?.mediaUrl}
+              src={toRelativeUrl(images[selectedIndex]?.mediaUrl)}
               className="max-h-[90vh] w-full object-contain"
             />
 
