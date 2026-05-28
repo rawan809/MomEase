@@ -141,7 +141,7 @@ export default function MonthlyGrowth({
                           {day.weight} kg
                         </p>
                         <p className="text-[10px] font-semibold">
-                          {day.weight} cm
+                          {day.height} cm
                         </p>
                       </div>
                     )}

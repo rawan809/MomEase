@@ -4,17 +4,17 @@ import FeedingHistoryCard from "./FeedingHistoryCard";
 import { useFeeding } from "@/hooks/useFeeding";
 import { useChild } from "@/contexts/ChildContext";
 import FeedingStatisticsCards from "./FeedingStatisticsCards";
-import FeedingMonthlyCards from "./FeedingMonthlyCards";
+// import FeedingMonthlyCards from "./FeedingMonthlyCards";
 
 function Feeding() {
   const { selectedChildId } = useChild();
   const {
     records,
-    loading,
+    // loading,
     addRecord,
     weeklyData,
     statistics,
-    monthlyData,
+    // monthlyData,
     deleteRecord,
     editRecord,
   } = useFeeding(selectedChildId);
@@ -38,7 +38,7 @@ function Feeding() {
         <FeedingStatisticsCards data={statistics} />
       </div>
       <div className="mt-5">
-        <FeedingMonthlyCards data={monthlyData} />
+        {/* <FeedingMonthlyCards data={monthlyData} /> */}
       </div>
       <div className="mt-5">
         <div>

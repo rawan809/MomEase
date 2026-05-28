@@ -1,5 +1,5 @@
 import { GoogleLogin } from "@react-oauth/google";
-import FacebookLogin from "@greatsumini/react-facebook-login";
+// import FacebookLogin from "@greatsumini/react-facebook-login";
 
 import { googleLogin, facebookLogin } from "../../../services/auth";
 
@@ -48,37 +48,37 @@ const SocialLogin = () => {
   };
 
   // FACEBOOK LOGIN
-  const handleFacebookSuccess = async (response: any) => {
-    try {
-      const accessToken = response.accessToken;
+  // const handleFacebookSuccess = async (response: any) => {
+  //   try {
+  //     const accessToken = response.accessToken;
 
-      const data = await facebookLogin(accessToken);
+  //     const data = await facebookLogin(accessToken);
 
-      console.log("FACEBOOK RESPONSE:", data);
+  //     console.log("FACEBOOK RESPONSE:", data);
 
-      if (data?.success && data?.data?.accessToken) {
-        loginWithFacebook({
-          accessToken: data.data.accessToken,
-          refreshToken: data.data.refreshToken ?? "",
-          user: {
-            userId: data.data.userId,
-            firstName: data.data.firstName,
-            lastName: data.data.lastName ?? "",
-            email: data.data.email ?? "",
-            role: data.data.role,
-          },
-        });
+  //     if (data?.success && data?.data?.accessToken) {
+  //       loginWithFacebook({
+  //         accessToken: data.data.accessToken,
+  //         refreshToken: data.data.refreshToken ?? "",
+  //         user: {
+  //           userId: data.data.userId,
+  //           firstName: data.data.firstName,
+  //           lastName: data.data.lastName ?? "",
+  //           email: data.data.email ?? "",
+  //           role: data.data.role,
+  //         },
+  //       });
 
-        if (data.data.role === "ADMIN") {
-          navigate("/admin");
-        } else {
-          navigate("/home");
-        }
-      }
-    } catch (error) {
-      console.error("Facebook login error:", error);
-    }
-  };
+  //       if (data.data.role === "ADMIN") {
+  //         navigate("/admin");
+  //       } else {
+  //         navigate("/home");
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error("Facebook login error:", error);
+  //   }
+  // };
 
   return (
     <div className="mt-6">
@@ -97,7 +97,7 @@ const SocialLogin = () => {
       </div>
 
       {/* FACEBOOK BUTTON */}
-      <div style={{ display: "none" }}>
+      {/* <div style={{ display: "none" }}>
         <FacebookLogin
           appId="1004153385630988"
           scope="email,public_profile"
@@ -107,7 +107,7 @@ const SocialLogin = () => {
             <div id="facebook-login-btn" onClick={onClick} />
           )}
         />
-      </div>
+      </div> */}
 
       <div className="flex gap-6 justify-center">
         {/* GOOGLE ICON */}
@@ -125,7 +125,7 @@ const SocialLogin = () => {
         </div>
 
         {/* FACEBOOK ICON */}
-        <div
+        {/* <div
           onClick={() => {
             const facebookButton = document.getElementById(
               "facebook-login-btn",
@@ -136,7 +136,7 @@ const SocialLogin = () => {
           className="cursor-pointer hover:scale-110 transition"
         >
           <FacebookIcon />
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -34,6 +34,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
     child?.feedingTypeForBaby ?? "Breastfeeding",
   );
   const [photo, setPhoto] = useState<File | null>(null);
+  const [removePhoto, setRemovePhoto] = useState(false);
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<string | null>(
     child?.photoUrl ? child.photoUrl : null,
@@ -48,9 +49,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
       setDeliveryType(child?.deliveryType ?? "Normal");
       setFeedingTypeForBaby(child?.feedingTypeForBaby ?? "Breastfeeding");
       setPhoto(null);
-      setPreview(
-        child?.photoUrl ? `${child.photoUrl}` : null,
-      );
+      setPreview(child?.photoUrl ? `${child.photoUrl}` : null);
     }
     setOpen(o);
   };
@@ -66,8 +65,11 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
           deliveryType,
           feedingTypeForBaby,
         });
-        if (photo) await onUploadPhoto(child.childId, photo);
-        if (!photo) await onDeletePhoto(child.childId);
+        if (photo) {
+          await onUploadPhoto(child.childId, photo);
+        } else if (removePhoto) {
+          await onDeletePhoto(child.childId);
+        }
         toast.success("Baby updated successfully");
       } else {
         const newChild = await addChild({
@@ -236,6 +238,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
                     e.preventDefault();
                     setPhoto(null);
                     setPreview(null);
+                    setRemovePhoto(true);
                   }}
                   className="mt-1 text-red-500 text-sm hover:underline"
                 >
@@ -263,6 +266,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
                     if (file) {
                       setPhoto(file);
                       setPreview(URL.createObjectURL(file));
+                      setRemovePhoto(false);
                     }
                   }}
                 />
