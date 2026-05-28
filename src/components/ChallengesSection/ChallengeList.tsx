@@ -2,25 +2,31 @@ import ChallengeCard from "./ChallengeCard";
 import challenge1 from "../../assets/images/challenge1.png";
 import challenge2 from "../../assets/images/challenge2.png";
 import challenge3 from "../../assets/images/challenge3.png";
+import { useTranslation } from "react-i18next";
 
 const ChallengeList = () => {
+  const { t } = useTranslation();
+
   const challenges = [
     {
-      title: "Emotional Overwhelm",
-      description:
+      title: t("Emotional Overwhelm"),
+      description: t(
         "Navigating postpartum emotions and mood changes without adequate support or understanding.",
+      ),
       icon: challenge1,
     },
     {
-      title: "Information Overload",
-      description:
+      title: t("Information Overload"),
+      description: t(
         "Feeling lost in conflicting advice from multiple sources about baby care and self-care.",
+      ),
       icon: challenge2,
     },
     {
-      title: "Isolated Experience",
-      description:
+      title: t("Isolated Experience"),
+      description: t(
         "Missing personalized guidance and feeling alone in the journey through early motherhood.",
+      ),
       icon: challenge3,
     },
   ];

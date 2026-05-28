@@ -1,10 +1,12 @@
-import React from "react";
 import FeatureCard from "./FeatureCard";
 import Heading from "../ui/Heading";
 import { FeatureData } from "./FeatureData";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 function FeatureSection() {
+  const { t } = useTranslation();
+
   return (
     <section className="py-(--space-xl)">
       <div className="px-(--space-lg) max-w-7xl mx-auto">
@@ -16,8 +18,10 @@ function FeatureSection() {
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <Heading
-            title="Everything you need in one place"
-            discription="Comprehensive tools designed specifically for your postpartum journey, all working together seamlessly."
+            title={t("Everything you need in one place")}
+            discription={t(
+              "Comprehensive tools designed specifically for your postpartum journey, all working together seamlessly.",
+            )}
           />
         </motion.div>
 
@@ -37,8 +41,8 @@ function FeatureSection() {
             >
               <FeatureCard
                 icon={feature.icon}
-                title={feature.title}
-                description={feature.description}
+                title={t(feature.title)}
+                description={t(feature.description)}
               />
             </motion.div>
           ))}

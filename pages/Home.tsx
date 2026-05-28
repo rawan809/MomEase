@@ -1,14 +1,16 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import HomeSection from "../src/components/HeroSection/HomeSection";
 import ArticalSection from "../src/components/Articles/ArticalSection";
 import { useAuth } from "../src/contexts/AuthContext";
 import { AllarticlesApi } from "../services/articles";
 import { useState } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function Home() {
   const { user } = useAuth();
   const firstName = user?.firstName;
   const [articles, setArticles] = useState([]);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -20,7 +22,7 @@ export default function Home() {
       }
     };
     fetchArticles();
-  }, []);
+  }, [language]);
 
   return (
     <>

@@ -10,6 +10,8 @@ import {
 } from "../../services/articles";
 import LoadingState from "../../src/components/ui/LoadingState";
 import EmptyResponse from "../../src/components/ui/EmptyResponse";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../src/contexts/LanguageContext";
 
 
 interface Category {
@@ -27,6 +29,8 @@ interface Article {
 }
 
 function Articles() {
+  const { t } = useTranslation();
+  const { language } = useLanguage();
   const params = useParams();
   let idstring = params.categoryID;
   let id = Number(idstring?.slice(1));
@@ -61,7 +65,7 @@ function Articles() {
     };
 
     if (id) fetchData();
-  }, [id]);
+  }, [id, language]); // أعد الـ fetch لما اللغة تتغير
 
   // save & unsave
   const toggleSaveArticle = async (articleId: number, isSaved: boolean) => {
@@ -99,14 +103,14 @@ function Articles() {
           </div>
         ) : category === null ? (
           <div className="h-[80vh]">
-            <EmptyResponse title="No Category Found" />
+            <EmptyResponse title={t("No Category Found")} />
           </div>
         ) : (
           <div className="mt-5 w-full">
             <div className="mb-5">
               <p className="text-primary font-semibold">
                 <Link to={"/ExploreArticles"} className="text-muted">
-                  Categories/{" "}
+                  {t("Categories /")} {" "}
                 </Link>
                 {category?.name}
               </p>
@@ -122,7 +126,7 @@ function Articles() {
             <InputSearch value={searchTerm} onChange={setSearchTerm} />
             {articles.length === 0 || filteredArticles.length === 0 ? (
               <div className="h-[50vh]">
-                <EmptyResponse title="No Articles Found" />
+                <EmptyResponse title={t("No Articles Found")} />
               </div>
             ) : (
               <div className="mt-10 grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2  gap-(--space-lg)">

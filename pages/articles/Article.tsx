@@ -1,4 +1,4 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import {
   ArticleAPI,
   AddSavedArticle,
@@ -16,7 +16,8 @@ import { FaBookmark } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
 import ArticleCard from "../../src/components/Articles/ArticleCard";
 import { ImageOff } from "lucide-react";
-// <ImageOff size={45} />
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../src/contexts/LanguageContext";
 
 interface ArticleType {
   articleId: number;
@@ -34,6 +35,8 @@ interface ArticleType {
 }
 
 function Article() {
+  const { t } = useTranslation();
+  const { language } = useLanguage();
   const params = useParams();
   let idString = params.articleID;
   let id = Number(idString?.slice(1));
@@ -43,7 +46,7 @@ function Article() {
   const [relatedArticles, setRelatedArticles] = useState<ArticleType[]>([]);
   const [isError, setIsError] = useState(false);
 
-  //   formate time
+  //    formate time
   const formatDate = (createdAt: string) => {
     const date = new Date(createdAt);
 
@@ -77,7 +80,7 @@ function Article() {
     };
 
     if (!isNaN(id)) fetchData();
-  }, [id]);
+  }, [id, language]); // أعد الـ fetch لما اللغة تتغير
   useEffect(() => {
     const fetchRelatedArticles = async () => {
       try {
@@ -121,14 +124,14 @@ function Article() {
           </div>
         ) : articleData === null ? (
           <div className="h-[80vh]">
-            <EmptyResponse title="No Article Found" />
+            <EmptyResponse title={t("No Article Found")} />
           </div>
         ) : (
           <div className="mt-5 w-full">
             <div className="mb-5">
               <p className="text-primary font-semibold">
                 <Link to={"/ExploreArticles"} className="text-muted">
-                  Categories/{" "}
+                  {t("Categories")}/{" "}
                 </Link>
                 <Link
                   to={`/Articles/:${articleData?.categoryId}`}
@@ -152,7 +155,7 @@ function Article() {
                   <div className="bg-slate-200 w-full h-full flex flex-col items-center justify-center  text-slate-400 relative">
                     <ImageOff size={45} />
                     <span className="text-xs font-medium">
-                      No image available
+                      {t("No image available")}
                     </span>
                     <div className="absolute w-full h-full bg-[linear-gradient(180deg,rgba(0,0,0,0.25)_0%,rgba(255,102,161,0.25)_100%)]"></div>
                   </div>
@@ -178,7 +181,7 @@ function Article() {
             <div className="flex text-muted gap-3 mb-5 flex-wrap">
               <div className="flex gap-1 items-center">
                 <FaRegClock />
-                <p>{articleData?.readingTimeMinutes} min read</p>
+                <p>{articleData?.readingTimeMinutes} {t("min read")}</p>
               </div>
               <div className="flex gap-1 items-center">
                 <MdOutlineDateRange />
@@ -221,7 +224,7 @@ function Article() {
                 ))}
             </div>
             <div>
-              <p className="font-semibold text-xl mb-5">Related Articles</p>
+              <p className="font-semibold text-xl mb-5">{t("Related Articles")}</p>
               <div className="mt-10 grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2  gap-(--space-lg)">
                 {relatedArticles.map((article) => (
                   <ArticleCard

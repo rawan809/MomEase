@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import LoadingState from "../ui/LoadingState";
 import EmptyResponse from "../ui/EmptyResponse";
 import ArticleSearchCard from "./ArticleSearchCard";
+import { useTranslation } from "react-i18next";
 
 import {
   searchArticles,
@@ -45,6 +46,7 @@ interface SearchData {
 }
 
 function Search() {
+  const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -189,7 +191,7 @@ function Search() {
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onFocus={() => setIsOpen(true)}
-          placeholder="Search articles..."
+          placeholder={t("Search articles...")}
           className="flex-1 outline-none text-sm bg-transparent text-gray-800 placeholder:text-muted"
         />
         {query && (
@@ -214,20 +216,20 @@ function Search() {
                 </div>
               ) : history.length === 0 ? (
                 <div className="h-24">
-                  <EmptyResponse title="No search history" />
+                  <EmptyResponse title={t("No search history")} />
                 </div>
               ) : (
                 <>
                   {/* Header */}
                   <div className="flex items-center justify-between mb-2 px-1">
                     <p className="text-xs font-semibold text-muted uppercase tracking-wide">
-                      Recent Searches
+                      {t("Recent Searches")}
                     </p>
                     <button
                       onClick={handleClearAll}
                       className="text-xs text-primary hover:underline cursor-pointer"
                     >
-                      Clear all
+                      {t("Clear all")}
                     </button>
                   </div>
 
@@ -270,7 +272,7 @@ function Search() {
                 (searchData.articles.length === 0 &&
                   searchData.categories.length === 0) ? (
                 <div className="h-32">
-                  <EmptyResponse title={`No results for "${query}"`} />
+                  <EmptyResponse title={t("No results for", { query })} />
                 </div>
               ) : (
                 <div className="flex flex-col gap-4">
@@ -278,7 +280,9 @@ function Search() {
                   {searchData.categories.length > 0 && (
                     <div>
                       <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2 px-1">
-                        Categories ({searchData.categoriesCount})
+                        {t("Categories Count", {
+                          count: searchData.categoriesCount,
+                        })}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {searchData.categories.map((cat) => (
@@ -301,11 +305,16 @@ function Search() {
                   {searchData.articles.length > 0 && (
                     <div>
                       <p className="text-xs font-semibold text-muted uppercase tracking-wide mb-2 px-1">
-                        Articles ({searchData.articlesCount})
+                        {t("Articles Count", {
+                          count: searchData.articlesCount,
+                        })}
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {searchData.articles.map((article) => (
-                          <Link to={`/Article/:${article.articleId}`}>
+                          <Link
+                            to={`/Article/:${article.articleId}`}
+                            key={article.articleId}
+                          >
                             {" "}
                             <ArticleSearchCard
                               articleId={article.articleId}

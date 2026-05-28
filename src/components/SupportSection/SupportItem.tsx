@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   title: string;
@@ -8,6 +9,8 @@ interface Props {
 }
 
 const SupportItem = ({ title, description, image, reverse }: Props) => {
+  const { t } = useTranslation();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -21,10 +24,13 @@ const SupportItem = ({ title, description, image, reverse }: Props) => {
       <div className="flex-1 flex justify-center">
         <img src={image} alt={title} className="max-w-sm w-full" />
       </div>
-      <div className="w-1 h-30 bg-primary" />
+
+      <div className="w-1 h-30 bg-primary hidden md:block" />
+
       <div className=" items-start gap-4">
-        <h3 className="text-normal font-semibold leading-tight">{title}</h3>
-        <p className="text-muted max-w-md ">{description}</p>
+        <h3 className="text-normal font-semibold leading-tight">{t(title)}</h3>
+
+        <p className="text-muted max-w-md ">{t(description)}</p>
       </div>
     </motion.div>
   );

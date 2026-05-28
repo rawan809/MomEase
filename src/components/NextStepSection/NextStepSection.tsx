@@ -1,9 +1,11 @@
-import React from "react";
 import Heading from "../ui/Heading";
 import { LockIcon, CheckIcon, HeartIcon } from "../../assets/icons/icons";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 function NextStepSection() {
+  const { t } = useTranslation();
+
   return (
     <section className="py-(--space-xl)">
       <div className="px-(--space-lg) max-w-7xl mx-auto">
@@ -21,8 +23,10 @@ function NextStepSection() {
             transition={{ duration: 0.6 }}
           >
             <Heading
-              title="Ready to feel supported in your motherhood journey?"
-              discription="Join thousands of mothers who are navigating postpartum with confidence, clarity, and care."
+              title={t("Ready to feel supported in your motherhood journey?")}
+              discription={t(
+                "Join thousands of mothers who are navigating postpartum with confidence, clarity, and care.",
+              )}
             />
           </motion.div>
 
@@ -33,12 +37,12 @@ function NextStepSection() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <button className="bg-white border border-primary text-primary px-(--space-lg) py-(--space-sm) rounded-lg transition-(--transition-fast) hover:bg-primary hover:text-white cursor-pointer">
-              Download the app
+            <button className="bg-white border border-primary text-primary px-(--space-lg) py-(--space-sm) rounded-lg transition-all  cursor-pointer">
+              {t("Download the app")}
             </button>
 
-            <button className="border text-white bg-primary px-(--space-lg) py-(--space-sm) rounded-lg transition-(--transition-fast) hover:bg-white hover:text-primary cursor-pointer">
-              Learn More
+            <button className="border text-white bg-primary px-(--space-lg) py-(--space-sm) rounded-lg transition-all hover:bg-primary/80 cursor-pointer">
+              {t("Learn More")}
             </button>
           </motion.div>
 
@@ -71,7 +75,7 @@ function NextStepSection() {
                 transition={{ duration: 0.5 }}
               >
                 {item.icon}
-                <p>{item.text}</p>
+                <p>{t(item.text)}</p>
               </motion.div>
             ))}
           </motion.div>

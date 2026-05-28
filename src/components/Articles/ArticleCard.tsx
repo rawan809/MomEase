@@ -3,6 +3,7 @@ import { FaRegBookmark } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { ImageOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface ArticleCardProps {
   articleId: number;
@@ -32,7 +33,9 @@ function ArticleCard({
   savedAt,
   categoryName,
 }: ArticleCardProps) {
+  const { t } = useTranslation();
   const [imageError, setImageError] = useState(false);
+
   useEffect(() => {
     if (!imageUrl) {
       setImageError(true);
@@ -48,9 +51,10 @@ function ArticleCard({
       setImageError(false);
     };
   }, [imageUrl]);
+
   return (
-    <div className="relative overflow-hidden rounded-2xl shadow-lg hover:-translate-y-1.25 transition-transform duration-300 group cursor-auto">
-      <Link to={`/Article/:${articleId}`}>
+    <div className="relative overflow-hidden rounded-2xl shadow-lg hover:-translate-y-1.25 transition-transform duration-300 group cursor-auto flex flex-col h-full">
+      <Link to={`/Article/:${articleId}`} className="block shrink-0">
         {!imageError ? (
           <div
             className="relative bg-cover bg-center h-64"
@@ -62,7 +66,7 @@ function ArticleCard({
             }}
           >
             <p className="absolute bottom-4 left-4 text-white z-20">
-              {readingTimeMinutes} mins
+              {readingTimeMinutes} {t("mins")}
             </p>
           </div>
         ) : (
@@ -76,40 +80,46 @@ function ArticleCard({
           >
             <ImageOff size={45} />
             <p className="absolute bottom-4 left-4 text-white z-20">
-              {readingTimeMinutes} mins
+              {readingTimeMinutes} {t("mins")}
             </p>
           </div>
         )}
       </Link>
 
-      <div className="relative z-20 p-4 bg-white">
-        <Link
-          to={`/Article/:${articleId}`}
-          className="font-semibold group-hover:text-primary transition-all duration-300"
-        >
-          {title}
-        </Link>
+      {/* الحاوية الأساسية للمحتوى تم تحويلها لـ Flexbox لتوزيع العناصر عمودياً */}
+      <div className="relative z-20 p-4 bg-white flex flex-col justify-between flex-1 gap-4">
+        
+        {/* حاوية فرعية علوية لتجميع النصوص وحمايتها من التباعد */}
+        <div>
+          <Link
+            to={`/Article/:${articleId}`}
+            className="font-semibold group-hover:text-primary transition-all duration-300 block mb-1"
+          >
+            {title}
+          </Link>
 
-        {savedArticlesPage ? (
-          <>
-            {" "}
-            <p className="text-muted mt-1">
-              category:{" "}
-              <span className="bg-accent w-fit px-2 py-1 rounded-lg text-black">
-                {categoryName}
-              </span>
-            </p>
-            <p className="text-muted mt-1">
-              Saved at:{" "}
-              {savedAt ? new Date(savedAt).toLocaleDateString() : "N/A"}
-            </p>
-          </>
-        ) : null}
+          {savedArticlesPage ? (
+            <div className="mb-2">
+              <p className="text-muted mt-1">
+                {t("category:")}{" "}
+                <span className="bg-accent w-fit px-2 py-1 rounded-lg text-black inline-block">
+                  {categoryName}
+                </span>
+              </p>
+              <p className="text-muted mt-1">
+                {t("Saved at:")}{" "}
+                {savedAt ? new Date(savedAt).toLocaleDateString() : t("N/A")}
+              </p>
+            </div>
+          ) : null}
 
-        <p className="text-muted">{shortDescription}</p>
-        <div className="mt-2 flex justify-end">
+          <p className="text-muted text-sm">{shortDescription}</p>
+        </div>
+
+        {/* حاوية زر الحفظ ستثبت في الأسفل تماماً دائماً */}
+        <div className="flex justify-end pt-2 border-t border-gray-50">
           <button
-            className="cursor-pointer"
+            className="cursor-pointer p-1 hover:scale-110 transition-transform"
             onClick={() => {
               if (savedArticlesPage) {
                 onDeleteSave?.(articleId);
