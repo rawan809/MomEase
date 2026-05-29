@@ -3,11 +3,13 @@ import ForgetPassword from "../../assets/images/forgetPassword.png";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 type Props = {
   children: ReactNode;
 };
 
 const ForgetPasswordLayout = ({ children }: Props) => {
+  const { t } = useTranslation();
   return (
     <div className="p-10 flex-col justify-center">
       <h1 className="mb-10">
@@ -26,7 +28,7 @@ const ForgetPasswordLayout = ({ children }: Props) => {
             </Link>
 
             <h2 className="text-xl font-semibold text-center">
-              Forget Password
+              {t("Forget Password")}
             </h2>
           </div>
 

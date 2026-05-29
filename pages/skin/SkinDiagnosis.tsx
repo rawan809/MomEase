@@ -1,40 +1,31 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import SkinImage from "../../src/assets/images/Dep.png";
+import { useTranslation } from "react-i18next";
 
 const SkinDiagnosis = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
+  // تحويل الـ steps لنصوص ثابتة قابلة للترجمة مع الحفاظ على التنسيق الـ bold عبر الـ JSX لاحقاً
   const steps = [
     {
-      text: (
-        <>
-          <span className="font-bold">Take a clear photo</span> of the affected
-          skin area
-        </>
-      ),
+      boldText: "Take a clear photo",
+      normalText: " of the affected skin area",
     },
     {
-      text: (
-        <>
-          <span className="font-bold">AI analyzes the image</span> for common
-          baby skin conditions
-        </>
-      ),
+      boldText: "AI analyzes the image",
+      normalText: " for common baby skin conditions",
     },
     {
-      text: (
-        <>
-          <span className="font-bold">Receive gentle care tips</span> and
-          personalized recommendations
-        </>
-      ),
+      boldText: "Receive gentle care tips",
+      normalText: " and personalized recommendations",
     },
   ];
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl)"
+      className="min-h-screen flex items-center justify-center px-(--space-lg) py-20"
       style={{ background: "var(--color-background)" }}
     >
       <div className="max-w-5xl w-full mx-auto flex flex-col-reverse lg:flex-row items-center gap-(--space-xl)">
@@ -59,12 +50,11 @@ const SkinDiagnosis = () => {
         >
           <div>
             <p className="text-(--text-small)">
-              Welcome to{" "}
-              <span className="text-primary font-semibold">Skin Diagnosis</span>
+              {t("Welcome to")}{" "}
+              <span className="text-primary font-semibold">{t("Skin Diagnosis")}</span>
             </p>
             <h1 className="font-bold text-(--text-normal) leading-snug mt-(--space-xs)">
-              Get AI-powered insights about common baby skin conditions and
-              gentle care tips.
+              {t("Get AI-powered insights about common baby skin conditions and gentle care tips.")}
             </h1>
           </div>
 
@@ -76,7 +66,7 @@ const SkinDiagnosis = () => {
               className="font-bold text-(--text-small) flex items-center gap-(--space-xs)"
               style={{ color: "var(--color-primary)" }}
             >
-              🔍 How It Works
+              {t("How It Works")}
             </p>
 
             <ul className="flex flex-col gap-(--space-xs)">
@@ -89,7 +79,10 @@ const SkinDiagnosis = () => {
                   className="flex items-start gap-(--space-xs) text-(--text-small)"
                 >
                   <span style={{ color: "var(--color-primary)" }}>•</span>
-                  <span>{step.text}</span>
+                  <span>
+                    <span className="font-bold">{t(step.boldText)}</span>
+                    {t(step.normalText)}
+                  </span>
                 </motion.li>
               ))}
             </ul>
@@ -102,13 +95,11 @@ const SkinDiagnosis = () => {
             className="w-fit px-(--space-xl) py-(--space-sm) rounded-full text-white font-bold transition-(--transition-fast)"
             style={{ background: "var(--color-primary)" }}
           >
-            {" "}
-            Upload photo
+            {t("Upload photo")}
           </motion.button>
 
           <p className="text-muted italic" style={{ fontSize: "13px" }}>
-            This is guidance, not medical advice. Trust your instincts — you
-            know your baby best.
+            {t("This is guidance, not medical advice. Trust your instincts — you know your baby best.")}
           </p>
         </motion.div>
       </div>

@@ -62,6 +62,7 @@ const router = createBrowserRouter([
           { path: "/depression", element: <Depression /> },
           { path: "/myprofile", element: <MotherProfile /> },
           { path: "/myprofile/children", element: <ChildrenPage /> },
+          { path: "/assessments", element: <Assessments /> },
         ],
       },
     ],
@@ -71,7 +72,7 @@ const router = createBrowserRouter([
     children: [
       { path: "/chatbot", element: <ChatBot /> },
 
-      { path: "/assessments", element: <Assessments /> },
+      
       { path: "/assessment/:id", element: <AssessmentQuestions /> },
       { path: "/assessment/:id/result", element: <AssessmentResult /> },
       { path: "/babytracking", element: <BabyTracking /> },

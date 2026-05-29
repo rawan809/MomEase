@@ -5,6 +5,9 @@ import Timer from "../../src/assets/icons/timer";
 import ShieldCheck from "../../src/assets/icons/shieldCheck";
 import Lock from "../../src/assets/icons/lock";
 import { getAssessments } from "../../services/dep";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/contexts/LanguageContext";
+import LoadingState from "@/components/ui/LoadingState";
 
 interface Assessment {
   assessmentId: number;
@@ -21,9 +24,11 @@ const assessmentMeta: Record<number, { icon: JSX.Element; label: string }> = {
 };
 
 const AssessmentList = () => {
+  const { t } = useTranslation();
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetchAssessments = async () => {
@@ -33,24 +38,24 @@ const AssessmentList = () => {
       } catch (err) {
         console.error("Failed to fetch assessments:", err);
       } finally {
-        setLoading(false);
+        loading && setLoading(false);
       }
     };
 
     fetchAssessments();
-  }, []);
+  }, [language]);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p className="text-primary">Loading...</p>
+        <LoadingState />
       </div>
     );
   }
 
   return (
     <section
-      className="min-h-screen py-(--space-xl) px-(--space-lg)"
+      className="min-h-screen py-20 px-(--space-lg)"
       style={{ background: "var(--color-background)" }}
     >
       <div className="max-w-5xl mx-auto">
@@ -61,10 +66,10 @@ const AssessmentList = () => {
           className="text-center mb-(--space-xl)"
         >
           <h1 className="font-(--font-brand) text-h1 leading-tight mb-(--space-sm)">
-            Depression Self-Assessment Tests
+            {t("Depression Self-Assessment Tests")}
           </h1>
           <p className="text-muted">
-            Choose a test based on your comfort level and availability
+            {t("Choose a test based on your comfort level and availability")}
           </p>
         </motion.div>
 
@@ -94,8 +99,12 @@ const AssessmentList = () => {
                 <p className="text-muted flex-1">{assessment.description}</p>
 
                 <div className="flex gap-(--space-md) text-(--text-small) font-semibold">
-                  <span>{assessment.totalQuestions} Questions</span>
-                  <span>Max Score: {assessment.maxScore}</span>
+                  <span>
+                    {assessment.totalQuestions} {t("Questions")}
+                  </span>
+                  <span>
+                    {t("Max Score:")} {assessment.maxScore}
+                  </span>
                 </div>
 
                 <button
@@ -105,7 +114,7 @@ const AssessmentList = () => {
                   className="w-full py-(--space-sm) rounded-full text-white font-bold transition-(--transition-fast) hover:opacity-90"
                   style={{ background: "var(--color-primary)" }}
                 >
-                  Start Test
+                  {t("Start Test")}
                 </button>
               </motion.div>
             );

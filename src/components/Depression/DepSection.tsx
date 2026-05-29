@@ -3,7 +3,7 @@ import DepImage from "./DepImg";
 
 const HeroSection = () => {
   return (
-    <section className=" py-(--space-xl)">
+    <section className=" py-20">
       <div className="max-w-7xl mx-auto px-(--space-lg) flex flex-col-reverse lg:flex-row items-center gap-(--space-xl)">
         <DepText />
         <DepImage />

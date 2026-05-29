@@ -1,18 +1,31 @@
+"use client";
+import { REGEXP_ONLY_DIGITS } from "input-otp";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Link, useNavigate } from "react-router-dom";
 import Verifyimg from "../../src/assets/images/verify.png";
 import { useState, useEffect } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
 import Success from "../../src/components/ui/Success";
 import { verifyEmail, resendOtp } from "../../services/auth";
+import { PuffLoader } from "react-spinners";
+import { useTranslation } from "react-i18next";
 
 function VerifyEmail() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [resendTimer, setResendTimer] = useState(0);
   const [isResending, setIsResending] = useState(false);
   const [isWrong, setIsWrong] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
-  const [code, setCode] = useState(["", "", "", ""]);
+
+  // شادسين بيتعامل مع الـ OTP كـ string مش array
+  const [code, setCode] = useState("");
 
   const email = localStorage.getItem("verifyEmail") || "";
 
@@ -38,59 +51,53 @@ function VerifyEmail() {
   }
 
   // resend timer
+
   useEffect(() => {
     if (resendTimer <= 0) {
       setIsResending(false);
       return;
     }
 
-    const timer = setInterval(() => {
+    const timer = setTimeout(() => {
       setResendTimer((prev) => prev - 1);
     }, 1000);
-
     return () => clearInterval(timer);
   }, [resendTimer]);
 
   // resend OTP
   const handleResend = async () => {
+    if (resendTimer > 0 || isResending) return;
     try {
-      await resendOtp(email);
-
-      setResendTimer(60);
       setIsResending(true);
+      await resendOtp(email);
+      setResendTimer(60);
     } catch (error) {
       console.log("Resend error", error);
+      setIsResending(false);
     }
   };
 
-  // input change
-  const handleChange = (index: number, val: string) => {
-    if (!/^[0-9]?$/.test(val)) return;
-
-    const newCode = [...code];
-    newCode[index] = val;
-    setCode(newCode);
-
-    if (val && index < 3) {
-      const next = document.getElementById(`otp-${index + 1}`);
-      next?.focus();
+  // Auto verify
+  useEffect(() => {
+    if (code.length === 4) {
+      handleVerify();
     }
-  };
+  }, [code]);
 
   // verify email
   const handleVerify = async () => {
-    const otp = code.join("");
+    if (loading) return;
+    setLoading(true);
 
-    if (otp.length !== 4) {
+    if (code.length !== 4) {
       setIsWrong(true);
+      setLoading(false);
       return;
     }
 
     try {
-      await verifyEmail(email, otp);
-
+      await verifyEmail(email, code);
       setIsVerified(true);
-
       localStorage.removeItem("verifyEmail");
 
       setTimeout(() => {
@@ -98,12 +105,15 @@ function VerifyEmail() {
       }, 2000);
     } catch (error) {
       setIsWrong(true);
+      setCode("");
+    } finally {
+      setLoading(false);
     }
   };
 
   if (isVerified)
     return (
-      <div className="p-10 flex-col justify-center">
+      <div className="p-10 flex flex-col justify-center">
         <h1 className="mb-10">
           <Link to={"/"} className="text-3xl font-brand text-primary">
             MamEase
@@ -122,6 +132,10 @@ function VerifyEmail() {
       </div>
     );
 
+  const slotClassName = `border border-gray-300 rounded-full w-17 h-17 text-center text-small
+  focus-within:border-primary focus-within:ring-0
+  ${isWrong ? "border-red-500" : ""}`;
+
   return (
     <div className="p-10 flex flex-col justify-center">
       <h1 className="mb-10">
@@ -132,39 +146,42 @@ function VerifyEmail() {
 
       <div className="flex items-center justify-center">
         <div className="bg-white rounded-3xl shadow-2xl text-center w-full max-w-md min-h-130 p-6 sm:p-8">
-          <h2 className="text-lg font-semibold mb-4">Verify Your Email</h2>
+          <h2 className="text-lg font-semibold mb-4">
+            {t("Verify Your Email")}
+          </h2>
 
           <div className="w-25 h-25 bg-blue-100 rounded-full mx-auto mb-4">
             <img src={Verifyimg} alt="" className="w-full" />
           </div>
 
-          <p className="text-muted text-[12px]">
-            Please enter the code we sent to {maskContetnt(email)}
+          <p className="text-muted text-[12px] mb-6">
+            {t("Please enter the code we sent to")} {maskContetnt(email)}
           </p>
 
-          {/* OTP inputs */}
-          <div className="py-5 flex justify-between">
-            {code.map((digit, i) => (
-              <input
-                key={i}
-                id={`otp-${i}`}
-                type="text"
-                value={digit}
-                maxLength={1}
-                onChange={(e) => handleChange(i, e.target.value)}
-                className={`border border-gray-300 rounded-full w-17 h-17 text-center text-small
-                focus:border-primary focus:outline-none
-                ${digit ? "border-primary" : ""}
-                ${isWrong ? "border-red-500" : ""}`}
-              />
-            ))}
+          <div className="py-5 flex justify-center" dir="ltr">
+            <InputOTP
+              maxLength={4}
+              pattern={REGEXP_ONLY_DIGITS}
+              value={code}
+              onChange={(val) => {
+                setIsWrong(false);
+                setCode(val);
+              }}
+            >
+              <InputOTPGroup className="flex justify-between w-full gap-3 shadow-none">
+                <InputOTPSlot index={0} className={slotClassName} />
+                <InputOTPSlot index={1} className={slotClassName} />
+                <InputOTPSlot index={2} className={slotClassName} />
+                <InputOTPSlot index={3} className={slotClassName} />
+              </InputOTPGroup>
+            </InputOTP>
           </div>
 
           {/* error */}
           {isWrong ? (
             <div className="flex items-center justify-center gap-1 px-2 text-[12px] h-4.5 rounded-full bg-red-100 text-red-500">
               <RiErrorWarningLine />
-              Invalid Code. Please try again
+              {t("Invalid Code. Please try again")}
             </div>
           ) : (
             <div className="h-4.5"></div>
@@ -172,26 +189,43 @@ function VerifyEmail() {
 
           {/* resend */}
           <p
-            className="p-3 cursor-pointer text-[12px] text-primary opacity-50 underline font-bold"
+            className={`p-3 text-[12px] underline font-bold transition ${
+              resendTimer > 0
+                ? "text-gray-400 cursor-not-allowed"
+                : "text-primary cursor-pointer"
+            }`}
             onClick={handleResend}
           >
-            Re-send Code
+            {isResending && resendTimer === 0
+              ? t("Sending...")
+              : t("Re-send Code")}
           </p>
 
           {/* verify button */}
           <button
             type="button"
-            className="w-full bg-accent text-black py-2 mb-3 rounded-full cursor-pointer"
+            className={`w-full py-2 mb-3 rounded-full flex justify-center items-center h-10 transition bg-accent ${
+              loading || code.length !== 4
+                ? " cursor-not-allowed"
+                : " cursor-pointer "
+            }`}
             onClick={handleVerify}
+            disabled={loading || code.length !== 4}
           >
-            Verify Email
+            {loading ? (
+              <PuffLoader size={22} color="#ff3381" />
+            ) : (
+              t("Verify Email")
+            )}
           </button>
 
           {/* timer */}
           {isResending ? (
             <p className="text-muted text-[12px] h-4.5">
-              <span className="font-bold text-black">00:{resendTimer}</span>{" "}
-              Resend Verification Code
+              <span className="font-bold text-black">
+                00:{resendTimer < 10 ? `0${resendTimer}` : resendTimer}
+              </span>{" "}
+              {t("Resend Verification Code")}
             </p>
           ) : (
             <div className="h-4.5"></div>

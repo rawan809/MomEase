@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const SkinUpload = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(null);
@@ -10,6 +13,7 @@ const SkinUpload = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
 
   const handleFile = (f: File) => {
     if (!f.type.startsWith("image/")) return;
@@ -44,6 +48,7 @@ const SkinUpload = () => {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
+          ["Accept-Language"]: language,
         },
         body: formData,
       });
@@ -54,12 +59,13 @@ const SkinUpload = () => {
       if (data?.success) {
         navigate("/skin-diagnosis/result", { state: { result: data } });
       } else {
-        setError(data?.message || "Analysis failed. Please try again.");
+        setError(data?.message || t("Analysis failed. Please try again."));
       }
     } catch (err) {
       console.error("Skin analysis error:", err);
-      setError("Something went wrong. Please try again.");
+      setError(t("Something went wrong. Please try again."));
     } finally {
+      loading && setLoading(false);
       setLoading(false);
     }
   };
@@ -79,9 +85,9 @@ const SkinUpload = () => {
           onClick={() => navigate(-1)}
           className="text-primary font-semibold mb-(--space-sm) flex items-center gap-1 mx-auto hover:opacity-70 transition"
         >
-          ‹ Skin Diagnosis
+          ‹ {t("Skin Diagnosis")}
         </button>
-        <h1 className="font-bold text-h2">Analyze Baby's Skin</h1>
+        <h1 className="font-bold text-h2">{t("Analyze Baby's Skin")}</h1>
       </motion.div>
 
       <motion.div
@@ -139,10 +145,10 @@ const SkinUpload = () => {
                 className="font-bold text-(--text-small)"
                 style={{ color: "var(--color-primary)" }}
               >
-                Click to upload or drag & drop
+                {t("Click to upload or drag & drop")}
               </p>
               <p className="text-muted" style={{ fontSize: "13px" }}>
-                PNG, JPG, JPEG supported
+                {t("PNG, JPG, JPEG supported")}
               </p>
             </div>
           </div>
@@ -197,7 +203,7 @@ const SkinUpload = () => {
               strokeWidth="2"
             />
           </svg>
-          {preview ? "Change Photo" : "Upload Photo"}
+          {preview ? t("Change Photo") : t("Upload Photo")}
         </button>
 
         {preview && (
@@ -213,7 +219,7 @@ const SkinUpload = () => {
               cursor: loading ? "not-allowed" : "pointer",
             }}
           >
-            {loading ? "Analyzing..." : "Analyze Now →"}
+            {loading ? t("Analyzing...") : t("Analyze Now →")}
           </motion.button>
         )}
 
@@ -228,7 +234,7 @@ const SkinUpload = () => {
             className="flex items-center gap-(--space-xs) px-(--space-md) py-(--space-sm) rounded-full font-bold text-(--text-small) border-2 transition-(--transition-fast) hover:bg-red-50"
             style={{ borderColor: "#e5e7eb", color: "#9ca3af" }}
           >
-            ✕ Remove
+            ✕ {t("Remove")}
           </motion.button>
         )}
       </motion.div>
@@ -237,9 +243,9 @@ const SkinUpload = () => {
         className="text-muted italic text-center mt-(--space-md)"
         style={{ fontSize: "13px" }}
       >
-        This is guidance, not medical advice.
+        {t("This is guidance, not medical advice.")}
         <br />
-        Trust your instincts — you know your baby best.
+        {t("Trust your instincts — you know your baby best.")}
       </p>
     </section>
   );

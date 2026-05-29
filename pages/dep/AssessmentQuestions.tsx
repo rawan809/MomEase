@@ -6,6 +6,8 @@ import {
   getQuestionOptions,
   submitAssessment,
 } from "../../services/dep";
+import LoadingState from "@/components/ui/LoadingState";
+import { useTranslation } from "react-i18next";
 
 interface Question {
   questionId: number;
@@ -30,6 +32,7 @@ interface Answer {
 }
 
 const AssessmentQuestions = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -97,14 +100,14 @@ const AssessmentQuestions = () => {
     } else {
       try {
         setSubmitting(true);
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
 
-        const payload = {
-          answers: newAnswers.map((a) => ({
-            questionId: a.questionId,
-            optionId: a.optionId,
-          })),
-        };
+        // const payload = {
+        //   answers: newAnswers.map((a) => ({
+        //     questionId: a.questionId,
+        //     optionId: a.optionId,
+        //    })),
+        // };
 
         const res = await submitAssessment(id, newAnswers);
 
@@ -138,7 +141,9 @@ const AssessmentQuestions = () => {
         className="flex justify-center items-center min-h-screen"
         style={{ background: "var(--color-background)" }}
       >
-        <p className="text-primary">Loading...</p>
+        <div className="flex justify-center items-center min-h-screen">
+          <LoadingState />
+        </div>
       </div>
     );
   }
@@ -163,12 +168,12 @@ const AssessmentQuestions = () => {
       <div className="flex items-center justify-between px-(--space-lg) py-(--space-md)">
         <button
           onClick={handleBack}
-          className="text-primary text-2xl font-bold hover:opacity-70 transition"
+          className="text-primary text-4xl font-bold hover:opacity-70 transition"
         >
           ‹
         </button>
         <span className="text-(--text-small)">
-          Question {currentIndex + 1} of {questions.length}
+          {t("Question")} {currentIndex + 1} {t("of")} {questions.length}
         </span>
       </div>
 
@@ -192,7 +197,7 @@ const AssessmentQuestions = () => {
                 <button
                   key={option.optionId}
                   onClick={() => setSelectedOptionId(option.optionId)}
-                  className="text-left px-(--space-md) py-(--space-sm) rounded-xl border-2 transition-(--transition-fast) text-(--text-small)"
+                  className=" px-(--space-md) py-(--space-sm) rounded-xl border-2 transition-(--transition-fast) text-(--text-small) "
                   style={{
                     borderColor:
                       selectedOptionId === option.optionId
@@ -234,10 +239,10 @@ const AssessmentQuestions = () => {
               }}
             >
               {submitting
-                ? "Submitting..."
+                ? t("Submitting...")
                 : currentIndex + 1 === questions.length
-                  ? "Submit"
-                  : "Next Question"}
+                  ? t("Submit")
+                  : t("Next Question")}
             </button>
           </motion.div>
         </AnimatePresence>

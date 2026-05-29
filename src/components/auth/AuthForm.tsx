@@ -1,7 +1,7 @@
-import {PuffLoader} from "react-spinners";
+import { PuffLoader } from "react-spinners";
 
 interface AuthFormProps {
-  loading:boolean,
+  loading: boolean;
   title: string;
   subtitle: string;
   fields: React.ReactNode;
@@ -24,15 +24,15 @@ const AuthForm = ({
       <h2 className="text-3xl font-semibold">{title}</h2>
       <p className="text-muted">{subtitle}</p>
 
-      <form className="space-y-4" onSubmit={onSubmit}>
+      <form className="space-y-4" onSubmit={onSubmit} dir="ltr">
         {fields}
 
         <button
           type="submit"
-          className={`w-full bg-accent py-2 rounded-full font-semibold ${loading?"":"cursor-pointer"} flex items-center justify-center gap-2`}
+          className={`w-full bg-accent py-2 rounded-full font-semibold ${loading ? "" : "cursor-pointer"} flex items-center justify-center gap-2`}
           disabled={loading}
         >
-          {loading?<PuffLoader size={22} color="#ff3381"/>:buttonText}
+          {loading ? <PuffLoader size={22} color="#ff3381" /> : buttonText}
         </button>
       </form>
 

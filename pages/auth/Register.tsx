@@ -1,89 +1,7 @@
-// import AuthLayout from "../../src/components/auth/AuthLayout";
-// import AuthForm from "../../src/components/auth/AuthForm";
-// import SocialLogin from "../../src/components/auth/SocialLogin";
-// import { Link } from "react-router-dom";
-// import { useFormik } from "formik";
-// import { validationSchema } from "./Validation";
+"use client";
 
-// const Register = () => {
-//   const formik = useFormik({
-//     initialValues: {
-//       email: "",
-//       password: "",
-//       confirmPassword: "",
-//     },
-//     onSubmit: () => {},
-//     validationSchema: validationSchema,
-//   });
-//   return (
-//     <AuthLayout>
-//       <AuthForm
-//         onSubmit={formik.handleSubmit}
-//         title="Create an account"
-//         subtitle="Join us to start your journey"
-//         buttonText="Sign Up"
-//         fields={
-//           <>
-//             <input
-//               name="email"
-//               onChange={formik.handleChange}
-//               onBlur={formik.handleBlur}
-//               value={formik.values.email}
-//               className="input"
-//               placeholder="Email"
-//             />
-//             {formik.touched.email && formik.errors.email ? (
-//               <div className="text-red-400 text-[12px] font-semibold">
-//                 {formik.errors.email}
-//               </div>
-//             ) : null}
-//             <input
-//               name="password"
-//               onChange={formik.handleChange}
-//               onBlur={formik.handleBlur}
-//               value={formik.values.password}
-//               className="input"
-//               type="password"
-//               placeholder="Password"
-//             />
-//             {formik.touched.password && formik.errors.password ? (
-//               <div className="text-red-400 text-[12px] font-semibold">
-//                 {formik.errors.password}
-//               </div>
-//             ) : null}
-//             <input
-//               name="confirmPassword"
-//               onChange={formik.handleChange}
-//               onBlur={formik.handleBlur}
-//               value={formik.values.confirmPassword}
-//               className="input"
-//               type="password"
-//               placeholder="Confirm Password"
-//             />
-//             {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
-//               <div className="text-red-400 text-[12px] font-semibold">
-//                 {formik.errors.confirmPassword}
-//               </div>
-//             ) : null}
-//           </>
-//         }
-//         footer={
-//           <>
-//             <SocialLogin />
-//             <p className="text-sm text-center">
-//               Already have an account?{" "}
-//               <Link to={"/login"} className="text-primary cursor-pointer">
-//                 Login
-//               </Link>
-//             </p>
-//           </>
-//         }
-//       />
-//     </AuthLayout>
-//   );
-// };
-
-// export default Register;
+import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import AuthLayout from "../../src/components/auth/AuthLayout";
 import AuthForm from "../../src/components/auth/AuthForm";
 import SocialLogin from "../../src/components/auth/SocialLogin";
@@ -93,8 +11,11 @@ import { validationSchema } from "./Validation";
 import { registerUser, resendOtp } from "../../services/auth";
 import axios from "axios";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
+  const { t } = useTranslation();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -139,7 +60,7 @@ const Register = () => {
         } else {
           console.log("Unexpected error:", error);
         }
-      }finally{
+      } finally {
         setLoading(false);
       }
     },
@@ -150,9 +71,9 @@ const Register = () => {
       <AuthForm
         loading={loading}
         onSubmit={formik.handleSubmit}
-        title="Create an account"
-        subtitle="Join us to start your journey"
-        buttonText="Sign Up"
+        title={t("Create an account")}
+        subtitle={t("Join us to start your journey")}
+        buttonText={t("Sign Up")}
         fields={
           <>
             {/* First Name */}
@@ -162,7 +83,7 @@ const Register = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               className="input"
-              placeholder="First Name"
+              placeholder={t("First Name")}
             />
             {formik.touched.firstName && formik.errors.firstName && (
               <div className="text-red-400 text-[12px] font-semibold">
@@ -177,7 +98,7 @@ const Register = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               className="input"
-              placeholder="Last Name"
+              placeholder={t("Last Name")}
             />
             {formik.touched.lastName && formik.errors.lastName && (
               <div className="text-red-400 text-[12px] font-semibold">
@@ -192,7 +113,7 @@ const Register = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               className="input"
-              placeholder="Email"
+              placeholder={t("Email")}
             />
             {formik.touched.email && formik.errors.email && (
               <div className="text-red-400 text-[12px] font-semibold">
@@ -201,15 +122,31 @@ const Register = () => {
             )}
 
             {/* Password */}
-            <input
-              name="password"
-              type="password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className="input"
-              placeholder="Password"
-            />
+            <div className="relative">
+              <input
+                className="input"
+                placeholder={t("Password")}
+                name="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                id="password-toggle"
+                type={showPassword ? "text" : "password"}
+              />
+              <Button
+                className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                onClick={() => setShowPassword(!showPassword)}
+                size="icon"
+                type="button"
+                variant="ghost"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                )}
+              </Button>
+            </div>
             {formik.touched.password && formik.errors.password && (
               <div className="text-red-400 text-[12px] font-semibold">
                 {formik.errors.password}
@@ -217,15 +154,31 @@ const Register = () => {
             )}
 
             {/* Confirm Password */}
-            <input
-              name="confirmPassword"
-              type="password"
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              className="input"
-              placeholder="Confirm Password"
-            />
+            <div className="relative">
+              <input
+                name="confirmPassword"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.confirmPassword}
+                className="input"
+                placeholder={t("Confirm Password")}
+                id="password-toggle"
+                type={showPassword ? "text" : "password"}
+              />
+              <Button
+                className="absolute top-0 right-0 h-full px-3 hover:bg-transparent"
+                onClick={() => setShowPassword(!showPassword)}
+                size="icon"
+                type="button"
+                variant="ghost"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                )}
+              </Button>
+            </div>
             {formik.touched.confirmPassword &&
               formik.errors.confirmPassword && (
                 <div className="text-red-400 text-[12px] font-semibold">
@@ -238,9 +191,9 @@ const Register = () => {
           <>
             <SocialLogin />
             <p className="text-sm text-center">
-              Already have an account?{" "}
+              {t("Already have an account?")}{" "}
               <Link to="/login" className="text-primary cursor-pointer">
-                Login
+                {t("Login")}
               </Link>
             </p>
           </>
