@@ -21,6 +21,10 @@ import AssessmentResult from "../pages/dep/AssessmentResult";
 import SkinDiagnoses from "../pages/skin/SkinDiagnosis";
 import SkinUpload from "../pages/skin/SkinUpload";
 import SkinResult from "../pages/skin/SkinResult";
+import CryAnalysis from "../pages/Cry/CryAnalysis";
+import CryRecording from "../pages/Cry/CryRecording";
+import CryAnalyzing from "../pages/Cry/CryAnalyzing";
+import CryResult from "../pages/Cry/CryResult";
 import AdminLayout from "./components/Admin/AdminLayout";
 import { NotificationProvider } from "./contexts/NotificationContext";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -62,6 +66,10 @@ const router = createBrowserRouter([
           { path: "/depression", element: <Depression /> },
           { path: "/myprofile", element: <MotherProfile /> },
           { path: "/myprofile/children", element: <ChildrenPage /> },
+          { path: "/cryAnalysis", element: <CryAnalysis /> },
+          { path: "/cryAnalysis/record", element: <CryRecording /> },
+          { path: "/cryAnalysis/analyzing", element: <CryAnalyzing /> },
+          { path: "/cryAnalysis/result", element: <CryResult /> },
         ],
       },
     ],

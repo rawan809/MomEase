@@ -12,7 +12,7 @@ function Growth() {
   const { selectedChildId } = useChild();
   const {
     records,
-    loading,
+    // loading,
     addRecord,
     editRecord,
     deleteRecord,

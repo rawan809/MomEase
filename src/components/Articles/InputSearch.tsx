@@ -1,16 +1,17 @@
-import React from "react";
 import { FiSearch } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   value: string;
   onChange: (value: string) => void;
 }
 function InputSearch({ value, onChange }: Props) {
+  const { t } = useTranslation();
   return (
     <div className="relative md:w-[33%] shadow-lg rounded-lg">
       <input
         type="text"
-        placeholder="Search articles..."
+        placeholder={`${t("Search articles...")}`}
         className="rounded-lg border-2 border-accent px-5 pr-12 py-2 focus:border-primary outline-none transition-all duration-75 w-full"
         value={value}
         onChange={(e) => onChange(e.target.value)}

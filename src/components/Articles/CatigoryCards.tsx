@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ImageOff } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 interface CatigoryCardsProps {
   id: number;
@@ -18,6 +19,7 @@ function CatigoryCards({
   articlesCount,
 }: CatigoryCardsProps) {
   const [imageError, setImageError] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!imageUrl) {
@@ -49,7 +51,7 @@ function CatigoryCards({
             }}
           >
             <p className="absolute bottom-4 left-4 text-white z-20 font-medium">
-              {articlesCount} Articles
+              {articlesCount} {t("Articles")}
             </p>
           </div>
         ) : (
@@ -64,7 +66,7 @@ function CatigoryCards({
             <ImageOff size={45} />
 
             <p className="absolute bottom-4 left-4 text-white z-20 font-medium">
-              {articlesCount} Articles
+              {articlesCount} {t("Articles")}
             </p>
           </div>
         )}
@@ -75,14 +77,16 @@ function CatigoryCards({
 
         <p className="text-sm text-gray-600 mt-1 line-clamp-2">
           {description ||
-            "Find supportive articles, expert guidance, and caring resources for every stage of your motherhood journey"}
+            t(
+              "Find supportive articles, expert guidance, and caring resources for every stage of your motherhood journey",
+            )}
         </p>
 
         <Link
           to={`/Articles/:${id}`}
           className="inline-block mt-3 text-sm font-medium text-primary hover:underline"
         >
-          View Articles →
+          {t("View Articles")} →
         </Link>
       </div>
     </div>

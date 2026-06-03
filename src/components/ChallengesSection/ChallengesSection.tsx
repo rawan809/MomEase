@@ -2,10 +2,12 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 import ChallengeList from "./ChallengeList";
+import { useTranslation } from "react-i18next";
 
 const ChallengesSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
+  const { t } = useTranslation();
 
   return (
     <section
@@ -21,16 +23,18 @@ const ChallengesSection = () => {
           className="text-center mb-(--space-xl)"
         >
           <h2 className=" text-h2 mb-(--space-md) font-semibold">
-            We understand the challenges you face
+            {t("We understand the challenges you face")}
           </h2>
+
           <motion.p
             className="text-(--text-normal) max-w-2xl mx-auto"
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : { opacity: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
-            The postpartum period is beautiful, but it comes with unique
-            challenges. You're not alone in feeling overwhelmed.
+            {t(
+              "The postpartum period is beautiful, but it comes with unique challenges. You're not alone in feeling overwhelmed.",
+            )}
           </motion.p>
         </motion.div>
 

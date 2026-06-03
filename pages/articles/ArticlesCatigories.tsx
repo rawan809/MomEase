@@ -10,14 +10,17 @@ import {
 import ArticleCard from "../../src/components/Articles/ArticleCard";
 import LoadingState from "../../src/components/ui/LoadingState";
 import EmptyResponse from "../../src/components/ui/EmptyResponse";
-import Search from "../../src/components/Articles/Search"
+import Search from "../../src/components/Articles/Search";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "../../src/contexts/LanguageContext";
 
 function ArticlesCatigories() {
-  // loding
+  const { t } = useTranslation();
+  const { language } = useLanguage();
+
   const [loading, setLoading] = useState(false);
-  // selected button
   const [SelectedBtn, setSelectedBtn] = useState("Categories");
-  // categories State
+
   const [categories, setCategories] = useState<
     Array<{
       name: string;
@@ -27,7 +30,7 @@ function ArticlesCatigories() {
       categoryId: number;
     }>
   >([]);
-  // saved Articles state
+
   const [savedArticles, setSavedArticles] = useState<
     Array<{
       articleId: number;
@@ -39,7 +42,6 @@ function ArticlesCatigories() {
     }>
   >([]);
 
-  // call categories
   useEffect(() => {
     const fetchCat = async () => {
       setLoading(true);
@@ -53,8 +55,8 @@ function ArticlesCatigories() {
       }
     };
     fetchCat();
-  }, []);
-  // call saved articles
+  }, [language]); // أعد الـ fetch لما اللغة تتغير
+
   useEffect(() => {
     if (SelectedBtn === "Saved") {
       const fetchSaved = async () => {
@@ -62,7 +64,6 @@ function ArticlesCatigories() {
         try {
           const savedRes = await getSavedArticlesAPI();
           setSavedArticles(savedRes.data);
-          console.log(savedRes);
         } catch (error) {
           console.log(error);
         } finally {
@@ -74,7 +75,6 @@ function ArticlesCatigories() {
     }
   }, [SelectedBtn]);
 
-  // unsave
   const deleteSavedArticle = async (articleId: number) => {
     try {
       await DeleteSavedArticle(articleId);
@@ -93,32 +93,48 @@ function ArticlesCatigories() {
         <div className="max-w-7xl mx-auto px-(--space-lg) flex flex-col items-center ">
           <div className="mt-5">
             <Heading
-              title="Explore Article Categories"
-              discription="Find supportive articles, expert guidance, and caring resources for every stage of your motherhood journey"
+              title={t("Explore Article Categories")}
+              discription={t(
+                "Find supportive articles, expert guidance, and caring resources for every stage of your motherhood journey",
+              )}
             />
           </div>
-          <div className="mb-5 w-full flex justify-center"><Search/></div>
+
+          <div className="mb-5 w-full flex justify-center">
+            <Search />
+          </div>
+
           <div className="flex items-center justify-center gap-5 mb-10">
             <button
               className={`text-[12px] rounded-lg px-5 py-2 cursor-pointer border border-primary
-            ${SelectedBtn === "Categories" ? "bg-primary text-white" : " bg-white text-primary"}
+            ${
+              SelectedBtn === "Categories"
+                ? "bg-primary text-white"
+                : " bg-white text-primary"
+            }
             `}
               onClick={() => {
                 setSelectedBtn("Categories");
               }}
             >
-              Categories
+              {t("Categories")}
             </button>
+
             <button
-              className={`flex items-center  text-[12px] border border-primary rounded-lg px-5 py-2 gap-1 cursor-pointer ${SelectedBtn === "Saved" ? "bg-primary text-white" : " bg-white text-primary"}`}
+              className={`flex items-center  text-[12px] border border-primary rounded-lg px-5 py-2 gap-1 cursor-pointer ${
+                SelectedBtn === "Saved"
+                  ? "bg-primary text-white"
+                  : " bg-white text-primary"
+              }`}
               onClick={() => {
                 setSelectedBtn("Saved");
               }}
             >
               <FaBookmark />
-              Saved Articles
+              {t("Saved Articles")}
             </button>
           </div>
+
           {SelectedBtn === "Saved" &&
             (loading ? (
               <div className="h-[40vh]">
@@ -126,7 +142,7 @@ function ArticlesCatigories() {
               </div>
             ) : savedArticles.length === 0 ? (
               <div className="h-[40vh]">
-                <EmptyResponse title="No saved articles" />
+                <EmptyResponse title={t("No saved articles")} />
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-(--space-lg) w-full">
@@ -154,7 +170,7 @@ function ArticlesCatigories() {
               </div>
             ) : categories.length === 0 ? (
               <div className="h-[40vh]">
-                <EmptyResponse title="No category found" />
+                <EmptyResponse title={t("No category found")} />
               </div>
             ) : (
               <div className="grid md:grid-cols-2 gap-(--space-lg) w-full">

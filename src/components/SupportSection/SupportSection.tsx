@@ -1,8 +1,11 @@
 import SupportItem from "./SupportItem";
 import { supportData } from "./supportData";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const SupportSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="py-(--space-xl) bg-white">
       <motion.h2
@@ -12,7 +15,7 @@ const SupportSection = () => {
         transition={{ duration: 0.6 }}
         className="text-center text-h2 font-semibold mb-(--space-xl)"
       >
-        HOW WE SUPPORT YOU
+        {t("HOW WE SUPPORT YOU")}
       </motion.h2>
 
       <div className="max-w-7xl mx-auto px-6 space-y-(--space-xl)">
