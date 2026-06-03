@@ -1,3 +1,7 @@
+"use client";
+
+import { Eye, EyeOff } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import AuthLayout from "../../src/components/auth/AuthLayout";
 import AuthForm from "../../src/components/auth/AuthForm";
 import SocialLogin from "../../src/components/auth/SocialLogin";
@@ -8,8 +12,11 @@ import { resendOtp } from "../../services/auth";
 import axios from "axios";
 import { useAuth } from "../../src/contexts/AuthContext";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Login = () => {
+  const { t } = useTranslation();
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -67,17 +74,18 @@ const Login = () => {
       <AuthForm
         loading={loading}
         onSubmit={formik.handleSubmit}
-        title="Welcome Back"
-        subtitle="Login to continue your journey!"
-        buttonText="Login"
+        title={t("Welcome Back")}
+        subtitle={t("Login to continue your journey!")}
+        buttonText={t("Login")}
         fields={
           <>
+          
             <input
               name="email"
               onChange={formik.handleChange}
               value={formik.values.email}
               className="input"
-              placeholder="Email / Phone"
+              placeholder={t("Email / Phone")}
               onBlur={formik.handleBlur}
             />
             {formik.touched.email && formik.errors.email ? (
@@ -86,15 +94,32 @@ const Login = () => {
               </div>
             ) : null}
 
-            <input
-              name="password"
-              onChange={formik.handleChange}
-              value={formik.values.password}
-              onBlur={formik.handleBlur}
-              className="input"
-              type="password"
-              placeholder="Password"
-            />
+            <div className="relative">
+              <input
+                name="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+                onBlur={formik.handleBlur}
+                className="input"
+                placeholder={t("Password")}
+                id="password-toggle"
+                type={showPassword ? "text" : "password"}
+              />
+              <Button
+                className={`absolute right-0 top-0  h-full px-3 hover:bg-transparent`}
+                onClick={() => setShowPassword(!showPassword)}
+                size="icon"
+                type="button"
+                variant="ghost"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4 text-muted-foreground" />
+                ) : (
+                  <Eye className="h-4 w-4 text-muted-foreground" />
+                )}
+              </Button>
+            </div>
+
             {formik.touched.password && formik.errors.password ? (
               <div className="text-red-400 text-[12px] font-semibold">
                 {formik.errors.password}
@@ -103,7 +128,7 @@ const Login = () => {
 
             <Link to={"/forgetByEmail"}>
               <p className="text-right text-primary text-sm cursor-pointer mb-2">
-                Forgot Password?
+                {t("Forgot Password?")}
               </p>
             </Link>
           </>
@@ -112,9 +137,9 @@ const Login = () => {
           <>
             <SocialLogin />
             <p className="text-sm text-center">
-              Don’t have an account?{" "}
+              {t("Don’t have an account?")}{" "}
               <Link to={"/signup"} className="text-primary cursor-pointer">
-                Sign Up
+                {t("Sign Up")}
               </Link>
             </p>
           </>

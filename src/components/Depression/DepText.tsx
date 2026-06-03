@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const DepText = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <motion.div
@@ -11,12 +13,11 @@ const DepText = () => {
       className="flex-1 space-y-(--space-lg)"
     >
       <h2 className="font-(--font-brand) text-h1 leading-tight text-bold">
-        Let's Check In Together
+        {t("Let's Check In Together")}
       </h2>
 
       <p className=" text-muted max-w-xl">
-        This is a safe, private space to reflect on how you've been feeling.
-        There are no wrong answers.
+        {t("This is a safe, private space to reflect on how you've been feeling. There are no wrong answers.")}
       </p>
       <div className="flex gap-(--space-md) justify-center">
         <button
@@ -32,7 +33,7 @@ const DepText = () => {
             hover:text-white
           "
         >
-          Start Check-in{" "}
+          {t("Start Check-in")}{" "}
         </button>
       </div>
     </motion.div>

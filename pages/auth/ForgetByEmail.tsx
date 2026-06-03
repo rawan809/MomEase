@@ -2,30 +2,36 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { emailSchema } from "./Validation";
 import ForgetPasswordLayout from "../../src/components/ForgetPassword/ForgetPasswordLayout";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
+import { useState } from "react";
 import { forgetPassword } from "../../services/auth";
 import { useNavigate } from "react-router-dom";
+import { PuffLoader } from "react-spinners";
+import { useTranslation } from "react-i18next";
 
 const ForgetByEmail = () => {
+  const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const handleSubmit = async (
     values: { email: string },
     { setFieldError }: any,
   ) => {
+    setLoading(true);
     try {
       const res = await forgetPassword(values.email);
       navigate(`/createNewPassword/:${values.email}`);
       console.log(res);
     } catch (error: any) {
-      if (error?.response?.data?.message === "User not found") {
-        setFieldError("email", "User not found");
-      }
+      setFieldError("email", `${error?.response?.data?.message}`);
+    } finally {
+      setLoading(false);
     }
   };
   return (
     <ForgetPasswordLayout>
       <p className="text-muted text-sm mb-4">
-        Please enter your Email address to receive a verification code
+        {t("Please enter your Email address to receive a verification code")}
       </p>
 
       <Formik
@@ -35,9 +41,10 @@ const ForgetByEmail = () => {
       >
         <Form className="space-y-4">
           <Field
+            dir="ltr"
             name="email"
             type="input"
-            placeholder="Email Address"
+            placeholder={t("Email Address")}
             className="input"
           />
 
@@ -50,18 +57,23 @@ const ForgetByEmail = () => {
           <button
             type="submit"
             className="w-full bg-accent text-black py-2 rounded-full cursor-pointer"
+            disabled={loading}
           >
-            Send Code
+            {loading ? (
+              <PuffLoader size={22} color="#ff3381" />
+            ) : (
+              t("Send Code")
+            )}
           </button>
         </Form>
       </Formik>
 
-      <Link
+      {/* <Link
         to={"/forgetByPhone"}
         className="text-primary text-sm mt-4 cursor-pointer underline"
       >
         Try another way
-      </Link>
+      </Link> */}
     </ForgetPasswordLayout>
   );
 };

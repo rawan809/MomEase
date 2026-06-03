@@ -1,4 +1,3 @@
-import Navbar from "../../src/components/ui/Navbar";
 import DepSection from "../../src/components/Depression/DepSection";
 import DepCards from "../../src/components/Depression/DepCards";
 export default function Depression() {

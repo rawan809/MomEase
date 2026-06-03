@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import ShieldCheck from "../../assets/icons/shieldCheck";
 import Lock from "../../assets/icons/lock";
 import Timer from "../../assets/icons/timer";
+import { useTranslation } from "react-i18next";
 
 const cards = [
   {
@@ -22,6 +23,8 @@ const cards = [
 ];
 
 const DepCards = () => {
+  const { t } = useTranslation();
+
   return (
     <section
       className="py-(--space-xl) px-(--space-lg)"
@@ -46,9 +49,9 @@ const DepCards = () => {
               </div>
               <div>
                 <h3 className="font-bold text-(--text-normal) mb-1">
-                  {card.title}
+                  {t(card.title)}
                 </h3>
-                <p className="text-muted">{card.desc}</p>
+                <p className="text-muted">{t(card.desc)}</p>
               </div>
             </motion.div>
           ))}
@@ -70,9 +73,9 @@ const DepCards = () => {
             </div>
             <div>
               <h3 className="font-bold text-(--text-normal) mb-1">
-                {cards[2].title}
+                {t(cards[2].title)}
               </h3>
-              <p className="text-muted">{cards[2].desc}</p>
+              <p className="text-muted">{t(cards[2].desc)}</p>
             </div>
           </motion.div>
         </div>
