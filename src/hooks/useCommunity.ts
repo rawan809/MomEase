@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   GetPosts,
   createPost,
@@ -9,6 +9,7 @@ import {
   savePost,
   deleteSavedpost,
   getSavedPosts,
+  GetPost,
 } from "../../services/community";
 
 export interface PostMedia {
@@ -34,24 +35,40 @@ export interface Post {
   isMyPost?: boolean;
 }
 
-interface PostsResponse {
-  posts: Post[];
-  totalCount: number;
-  pageNumber: number;
-  pageSize: number;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-}
-
 export function useCommunityPosts() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(false);
   const [myPosts, setMyPosts] = useState<Post[]>([]);
   const [savedPosts, setSavedPosts] = useState<Post[]>([]);
+  const [post, setPost] = useState<Post>();
 
   const [pageNumber, setPageNumber] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(false);
 
+  // fetch post
+  const fetchPost = async (id: number) => {
+    setLoading(true);
+
+    try {
+      const res = await GetPost(id);
+
+      if (!res.success) {
+        throw new Error(res.message);
+      }
+
+      setPost(res.data);
+    } catch (err: any) {
+      console.log(err);
+
+      if (err?.response?.data?.message) {
+        throw new Error(err.response.data.message);
+      }
+
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
   //   fetch posts
   const fetchPosts = async (page = 1) => {
     setLoading(true);
@@ -135,9 +152,6 @@ export function useCommunityPosts() {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    fetchPosts(1);
-  }, []);
 
   const addPost = async ({
     text,
@@ -273,5 +287,7 @@ export function useCommunityPosts() {
     savedPosts,
     savePosts,
     removeSavedPost,
+    fetchPost,
+    post,
   };
 }

@@ -3,9 +3,56 @@ import Children from "@/components/profile/Children";
 import { useMotherProfile } from "@/hooks/useMotherProfile";
 import { toast } from "sonner";
 import ConfirmProfilePhoto from "@/components/profile/ConfirmProfilePhoto";
+import ArticlesSection from "@/components/Articles/ArticalSection";
+import { getSavedArticlesAPI } from "../../services/articles";
+import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/contexts/LanguageContext";
+import ProfileActionsMenu from "@/components/profile/ProfileActionsMenu";
+import EditProfileDialog from "@/components/profile/EditProfileDialog";
+import ChangePasswordDialog from "@/components/profile/ChangePasswordDialog";
+import ProfileNavTabs from "@/components/profile/ProfileNavTabs";
 
 function MotherProfile() {
-  const { profileData, uploadPhoto, deletePhoto } = useMotherProfile();
+  const { t } = useTranslation();
+
+  const [savedArticles, setSavedArticles] = useState<
+    Array<{
+      articleId: number;
+      title: string;
+      imageUrl: string;
+      readingTimeMinutes: number;
+      categoryName: string;
+      savedAt: string;
+    }>
+  >([]);
+
+  const { language } = useLanguage();
+
+  const {
+    profileData,
+    userProfile,
+    uploadPhoto,
+    deletePhoto,
+    updateUserProfile,
+    changePassword,
+  } = useMotherProfile();
+
+  const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
+  const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchSaved = async () => {
+      try {
+        const savedRes = await getSavedArticlesAPI();
+        setSavedArticles(savedRes.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchSaved();
+  }, []);
 
   return (
     <section className="py-20">
@@ -13,9 +60,11 @@ function MotherProfile() {
         <div className="space-y-10">
           <div>
             <div className="mb-5">
-              <p className="text-2xl font-bold text-gray-800">My Profile</p>
+              <p className="text-2xl font-bold text-gray-800">
+                {t("My Profile")}
+              </p>
               <p className="text-sm text-gray-500 font-medium">
-                Manage your account and baby information
+                {t("Manage your account and baby information")}
               </p>
             </div>
 
@@ -25,7 +74,7 @@ function MotherProfile() {
                   {profileData?.profilePictureUrl ? (
                     <img
                       src={profileData.profilePictureUrl}
-                      alt="profile"
+                      alt={t("profile")}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -56,10 +105,10 @@ function MotherProfile() {
                         if (file) {
                           try {
                             await uploadPhoto(file);
-                            toast.success("Photo Added successfully");
+                            toast.success(t("Photo Added successfully"));
                           } catch (err: any) {
                             toast.error(
-                              err.message || "Something went wrong"
+                              err.message || t("Something went wrong"),
                             );
                           }
                         }
@@ -69,38 +118,63 @@ function MotherProfile() {
                 )}
               </div>
 
-              <div className="w-full text-center md:text-left">
+              <div
+                className={`w-full text-center ${
+                  language === "en" ? "md:text-left" : "md:text-right"
+                }`}
+              >
                 <div className="md:flex items-center justify-between">
-                  <p className="text-xl font-semibold  ">
+                  <p className="text-xl font-semibold">
                     {profileData?.firstName} {profileData?.lastName}
                   </p>
 
-                  <button className="bg-white rounded-xl  items-center gap-1 px-3 py-1 cursor-pointer hover:bg-gray-100 transition-all md:flex hidden">
-                    <FiEdit />
-                    <span>edit</span>
-                  </button>
+                  <ProfileActionsMenu
+                    onEditProfile={() => setIsEditProfileOpen(true)}
+                    onChangePassword={() => setIsChangePasswordOpen(true)}
+                  />
                 </div>
 
                 <p className="mb-2">{profileData?.email}</p>
 
                 <p className="text-sm text-primary font-medium">
                   {profileData?.numberOfChildren === 0
-                    ? "No children added yet"
-                    : `Mom of ${profileData?.numberOfChildren} ${
-                        profileData?.numberOfChildren === 1
-                          ? "child"
-                          : "children"
-                      }`}
+                    ? t("No children added yet")
+                    : profileData?.numberOfChildren === 1
+                      ? t("Mom of 1 child")
+                      : t("Mom of {{count}} children", {
+                          count: profileData?.numberOfChildren,
+                        })}
                 </p>
               </div>
             </div>
           </div>
 
           <div>
+            <ProfileNavTabs />
+          </div>
+
+          <div>
             <Children />
+          </div>
+
+          <div>
+            <ArticlesSection articles={savedArticles} saved />
           </div>
         </div>
       </div>
+
+      <EditProfileDialog
+        open={isEditProfileOpen}
+        onOpenChange={setIsEditProfileOpen}
+        userProfile={userProfile}
+        onSave={updateUserProfile}
+      />
+
+      <ChangePasswordDialog
+        open={isChangePasswordOpen}
+        onOpenChange={setIsChangePasswordOpen}
+        onChangePassword={changePassword}
+      />
     </section>
   );
 }

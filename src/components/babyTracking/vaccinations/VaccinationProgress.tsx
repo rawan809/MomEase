@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 type Vaccine = {
   childVaccineId: number;
   status: "Pending" | "Done" | "Missed";
@@ -14,6 +16,8 @@ export default function VaccinationProgress({
 }: {
   data: VaccinationGroup[] | null;
 }) {
+  const { t } = useTranslation();
+
   // بنجمع كل التطعيمات في Array واحدة
   const allVaccines = data?.flatMap((group) => group.vaccines) || [];
 
@@ -39,10 +43,10 @@ export default function VaccinationProgress({
       <div className="flex justify-between items-end">
         <div className="space-y-0.5">
           <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
-            Overall Progress
+            {t("Overall Progress")}
           </p>
           <h3 className="text-xl font-bold text-gray-800">
-            {percentage}% <span className="text-sm font-normal text-gray-400">Completed</span>
+            {percentage}% <span className="text-sm font-normal text-gray-400">{t("Completed")}</span>
           </h3>
         </div>
         
@@ -50,7 +54,7 @@ export default function VaccinationProgress({
           <span className={`text-sm font-bold ${accentColorClass}`}>
             {doneCount}
           </span>
-          <span className="text-sm text-gray-400 font-medium"> / {total} Vaccines</span>
+          <span className="text-sm text-gray-400 font-medium"> / {total} {t("Vaccines")}</span>
         </div>
       </div>
 
@@ -67,13 +71,15 @@ export default function VaccinationProgress({
         {percentage === 100 ? (
           <>
             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs font-semibold text-green-600 uppercase tracking-tight">Fully Protected</span>
+            <span className="text-xs font-semibold text-green-600 uppercase tracking-tight">
+              {t("Fully Protected")}
+            </span>
           </>
         ) : (
           <>
             <div className={`w-1.5 h-1.5 rounded-full ${bgColorClass}`} />
             <span className="text-xs font-medium text-gray-500">
-              {total - doneCount} vaccinations remaining to reach full protection
+              {total - doneCount} {t("vaccinations remaining to reach full protection")}
             </span>
           </>
         )}

@@ -10,9 +10,9 @@ import {
 import { FaRegTrashCan } from "react-icons/fa6";
 import { toast } from "sonner";
 import EditGrowthRecord from "./EditGrowthRecord";
-
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/contexts/LanguageContext"; 
 // TYPES
-
 
 type GrowthRecord = {
   growthId?: number;
@@ -32,24 +32,26 @@ type Props = {
   onDelete: (id: number) => Promise<void>;
 };
 
-// HELPERS
-
-const formatDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-
 // COMPONENT
 
 function GrowthHistoryCard({ data, onEdit, onDelete }: Props) {
+  const { t } = useTranslation();
+  const { language } = useLanguage();
+
+  // HELPERS (نُقلت بالداخل للاعتماد على لغة التطبيق الحالية بشكل ديناميكي)
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString(language === "ar" ? "ar-EG" : "en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+
   //  No data
   if (!data) {
     return (
       <Card className="bg-gray-100">
         <CardContent className="h-30 flex items-center justify-center text-gray-500">
-          No record available
+          {t("No record available")}
         </CardContent>
       </Card>
     );
@@ -58,9 +60,9 @@ function GrowthHistoryCard({ data, onEdit, onDelete }: Props) {
   const handleDelete = async () => {
     try {
       await onDelete(data.growthId!);
-      toast.success("Record deleted");
+      toast.success(t("Record deleted"));
     } catch (err: any) {
-      toast.error(err.message || "Delete failed");
+      toast.error(err.message || t("Delete failed"));
     }
   };
 
@@ -69,10 +71,6 @@ function GrowthHistoryCard({ data, onEdit, onDelete }: Props) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <p>{formatDate(data.recordDate!)}</p>
-
-          {/* <p className="text-[12px] bg-accent rounded-xl px-2 py-1 text-primary">
-            {data.ageInWeeks} weeks
-          </p> */}
         </CardTitle>
 
         <CardAction className="flex items-center gap-3">
@@ -92,22 +90,22 @@ function GrowthHistoryCard({ data, onEdit, onDelete }: Props) {
       <CardContent className="space-y-3">
         {/* Weight */}
         <div className="flex justify-between bg-gray-100 p-3 rounded-xl">
-          <span className="text text-primary">Weight</span>
-          <span className="font-semibold">{data.weightKg} kg</span>
+          <span className="text text-primary">{t("Weight")}</span>
+          <span className="font-semibold">{data.weightKg} {t("kg")}</span>
         </div>
 
         {/* Height */}
         <div className="flex justify-between bg-gray-100 p-3 rounded-xl">
-          <span className="text text-primary">Height</span>
-          <span className="font-semibold">{data.heightCm} cm</span>
+          <span className="text text-primary">{t("Height")}</span>
+          <span className="font-semibold">{data.heightCm} {t("cm")}</span>
         </div>
 
         {/* Age */}
         <div className="text-xs text-gray-500">
           {data.ageInWeeks && !data.ageInMonths ? (
-            <span>{data.ageInWeeks} weeks old</span>
+            <span>{t("{{count}} Weeks old", { count: data.ageInWeeks })}</span>
           ) : (
-            <span>{data.ageInMonths} months old</span>
+            <span>{t("{{count}} Months old", { count: data.ageInMonths ?? 0 })}</span>
           )}
         </div>
       </CardContent>

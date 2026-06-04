@@ -9,6 +9,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   onUpload: (file: File) => Promise<void>;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 function ConfirmProfilePhoto({ onUpload, onDelete }: Props) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -27,10 +29,10 @@ function ConfirmProfilePhoto({ onUpload, onDelete }: Props) {
     try {
       setLoading(true);
       await onUpload(file);
-      toast.success("Photo Added successfully");
+      toast.success(t("Photo Added successfully"));
       setOpen(false);
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || t("Something went wrong"));
     } finally {
       setLoading(false);
     }
@@ -40,10 +42,10 @@ function ConfirmProfilePhoto({ onUpload, onDelete }: Props) {
     try {
       setLoading(true);
       await onDelete();
-      toast.success("Photo Deleted ");
+      toast.success(t("Photo Deleted "));
       setOpen(false);
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || t("Something went wrong"));
     } finally {
       setLoading(false);
     }
@@ -57,9 +59,12 @@ function ConfirmProfilePhoto({ onUpload, onDelete }: Props) {
         </div>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-md rounded-2xl">
+      <DialogContent
+        className="sm:max-w-md rounded-2xl"
+        showCloseButton={false}
+      >
         <DialogHeader>
-          <DialogTitle className="text-xl">Profile Photo</DialogTitle>
+          <DialogTitle className="text-xl">{t("Profile Photo")}</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-4 pt-2">
@@ -70,10 +75,12 @@ function ConfirmProfilePhoto({ onUpload, onDelete }: Props) {
             </div>
 
             <div>
-              <p className="font-semibold text-gray-800">Upload New Photo</p>
+              <p className="font-semibold text-gray-800">
+                {t("Upload New Photo")}
+              </p>
 
               <p className="text-sm text-gray-500">
-                Choose an image from your device
+                {t("Choose an image from your device")}
               </p>
             </div>
 
@@ -98,10 +105,10 @@ function ConfirmProfilePhoto({ onUpload, onDelete }: Props) {
             </div>
 
             <div className="text-left">
-              <p className="font-semibold">Remove Current Photo</p>
+              <p className="font-semibold">{t("Remove Current Photo")}</p>
 
               <p className="text-sm text-red-400">
-                Delete your current profile picture
+                {t("Delete your current profile picture")}
               </p>
             </div>
           </button>

@@ -4,12 +4,19 @@ import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import Notification from "@/components/notifications/Notification";
 import { useNotifs } from "../src/contexts/NotificationContext";
 import EmptyResponse from "@/components/ui/EmptyResponse";
+import { useNavigate } from "react-router-dom";
+import { getNotificationRoute } from "@/utils/notificationNavigation";
+import { useTranslation } from "react-i18next";
 // import LoadingState from "@/components/ui/LoadingState";
 
 function Notifications() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [filter, setFilter] = useState("all");
   const notifContext = useNotifs();
+
   if (!notifContext) return null;
+
   const {
     notifications,
     unreadCount,
@@ -17,6 +24,16 @@ function Notifications() {
     markedAllAsRead,
     deleteNotification,
   } = notifContext;
+
+  const handleNotificationClick = (notify: any) => {
+    markedAsRead(notify.notificationId);
+
+    const route = getNotificationRoute(notify.actionUrl);
+
+    if (route) {
+      navigate(route);
+    }
+  };
 
   return (
     <section className="py-20">
@@ -29,10 +46,10 @@ function Notifications() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-800">
-                Notifications
+                {t("Notifications")}
               </h2>
               <p className="text-sm text-gray-500 font-medium">
-                {unreadCount} unread notifications
+                {t("unread_count", { count: unreadCount })}
               </p>
             </div>
           </div>
@@ -42,7 +59,7 @@ function Notifications() {
             onClick={markedAllAsRead}
           >
             <IoCheckmarkDoneOutline size={18} />
-            Mark all as read
+            {t("Mark all as read")}
           </button>
         </div>
 
@@ -56,7 +73,7 @@ function Notifications() {
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            All
+            {t("All")}
           </button>
           <button
             onClick={() => setFilter("unread")}
@@ -66,19 +83,19 @@ function Notifications() {
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
-            Unread
+            {t("Unread")}
           </button>
         </div>
 
-        {/* Placeholder for Content */}
+        {/* Content Section */}
         {filter === "unread" ? (
           notifications.length === 0 ? (
             <div className="h-40 flex items-center justify-center">
-              <p>Loading...</p>
+              <p>{t("Loading...")}</p>
             </div>
           ) : notifications.filter((n) => !n.isRead).length === 0 ? (
             <div className="h-[40vh]">
-              <EmptyResponse title="No UnRead Notifications" />
+              <EmptyResponse title={t("No UnRead Notifications")} />
             </div>
           ) : (
             <div className="mt-6 space-y-3">
@@ -86,12 +103,13 @@ function Notifications() {
                 .filter((n) => !n.isRead)
                 .map((notify: any) => (
                   <Notification
+                    markAsRead={() => markedAsRead(notify.notificationId)}
                     key={notify.notificationId}
                     title={notify.title}
                     body={notify.body}
                     date={notify.createdAt}
                     read={notify.isRead}
-                    onClick={() => markedAsRead(notify.notificationId)}
+                    onClick={() => handleNotificationClick(notify)}
                     notificationPage={true}
                     deleteNotification={() =>
                       deleteNotification(notify.notificationId)
@@ -103,18 +121,19 @@ function Notifications() {
         ) : filter === "all" ? (
           notifications.length === 0 ? (
             <div className="h-[40vh]">
-              <EmptyResponse title="No Notifications" />
+              <EmptyResponse title={t("No Notifications")} />
             </div>
           ) : (
             <div className="mt-6 space-y-3">
               {notifications.map((notify: any) => (
                 <Notification
+                  markAsRead={() => markedAsRead(notify.notificationId)}
                   key={notify.notificationId}
                   title={notify.title}
                   body={notify.body}
                   date={notify.createdAt}
                   read={notify.isRead}
-                  onClick={() => markedAsRead(notify.notificationId)}
+                  onClick={() => handleNotificationClick(notify)}
                   notificationPage={true}
                   deleteNotification={() =>
                     deleteNotification(notify.notificationId)

@@ -90,16 +90,15 @@ export function useSleep(childId: number | null) {
 
   const addRecord = async (data: {
     sleepDate: string;
-    sleepHoursTotal: string;
+    sleepStartTime: string;
+    sleepEndTime: string;
+    quality: string;
     notes: string;
   }) => {
     if (!childId) return;
 
     try {
-      const res = await AddSleepRecord(childId, {
-        childId,
-        ...data,
-      });
+      const res = await AddSleepRecord(childId, data);
 
       if (!res.success) {
         throw new Error(res.message);
@@ -119,28 +118,25 @@ export function useSleep(childId: number | null) {
     id: number,
     data: {
       sleepDate: string;
-      sleepHoursTotal: string;
+      sleepStartTime: string;
+      sleepEndTime: string;
+      quality?: string;
       notes: string;
     },
   ) => {
     if (!childId) return;
 
     try {
-      const res = await EditSleepRecord(
-        childId,
-        {
-          childId,
-          ...data,
-        },
-        id,
-      );
+      const res = await EditSleepRecord(childId, data, id);
 
       if (!res.success) {
         throw new Error(res.message);
       }
 
       setRecords((prev) =>
-        prev.map((item) => (item.recordId === id ? { ...item, ...data } : item)),
+        prev.map((item) =>
+          item.recordId === id ? { ...item, ...data } : item,
+        ),
       );
 
       refreshAnalytics();
@@ -151,7 +147,6 @@ export function useSleep(childId: number | null) {
       throw err;
     }
   };
-
   const deleteRecord = async (id: number) => {
     if (!childId) return;
 
@@ -183,6 +178,9 @@ export function useSleep(childId: number | null) {
     editRecord,
     deleteRecord,
     fetchRecords,
+    fetchStatistics,
+    fetchWeekly,
+    fetchMonthly,
 
     // analytics
     statistics,

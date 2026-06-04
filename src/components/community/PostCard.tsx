@@ -5,8 +5,13 @@ import PostText from "./PostText";
 import PostImages from "./PostImages";
 import Comment from "./Comment";
 import Reactions from "./Reactions";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PostOptions from "./PostOptions";
+import ReactionListDialog from "./ReactionListDialog";
+import { useCommunityInteractions } from "@/hooks/useCommunityInteractions";
+import { ThumbsUp, Heart, HandFist, Lightbulb } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 export interface PostMedia {
   mediaId: number;
@@ -58,13 +63,57 @@ const PostCard: React.FC<PostCardProps> = ({
   isSavedProp,
   isMypost,
 }) => {
+  const { t } = useTranslation();
   const [commentsCount, setCommentsCount] = useState(post.commentsCount);
+  const [reactionsCount, setReactionsCount] = useState(post.reactionsCount);
+  const [isReactionsModalOpen, setIsReactionsModalOpen] = useState(false);
 
-  // Initialize with prop or api data, defaulting to false
-  // const [isSavedLocal, setIsSavedLocal] = useState(isSavedProp ?? post.isSaved ?? false);
   const [isSavedLocal, setIsSavedLocal] = useState(isSavedProp ?? false);
   const [isSaving, setIsSaving] = useState(false);
 
+  // first 3 reactions
+  const { reactions, fetchReactions } = useCommunityInteractions(post.postId);
+
+  useEffect(() => {
+    fetchReactions();
+  }, []);
+
+  const getReactionIcon = (type: string) => {
+    switch (type?.toUpperCase()) {
+      case "LIKE":
+        return (
+          <span className="w-4 h-4 rounded-full bg-blue-500 text-white flex items-center justify-center border border-white">
+            <ThumbsUp size={8} className="fill-current" />
+          </span>
+        );
+
+      case "LOVE":
+        return (
+          <span className="w-4 h-4 rounded-full bg-red-500 text-white flex items-center justify-center border border-white">
+            <Heart size={8} className="fill-current" />
+          </span>
+        );
+
+      case "SUPPORT":
+        return (
+          <span className="w-4 h-4 rounded-full bg-purple-500 text-white flex items-center justify-center border border-white">
+            <HandFist size={8} className="fill-current" />
+          </span>
+        );
+
+      case "HELPFUL":
+        return (
+          <span className="w-4 h-4 rounded-full bg-amber-500 text-white flex items-center justify-center border border-white">
+            <Lightbulb size={8} className="fill-current" />
+          </span>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  // handle save/unsave
   const handleSaveToggle = async () => {
     if (isSaving) return;
     setIsSaving(true);
@@ -87,14 +136,14 @@ const PostCard: React.FC<PostCardProps> = ({
     }
   };
   return (
-    <div className="bg-white rounded-xl p-4 shadow-sm     mb-4 lg:w-140 md:w-110 w-full">
+    <div className="bg-white rounded-xl p-4 shadow-sm mb-4 lg:w-140 md:w-110 w-full">
       {/* Header: User Info */}
-      <div className="flex justify-between items-center  mb-3">
+      <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-3">
           {post.userPhoto ? (
             <img
-              // src={`http://momease.runasp.net${post.userPhoto}`}
               src={post.userPhoto}
+              alt={post.userName}
               className="w-12 aspect-square rounded-full object-cover border"
             />
           ) : (
@@ -104,13 +153,25 @@ const PostCard: React.FC<PostCardProps> = ({
           )}
 
           <div className="text-start">
-            <h4 className="font-bold text-gray-900 text-sm">{post.userName}</h4>
+            {isMypost ? (
+              <Link
+                className="font-bold text-gray-900 text-sm"
+                to={"/myprofile"}
+              >
+                {post.userName}
+              </Link>
+            ) : (
+              <h4 className="font-bold text-gray-900 text-sm">
+                {post.userName}
+              </h4>
+            )}
+
             <p className="text-gray-400 text-xs">
               {formatDate(post.createdAt)}
             </p>
             {post.updatedAt ? (
               <p className="text-[10px] text-primary">
-                updated {formatDate(post.updatedAt)}
+                {t("updated")} {formatDate(post.updatedAt)}
               </p>
             ) : (
               ""
@@ -134,14 +195,48 @@ const PostCard: React.FC<PostCardProps> = ({
       {/* Post Media (Images) */}
       <PostImages media={post.media} />
 
+      {/* Reactions & Comments summary row */}
+      {(reactionsCount > 0 || commentsCount > 0) && (
+        <div className="flex justify-between items-center px-1 mb-2.5 text-xs text-gray-500 select-none">
+          {reactionsCount > 0 ? (
+            <div
+              onClick={() => setIsReactionsModalOpen(true)}
+              className="flex items-center gap-1.5 cursor-pointer hover:underline"
+            >
+              <div className="flex -space-x-1 items-center">
+                {[...new Set(reactions.map((r) => r.reactionType))]
+                  .slice(0, 3)
+                  .map((type) => (
+                    <React.Fragment key={type}>
+                      {getReactionIcon(type)}
+                    </React.Fragment>
+                  ))}
+              </div>
+              <span className="font-semibold text-gray-600">
+                {reactionsCount}
+              </span>
+            </div>
+          ) : (
+            <div />
+          )}
+        </div>
+      )}
+
+      {/* Divider */}
+      {(reactionsCount > 0 || commentsCount > 0) && (
+        <div className="border-t border-gray-100 my-2" />
+      )}
+
       {/* Footer: Interactions */}
       <div className="grid grid-cols-3 gap-2">
         <Reactions
           postId={post.postId}
           initialCount={post.reactionsCount}
           myReaction={post.myReaction}
+          onReactionChange={setReactionsCount}
         />
         <Comment
+          isMypost={isMypost}
           postId={post.postId}
           commentCount={commentsCount}
           onCommentAdd={() => setCommentsCount((prev) => prev + 1)}
@@ -151,6 +246,7 @@ const PostCard: React.FC<PostCardProps> = ({
         <button
           onClick={handleSaveToggle}
           disabled={isSaving}
+          aria-label={isSavedLocal ? t("Unsave post") : t("Save post")}
           className={`flex items-center justify-center gap-2 py-2 rounded-xl transition cursor-pointer ${
             isSavedLocal
               ? "bg-pink-100 text-pink-600"
@@ -160,6 +256,12 @@ const PostCard: React.FC<PostCardProps> = ({
           <Bookmark size={18} fill={isSavedLocal ? "#ff3381" : "transparent"} />
         </button>
       </div>
+
+      <ReactionListDialog
+        open={isReactionsModalOpen}
+        postId={post.postId}
+        onClose={() => setIsReactionsModalOpen(false)}
+      />
     </div>
   );
 };

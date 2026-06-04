@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 type Vaccine = {
   childVaccineId: number;
   vaccineName: string;
@@ -15,21 +17,24 @@ type Props = {
   onMarkTaken: (id: number) => void;
 };
 
-const formatDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
 export default function OverdueList({
   data,
   onMarkTaken,
 }: Props) {
+  const { t, i18n } = useTranslation();
+
+  // تحويل التاريخ ليعتمد على لغة التطبيق الحالية
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString(i18n.language, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
   if (!data || data.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-10 text-center">
-        <p className="text-sm text-gray-400">No overdue vaccinations</p>
+        <p className="text-sm text-gray-400">{t("No overdue vaccinations")}</p>
       </div>
     );
   }
@@ -37,7 +42,7 @@ export default function OverdueList({
   return (
     <div className="space-y-3">
       <p className="text-sm font-semibold text-red-500 uppercase tracking-wide">
-        Overdue ({data.length})
+        {t("Overdue")} ({data.length})
       </p>
 
       {data.map((vaccine) => (
@@ -56,14 +61,14 @@ export default function OverdueList({
               </p>
             </div>
             <span className="text-xs px-2 py-1 rounded-full bg-red-100 text-red-600 whitespace-nowrap">
-              Missed
+              {t(vaccine.status)}
             </span>
           </div>
 
           {/* Info row */}
           <div className="text-xs text-gray-500 flex justify-between">
-            <span>Dosage: {vaccine.dosage}</span>
-            <span>Was due: {formatDate(vaccine.scheduledDate)}</span>
+            <span>{t("Dosage")}: {vaccine.dosage}</span>
+            <span>{t("Was due")}: {formatDate(vaccine.scheduledDate)}</span>
           </div>
 
           {/* Actions */}
@@ -72,9 +77,8 @@ export default function OverdueList({
               onClick={() => onMarkTaken(vaccine.childVaccineId)}
               className="text-xs px-3 py-1.5 rounded-lg bg-[#ff3381] text-white hover:bg-[#e02a70] transition-colors"
             >
-              Mark as Taken
+              {t("Mark as Taken")}
             </button>
-
           </div>
         </div>
       ))}

@@ -1,5 +1,5 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import MainLayout from "./components/layouts/MainLayout";
 import LandingPage from "../pages/LandingPage";
 import Login from "../pages/auth/Login";
@@ -30,7 +30,17 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoutes";
 import MotherProfile from "../pages/profile/MotherProfile";
 import BabyTracking from "../pages/babyTracking/BabyTracking";
+import Overview from "./components/babyTracking/overview/Overview";
+import Feeding from "./components/babyTracking/feeding/Feeding";
+import Growth from "./components/babyTracking/growth/Growth";
+import Sleep from "./components/babyTracking/sleep/Sleep";
+import Vaccination from "./components/babyTracking/vaccinations/Vaccination";
+import ReportDetailsPage from "../pages/babyTracking/ReportDetailsPage";
 import Community from "../pages/Community";
+import CommunityFeed from "../pages/community/CommunityFeed";
+import CommunityMyPosts from "../pages/community/CommunityMyPosts";
+import CommunitySaved from "../pages/community/CommunitySaved";
+import CommunityPost from "../pages/community/CommunityPost";
 import { Toaster } from "sonner";
 import ChildrenPage from "../pages/profile/ChildrenPage";
 
@@ -72,11 +82,31 @@ const router = createBrowserRouter([
     children: [
       { path: "/chatbot", element: <ChatBot /> },
 
-      
       { path: "/assessment/:id", element: <AssessmentQuestions /> },
       { path: "/assessment/:id/result", element: <AssessmentResult /> },
-      { path: "/babytracking", element: <BabyTracking /> },
-      { path: "/community", element: <Community /> },
+      {
+        path: "/babytracking",
+        element: <BabyTracking />,
+        children: [
+          { index: true, element: <Navigate to="overview" replace /> },
+          { path: "overview", element: <Overview /> },
+          { path: "feeding", element: <Feeding /> },
+          { path: "growth", element: <Growth /> },
+          { path: "sleep", element: <Sleep /> },
+          { path: "vaccinations", element: <Vaccination /> },
+          { path: "report/:reportId", element: <ReportDetailsPage /> },
+        ],
+      },
+      {
+        path: "/community",
+        element: <Community />,
+        children: [
+          { index: true, element: <CommunityFeed /> },
+          { path: "saved", element: <CommunitySaved /> },
+          { path: "my-posts", element: <CommunityMyPosts /> },
+          { path: "post/:postId", element: <CommunityPost /> },
+        ],
+      },
     ],
   },
 

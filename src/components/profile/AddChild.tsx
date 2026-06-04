@@ -6,7 +6,7 @@ import { useState } from "react";
 import { FiPlus, FiCalendar, FiHeart } from "react-icons/fi";
 import { LuMilk } from "react-icons/lu";
 import { toast } from "sonner";
-
+import { useTranslation } from "react-i18next";
 
 type ChildPayload = {
   fullName: string;
@@ -22,6 +22,7 @@ type Props = {
 };
 
 function AddChild({ onAdd, onUpload }: Props) {
+  const { t } = useTranslation();
   const [gender, setGender] = useState("Boy");
   const isBoy = gender === "Boy";
   const [fullName, setFullName] = useState("");
@@ -52,9 +53,9 @@ function AddChild({ onAdd, onUpload }: Props) {
       setFeedingTypeForBaby("Breastfeeding");
       setPhoto(null);
       setPreview(null);
-      toast.success("Baby added successfully");
+      toast.success(t("Baby added successfully"));
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || t("Something went wrong"));
     } finally {
       setLoading(false);
     }
@@ -65,7 +66,7 @@ function AddChild({ onAdd, onUpload }: Props) {
       <DialogTrigger>
         <div className="bg-primary text-white p-3 rounded-xl flex items-center gap-2 hover:opacity-90 transition-all shadow-lg cursor-pointer">
           <FiPlus />
-          Add Child
+          {t("Add Child")}
         </div>
       </DialogTrigger>
 
@@ -74,20 +75,20 @@ function AddChild({ onAdd, onUpload }: Props) {
         <div className=" px-5 py-3 space-y-2">
           {/* name */}
           <div className="flex flex-col gap-2">
-            <label className="font-medium">Baby Name</label>
+            <label className="font-medium">{t("Baby Name")}</label>
 
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="Enter baby name"
+              placeholder={t("Enter baby name")}
               className="border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary transition-all"
             />
           </div>
 
           {/* gender */}
           <div className="space-y-3">
-            <label className="font-medium">Gender</label>
+            <label className="font-medium">{t("Gender")}</label>
 
             <div className="grid grid-cols-2 gap-4">
               <button
@@ -103,7 +104,7 @@ function AddChild({ onAdd, onUpload }: Props) {
                   <CgBoy />
                 </div>
 
-                <span className="font-semibold">Boy</span>
+                <span className="font-semibold">{t("Boy")}</span>
               </button>
 
               <button
@@ -119,7 +120,7 @@ function AddChild({ onAdd, onUpload }: Props) {
                   <CgGirl />
                 </div>
 
-                <span className="font-semibold">Girl</span>
+                <span className="font-semibold">{t("Girl")}</span>
               </button>
             </div>
           </div>
@@ -128,7 +129,7 @@ function AddChild({ onAdd, onUpload }: Props) {
           <div className="flex flex-col gap-2">
             <label className="font-medium flex items-center gap-2">
               <FiCalendar />
-              Birth Date
+              {t("Birth Date")}
             </label>
 
             <input
@@ -143,7 +144,7 @@ function AddChild({ onAdd, onUpload }: Props) {
             <div className="space-y-3 flex-1 ">
               <label className="font-medium flex items-center gap-2">
                 <FiHeart />
-                Delivery Type
+                {t("Delivery Type")}
               </label>
               <select
                 name="deliveryType"
@@ -152,15 +153,15 @@ function AddChild({ onAdd, onUpload }: Props) {
                 onChange={(e) => setDeliveryType(e.target.value)}
                 className="border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary transition-all w-full"
               >
-                <option value="Normal">Normal</option>
-                <option value="Cesarean">Cesarean</option>
+                <option value="Normal">{t("Normal")}</option>
+                <option value="Cesarean">{t("Cesarean")}</option>
               </select>
             </div>
 
             <div className="space-y-3 flex-1">
               <label className="font-medium flex items-center gap-2">
                 <LuMilk />
-                Feeding Type
+                {t("Feeding Type")}
               </label>
               <select
                 value={feedingTypeForBaby}
@@ -169,9 +170,9 @@ function AddChild({ onAdd, onUpload }: Props) {
                 id="feedingType"
                 className="border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary transition-all w-full"
               >
-                <option value="Breastfeeding">Breastfeeding</option>
-                <option value="Formula">Formula</option>
-                <option value="SolidFood">Solid Food</option>
+                <option value="Breastfeeding">{t("Breastfeeding")}</option>
+                <option value="Formula">{t("Formula")}</option>
+                <option value="SolidFood">{t("Solid Food")}</option>
               </select>
             </div>
           </div>
@@ -196,7 +197,7 @@ function AddChild({ onAdd, onUpload }: Props) {
                   }}
                   className="mt-1 text-red-500 text-sm hover:underline"
                 >
-                  Remove photo
+                  {t("Remove photo")}
                 </button>
               </div>
             ) : (
@@ -208,7 +209,7 @@ function AddChild({ onAdd, onUpload }: Props) {
                   <MdOutlineAddPhotoAlternate />
                 </div>
 
-                <p className="font-medium">Upload Baby Photo</p>
+                <p className="font-medium">{t("Upload Baby Photo")}</p>
 
                 <input
                   type="file"
@@ -234,7 +235,7 @@ function AddChild({ onAdd, onUpload }: Props) {
             className={`w-full text-white py-3 rounded-xl font-semibold transition-all hover:opacity-90
             ${isBoy ? "bg-blue-500" : "bg-primary/90"} cursor-pointer`}
           >
-            {loading ? "Adding..." : "Add Baby"}
+            {loading ? t("Adding...") : t("Add Baby")}
           </button>
         </div>
       </DialogContent>

@@ -2,7 +2,6 @@ import api from "./instance";
 
 export const GetProfileData = async () => {
   const response = await api.get(`/MotherProfile`);
-
   return response.data;
 };
 
@@ -22,5 +21,31 @@ export const UploadProfilePhoto = async (photo: File) => {
 
 export const DeleteProfilePhoto = async () => {
   const response = await api.delete(`/MotherProfile/photo`);
+  return response.data;
+};
+
+// Users Profile
+
+export const GetUserProfile = async () => {
+  const response = await api.get(`/Users/profile`);
+  return response.data;
+};
+
+export const UpdateUserProfile = async (data: {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  age: number;
+}) => {
+  const response = await api.put(`/Users/profile`, data);
+  return response.data;
+};
+
+export const ChangePassword = async (data: {
+  currentPassword: string;
+  newPassword: string;
+  confirmNewPassword: string;
+}) => {
+  const response = await api.put(`/Users/change-password`, data);
   return response.data;
 };

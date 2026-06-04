@@ -1,3 +1,5 @@
+import i18next from "i18next";
+
 export default function formatBabyAge({
   ageInDays,
   ageInMonths,
@@ -7,12 +9,12 @@ export default function formatBabyAge({
 }) {
   // أقل من شهر → باليوم
   if (ageInMonths === 0) {
-    return `${ageInDays} day${ageInDays !== 1 ? "s" : ""}`;
+    return i18next.t("{{count}} day", { count: ageInDays, defaultValue_other: "{{count}} days" });
   }
 
   // أقل من سنة → بالشهور
   if (ageInMonths < 12) {
-    return `${ageInMonths} month${ageInMonths !== 1 ? "s" : ""}`;
+    return i18next.t("{{count}} month", { count: ageInMonths, defaultValue_other: "{{count}} months" });
   }
 
   // سنة أو أكتر
@@ -20,10 +22,12 @@ export default function formatBabyAge({
   const months = ageInMonths % 12;
 
   if (months === 0) {
-    return `${years} year${years !== 1 ? "s" : ""}`;
+    return i18next.t("{{count}} year", { count: years, defaultValue_other: "{{count}} years" });
   }
 
-  return `${years} year${years !== 1 ? "s" : ""} ${months} month${
-    months !== 1 ? "s" : ""
-  }`;
+  // دمج السنوات والشهور بشكل مرن بالاعتماد على النصوص الإنجليزية كـ مفاتيح وفول باك
+  const yearsStr = i18next.t("{{count}} year", { count: years, defaultValue_other: "{{count}} years" });
+  const monthsStr = i18next.t("{{count}} month", { count: months, defaultValue_other: "{{count}} months" });
+
+  return `${yearsStr} ${monthsStr}`;
 }

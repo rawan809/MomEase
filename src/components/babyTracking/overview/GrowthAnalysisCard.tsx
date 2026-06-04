@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, Minus, Scale } from "lucide-react";
 import type { GrowthAnalysis } from "./types";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   data?: GrowthAnalysis;
@@ -8,7 +9,9 @@ type Props = {
 
 const TREND_ICON: Record<string, React.ReactNode> = {
   Increasing: <TrendingUp size={13} className="text-green-600" />,
+  "في ازدياد": <TrendingUp size={13} className="text-green-600" />,
   Decreasing: <TrendingDown size={13} className="text-red-500" />,
+  "في نقصان": <TrendingDown size={13} className="text-red-500" />,
   Stable: <Minus size={13} className="text-blue-500" />,
   "No Data": <Minus size={13} className="text-gray-400" />,
 };
@@ -23,19 +26,20 @@ const STATUS_COLOR: Record<string, string> = {
 };
 
 export default function GrowthAnalysisCard({ data }: Props) {
+  const { t } = useTranslation();
+
   if (!data) {
     return (
       <Card className="border-0 shadow-md">
         <CardContent className="p-5">
           <p className="text-sm text-gray-400 text-center py-6">
-            No growth data available.
+            {t("No growth data available.")}
           </p>
         </CardContent>
       </Card>
     );
   }
 
-  const hasData = data.totalWeightGain > 0 || data.totalHeightGain > 0;
   const trend = data.trend ?? "No Data";
 
   return (
@@ -45,7 +49,7 @@ export default function GrowthAnalysisCard({ data }: Props) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Scale size={15} className="text-primary" />
-            <p className="text-base font-semibold">Growth</p>
+            <p className="text-base font-semibold">{t("Growth")}</p>
           </div>
           <div className="flex items-center gap-1 text-xs text-gray-500">
             {TREND_ICON[trend] ?? <Minus size={13} className="text-gray-400" />}
@@ -56,42 +60,44 @@ export default function GrowthAnalysisCard({ data }: Props) {
         {/* Metrics */}
         <div className="grid grid-cols-2 gap-3">
           <GrowthMetric
-            label="Weight Gain"
+            label={t("Weight Gain")}
             value={
-              hasData && data.totalWeightGain > 0
-                ? `+${data.totalWeightGain} kg`
+              data.totalWeightGain
+                ? t("{{count}} kg", { count: data.totalWeightGain })
                 : "—"
             }
             status={data.weightStatus}
+            statusColor={STATUS_COLOR[data.weightStatus]}
           />
           <GrowthMetric
-            label="Height Gain"
+            label={t("Height Gain")}
             value={
-              hasData && data.totalHeightGain > 0
-                ? `+${data.totalHeightGain} cm`
+              data.totalHeightGain
+                ? t("{{count}} cm", { count: data.totalHeightGain })
                 : "—"
             }
             status={data.heightStatus}
+            statusColor={STATUS_COLOR[data.heightStatus]}
           />
         </div>
 
         {/* Monthly Breakdown */}
         {data.monthlyBreakdown.length > 0 ? (
           <div className="space-y-2">
-            <p className="text-xs text-gray-500 font-medium">Monthly</p>
+            <p className="text-xs text-gray-500 font-medium">{t("Monthly")}</p>
             {data.monthlyBreakdown.map((m) => (
               <div
                 key={m.month}
                 className="flex items-center justify-between bg-white rounded-xl px-3 py-2"
               >
-                <span className="text-sm text-gray-700">{m.month}</span>
+                <span className="text-sm text-gray-700">{t(m.month)}</span>
                 <div className="flex items-center gap-3 text-xs text-gray-500">
-                  <span>+{m.weightGain}kg</span>
-                  <span>+{m.heightGain}cm</span>
+                  <span>{t("{{count}} kg", { count: m.weightGain })}</span>
+                  <span>{t("{{count}} cm", { count: m.heightGain })}</span>
                   <span
                     className={`font-semibold ${STATUS_COLOR[m.status] ?? "text-gray-600"}`}
                   >
-                    {m.status}
+                    {t(m.status)}
                   </span>
                 </div>
               </div>
@@ -99,7 +105,7 @@ export default function GrowthAnalysisCard({ data }: Props) {
           </div>
         ) : (
           <p className="text-xs text-gray-400 text-center py-2">
-            No monthly breakdown available yet.
+            {t("No monthly breakdown available yet.")}
           </p>
         )}
       </CardContent>
@@ -111,19 +117,20 @@ function GrowthMetric({
   label,
   value,
   status,
+  statusColor,
 }: {
   label: string;
   value: string;
   status: string;
+  statusColor?: string;
 }) {
+  const { t } = useTranslation();
   return (
     <div className=" rounded-2xl p-3 space-y-1">
       <p className="text-xs text-gray-500">{label}</p>
       <p className="text-xl font-bold text-primary">{value}</p>
-      <p
-        className={`text-xs font-medium ${STATUS_COLOR[status] ?? "text-gray-500"}`}
-      >
-        {status}
+      <p className={`text-xs font-medium ${statusColor ?? "text-gray-500"}`}>
+        {t(status)}
       </p>
     </div>
   );

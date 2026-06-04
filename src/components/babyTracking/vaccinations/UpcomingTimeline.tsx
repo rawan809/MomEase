@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 type Vaccine = {
   childVaccineId: number;
   vaccineName: string;
@@ -24,31 +26,31 @@ type Props = {
 
 const DAYS_AHEAD = 30;
 
-const formatDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
-const getDaysUntil = (date: string) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const target = new Date(date);
-  target.setHours(0, 0, 0, 0);
-  return Math.ceil(
-    (target.getTime() - today.getTime()) / (1000 * 60 * 60 * 24),
-  );
-};
-
 export default function UpcomingTimeline({
   data,
   onMarkTaken,
-
 }: Props) {
+  const { t, i18n } = useTranslation();
   const today = new Date();
   const cutoff = new Date();
   cutoff.setDate(today.getDate() + DAYS_AHEAD);
+
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString(i18n.language, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
+  const getDaysUntil = (date: string) => {
+    const todayZero = new Date();
+    todayZero.setHours(0, 0, 0, 0);
+    const target = new Date(date);
+    target.setHours(0, 0, 0, 0);
+    return Math.ceil(
+      (target.getTime() - todayZero.getTime()) / (1000 * 60 * 60 * 24),
+    );
+  };
 
   // filter groups that have pending vaccines in the next 30 days
   const upcomingGroups = (data ?? [])
@@ -65,7 +67,7 @@ export default function UpcomingTimeline({
     return (
       <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-10 text-center">
         <p className="text-sm text-gray-400">
-          No upcoming vaccinations in the next 30 days
+          {t("No upcoming vaccinations in the next 30 days")}
         </p>
       </div>
     );
@@ -74,7 +76,7 @@ export default function UpcomingTimeline({
   return (
     <div className="space-y-3">
       <p className="text-sm font-semibold text-[#ff3381] uppercase tracking-wide">
-        Next 30 Days
+        {t("Next 30 Days")}
       </p>
 
       {/* Timeline */}
@@ -102,10 +104,10 @@ export default function UpcomingTimeline({
                     </span>
                     <span className="ml-auto text-xs bg-[#ffc8dd] text-[#ff3381] px-2 py-0.5 rounded-full">
                       {daysUntil === 0
-                        ? "Today"
+                        ? t("Today")
                         : daysUntil === 1
-                          ? "Tomorrow"
-                          : `In ${daysUntil} days`}
+                          ? t("Tomorrow")
+                          : t("In {{count}} days", { count: daysUntil })}
                     </span>
                   </div>
 
@@ -125,12 +127,12 @@ export default function UpcomingTimeline({
                           </p>
                         </div>
                         <span className="text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-600 whitespace-nowrap">
-                          Pending
+                          {t(vaccine.status)}
                         </span>
                       </div>
 
                       <p className="text-xs text-gray-400">
-                        Dosage: {vaccine.dosage}
+                        {t("Dosage")}: {vaccine.dosage}
                       </p>
 
                       {/* Actions */}
@@ -139,9 +141,8 @@ export default function UpcomingTimeline({
                           onClick={() => onMarkTaken(vaccine.childVaccineId)}
                           className="text-xs px-3 py-1.5 rounded-lg bg-[#ff3381] text-white hover:bg-[#e02a70] transition-colors"
                         >
-                          Mark as Taken
+                          {t("Mark as Taken")}
                         </button>
-
                       </div>
                     </div>
                   ))}

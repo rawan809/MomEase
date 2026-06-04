@@ -3,18 +3,21 @@ import { Link } from "react-router-dom";
 import { useChildren } from "../../hooks/useChildren";
 import formatBabyAge from "@/utils/formatBabyAge";
 import LoadingState from "../ui/LoadingState";
+import { useTranslation } from "react-i18next";
+
 function Children() {
+  const { t } = useTranslation();
   const { children, loading } = useChildren();
   return (
     <div>
       <div className="flex justify-between mb-5">
-        <p className="font-semibold mb-2">My Babies</p>
+        <p className="text-[25px] font-semibold">{t("My Babies")}</p>
         <Link
           to={"/myprofile/children"}
-          className="bg-primary/80 text-white rounded-xl px-3 py-2 cursor-pointer hover:bg-primary transition-all md:text-[16px] text-sm flex items-center gap-1"
+          className="bg-primary text-white rounded-xl px-3 py-2 cursor-pointer hover:bg-primary transition-all md:text-[16px] text-sm flex items-center gap-1"
         >
           <FiEdit />
-          <span>manage</span>
+          <span>{t("manage")}</span>
         </Link>
       </div>
 
@@ -50,7 +53,7 @@ function Children() {
               </h3>
 
               <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
-                <span>{child.gender}</span>
+                <span>{t(child.gender)}</span>
                 <span>•</span>
                 <span>
                   {formatBabyAge({

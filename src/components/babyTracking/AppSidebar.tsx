@@ -1,9 +1,7 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
-  SidebarHeader,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
@@ -13,77 +11,76 @@ import { LuMilk } from "react-icons/lu";
 import { GrLineChart } from "react-icons/gr";
 import { TbVaccine } from "react-icons/tb";
 import { IoCloudyNightOutline } from "react-icons/io5";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "react-i18next";
+import { useNavigate, useLocation } from "react-router-dom";
 
-export function AppSidebar({
-  setActiveTab,
-  activeTab,
-}: {
-  setActiveTab: (tab: string) => void;
-  activeTab: string;
-}) {
+export function AppSidebar() {
+  const { language } = useLanguage();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isTabActive = (tabPath: string) => {
+    return location.pathname === tabPath;
+  };
+
   return (
-    <Sidebar className="top-20 h-full ">
+    <Sidebar className="top-20 h-full " side={`${language === "ar" ? "right" : "left"}`}>
       <SidebarContent className="bg-white border px-(--space-lg) py-5">
         <SidebarMenu className="space-y-1">
           <SidebarMenuItem>
             <SidebarMenuButton
-              onClick={() => setActiveTab("overview")}
-              isActive={activeTab === "overview"}
+              onClick={() => navigate("/babytracking/overview")}
+              isActive={isTabActive("/babytracking/overview") || location.pathname === "/babytracking"}
             >
               <MdOutlineTableChart />
-              Overview
+              {t("Overview")}
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
             <SidebarMenuButton
-              onClick={() => setActiveTab("feeding")}
-              isActive={activeTab === "feeding"}
+              onClick={() => navigate("/babytracking/feeding")}
+              isActive={isTabActive("/babytracking/feeding")}
             >
               <LuMilk />
-              Feeding
+              {t("Feeding")}
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
             <SidebarMenuButton
-              onClick={() => setActiveTab("growth")}
-              isActive={activeTab === "growth"}
+              onClick={() => navigate("/babytracking/growth")}
+              isActive={isTabActive("/babytracking/growth")}
             >
               <GrLineChart />
-              Growth
+              {t("Growth")}
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
             <SidebarMenuButton
-              onClick={() => setActiveTab("sleep")}
-              isActive={activeTab === "sleep"}
+              onClick={() => navigate("/babytracking/sleep")}
+              isActive={isTabActive("/babytracking/sleep")}
             >
               <IoCloudyNightOutline />
-              Sleep
+              {t("Sleep")}
             </SidebarMenuButton>
           </SidebarMenuItem>
 
           <SidebarMenuItem>
             <SidebarMenuButton
-              onClick={() => setActiveTab("vaccinations")}
-              isActive={activeTab === "vaccinations"}
+              onClick={() => navigate("/babytracking/vaccinations")}
+              isActive={isTabActive("/babytracking/vaccinations")}
             >
               <TbVaccine />
-              Vaccinations
+              {t("Vaccinations")}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
         <SidebarGroup />
       </SidebarContent>
-      {/* <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton> Username</SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter> */}
     </Sidebar>
   );
 }

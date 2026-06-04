@@ -1,6 +1,9 @@
-import React, { useState } from "react";
+interface MineuiconProps {
+  isMenuOpen: boolean;
+  setIsMenuOpen: (open: boolean) => void;
+}
 
-function Mineuicon({isMenuOpen,setIsMenuOpen}) {
+function Mineuicon({ isMenuOpen, setIsMenuOpen }: MineuiconProps) {
   const toggleOpen = () => setIsMenuOpen(!isMenuOpen);
 
   return (

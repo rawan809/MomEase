@@ -1,18 +1,19 @@
 import Mineuicon from "./Mineuicon";
 import { useState, useEffect } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import botIcon from "../../assets/images/ChatIcon.svg";
 import { BsFillPersonFill } from "react-icons/bs";
 import { CiLogout } from "react-icons/ci";
 import NotificationDropDown from "../notifications/NotificationDropDown";
 import ProfileDropDown from "./ProfileDropDown";
 import { useAuth } from "@/contexts/AuthContext";
-import { LanguageButton, LanguageToggleMobile } from "./Languageswitcher";
-import { HealthTools } from "./healthTools";
+import { LanguageButton, LanguageToggleMobile } from "./LanguageSwitcher";
+import { HealthTools } from "./HealthTools";
 import { useTranslation } from "react-i18next";
 
 function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
+  const location = useLocation();
   const authtoken = localStorage.getItem("userToken");
   const authtoken2 = localStorage.getItem("token");
   const [loggedIn] = useState(!!authtoken || !!authtoken2);
@@ -27,6 +28,10 @@ function Navbar() {
     handleResize();
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    setIsMenueOpen(false);
+  }, [location]);
 
   useEffect(() => {
     document.body.style.overflow = isMenuOpen ? "hidden" : "auto";

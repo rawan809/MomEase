@@ -3,6 +3,7 @@ import { FiCalendar, FiTrash2, FiHeart, FiClock } from "react-icons/fi";
 import formatBabyAge from "@/utils/formatBabyAge";
 import EditBaby from "./EditBaby";
 import ConfirmDeleteDialog from "@/components/community/ConfirmDeleteDialog";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   child: any;
@@ -29,6 +30,7 @@ function ChildCard({
   onDeletePhoto,
   onUploadPhoto,
 }: Props) {
+  const { t } = useTranslation();
   const isBoy = child.gender === "Boy";
   const [confirmOpen, setConfirmOpen] = useState(false);
 
@@ -89,7 +91,7 @@ function ChildCard({
           </div>
 
           <div className="flex items-center gap-2 text-gray-600 ">
-            <span>{child.gender}</span>
+            <span>{t(child.gender)}</span>
             <span>•</span>
             <span>
               {formatBabyAge({
@@ -102,7 +104,7 @@ function ChildCard({
           <div
             className={`mt-2 inline-flex px-3 py-1 rounded-full text-sm font-medium bg-white`}
           >
-            {child.feedingTypeForBaby}
+            {t(child.feedingTypeForBaby)}
           </div>
         </div>
       </div>
@@ -113,23 +115,23 @@ function ChildCard({
           {[
             {
               icon: <FiCalendar />,
-              title: "Birth Date",
+              title: t("Birth Date"),
               value: formatDate(child.birthDate),
             },
             {
               icon: <FiClock />,
-              title: "Age In Days",
-              value: `${child.ageInDays} Days`,
+              title: t("Age In Days"),
+              value: t("{{count}} Days", { count: child.ageInDays }),
             },
             {
               icon: <FiHeart />,
-              title: "Delivery Type",
-              value: child.deliveryType,
+              title: t("Delivery Type"),
+              value: t(child.deliveryType),
             },
             {
               icon: <FiHeart />,
-              title: "Feeding Type",
-              value: child.feedingTypeForBaby,
+              title: t("Feeding Type"),
+              value: t(child.feedingTypeForBaby),
             },
           ].map((item, index) => (
             <div
@@ -156,9 +158,9 @@ function ChildCard({
         open={confirmOpen}
         onClose={() => setConfirmOpen(false)}
         onDelete={() => onDelete(child.childId)}
-        title="Delete Baby?"
-        description={`Are you sure you want to delete ${child.fullName}? This action cannot be undone.`}
-        successMessage="Baby deleted successfully"
+        title={t("Delete Baby?")}
+        description={t("Are you sure you want to delete {{name}}? This action cannot be undone.", { name: child.fullName })}
+        successMessage={t("Baby deleted successfully")}
       />
     </div>
   );

@@ -4,6 +4,8 @@ import StartScreen from "../src/components/ChatBot/StartScreen";
 import Input from "../src/components/ChatBot/Input";
 import Chat from "../src/components/ChatBot/Chat";
 import { sendMessage, getHistory } from "../services/chatbot";
+import { useAuth } from "../src/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 export type Role = "User" | "Bot";
 
@@ -14,9 +16,12 @@ export interface Message {
 }
 
 function ChatBot() {
+  const { t } = useTranslation();
   const bottomRef = useRef<HTMLDivElement | null>(null);
-  const userIdStr = localStorage.getItem("userId");
-  const userId = userIdStr ? Number(userIdStr) : undefined;
+  const { user } = useAuth();
+  const userId = user?.userId;
+  // const userIdStr = localStorage.getItem("userId");
+  // const userId = userIdStr ? Number(userIdStr) : undefined;
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingHistory, setLoadingHistory] = useState<boolean>(false);
@@ -24,17 +29,17 @@ function ChatBot() {
   // send and reply
   const send = async (text: string) => {
     if (!text.trim()) return;
-    const prompt = `
-You MUST format your response using Markdown.
+    //     const prompt = `
+    // You MUST format your response using Markdown.
 
-Rules:
-- ALWAYS use bullet points if listing items
-- ALWAYS use headings (##) for explanations
-- NEVER return plain text only
+    // Rules:
+    // - ALWAYS use bullet points if listing items
+    // - ALWAYS use headings (##) for explanations
+    // - NEVER return plain text only
 
-User message:
-${text}
-`;
+    // User message:
+    // ${text}
+    // `;
 
     setMessages((prev) => [
       ...prev,
@@ -44,7 +49,7 @@ ${text}
     setLoading(true);
     try {
       if (typeof userId === "number" && !isNaN(userId)) {
-        const res = await sendMessage(userId, prompt);
+        const res = await sendMessage(userId, text);
         setMessages((prev) => [
           ...prev,
           {
@@ -107,7 +112,7 @@ ${text}
         <div className="pb-5 bg-white rounded-t-xl mx-auto md:w-[50%] sm:w-[70%] w-full max-w-7xl">
           <Input onSend={send} loading={loading} />
           <p className="text-muted text-center text-[12px]">
-            AI can make mistakes. Please double-check responses.
+            {t("AI can make mistakes. Please double-check responses.")}
           </p>
         </div>
       </div>

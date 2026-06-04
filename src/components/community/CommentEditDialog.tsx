@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useTranslation } from "react-i18next";
 
 interface CommentEditDialogProps {
   open: boolean;
@@ -20,6 +21,7 @@ function CommentEditDialog({
   onClose,
   onSubmit,
 }: CommentEditDialogProps) {
+  const { t } = useTranslation();
   const [text, setText] = useState(initialText);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -33,10 +35,10 @@ function CommentEditDialog({
     try {
       setIsSubmitting(true);
       await onSubmit(text);
-      toast.success("Comment updated");
+      toast.success(t("Comment updated"));
       onClose();
     } catch (err: any) {
-      toast.error(err.message || "Failed to update comment");
+      toast.error(err.message || t("Failed to update comment"));
     } finally {
       setIsSubmitting(false);
     }
@@ -47,7 +49,7 @@ function CommentEditDialog({
       <DialogContent className="sm:max-w-md rounded-xl p-6 border-none shadow-xl bg-white gap-6 [&>button]:hidden">
         <DialogHeader className="flex flex-row items-center relative border-b-0 space-y-0 p-0 m-0">
           <DialogTitle className="text-center flex-1 text-xl font-bold text-black m-0">
-            Edit Comment
+            {t("Edit Comment")}
           </DialogTitle>
         </DialogHeader>
 
@@ -55,7 +57,7 @@ function CommentEditDialog({
           <textarea
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Write your comment..."
+            placeholder={t("Write your comment...")}
             className="w-full min-h-28 p-4 rounded-xl border border-primary/20 bg-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 resize-none text-[15px]"
             autoFocus
           />
@@ -65,7 +67,7 @@ function CommentEditDialog({
             disabled={!text.trim() || isSubmitting}
             className="w-full bg-primary/90 hover:bg-primary text-white font-semibold py-3.5 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm text-base mt-2 cursor-pointer"
           >
-            {isSubmitting ? "Saving..." : "Save Changes"}
+            {isSubmitting ? t("Saving...") : t("Save Changes")}
           </button>
 
           <button
@@ -73,7 +75,7 @@ function CommentEditDialog({
             disabled={isSubmitting}
             className="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-3 rounded-xl transition-colors text-base cursor-pointer"
           >
-            Cancel
+            {t("Cancel")}
           </button>
         </div>
       </DialogContent>

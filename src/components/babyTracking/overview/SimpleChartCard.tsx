@@ -15,6 +15,9 @@ import {
   CartesianGrid,
 } from "recharts";
 
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
+
 type ChartItem = {
   date: string;
   value?: number;
@@ -27,13 +30,11 @@ type Props = {
 
 const formatChartData = (
   data: ChartItem[],
+  locale: string
 ) => {
   return data.map((item) => ({
     ...item,
-
-    shortDate: new Date(
-      item.date,
-    ).toLocaleDateString("en-US", {
+    shortDate: new Date(item.date).toLocaleDateString(locale === "ar" ? "ar-EG" : "en-US", {
       month: "short",
       day: "numeric",
     }),
@@ -44,22 +45,23 @@ function SimpleChartCard({
   title,
   data,
 }: Props) {
+  const { t } = useTranslation();
+  const currentLanguage = i18next?.language ?? "en";
+
   if (!data?.length) return null;
 
-  const formattedData =
-    formatChartData(data);
+  const formattedData = formatChartData(data, currentLanguage);
 
   return (
     <Card className="overflow-hidden rounded-3xl border bg-white shadow-sm">
       {/* Header */}
       <CardHeader className="pb-0">
         <CardTitle className="text-base font-semibold">
-          {title}
+          {t(title)}
         </CardTitle>
 
         <p className="text-xs text-gray-500">
-          Track your child's progress over
-          time
+          {t("Track your child's progress over time")}
         </p>
       </CardHeader>
 
@@ -147,7 +149,7 @@ function SimpleChartCard({
           <div className="h-0.75 w-4 rounded-full bg-[#ff3381]" />
 
           <span className="text-[11px] font-medium text-gray-500">
-            Child Progress
+            {t("Child Progress")}
           </span>
         </div>
       </div>

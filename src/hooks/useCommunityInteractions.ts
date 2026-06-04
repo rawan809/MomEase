@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getComments, addComment, deleteComment, editComment } from "../../services/community";
+import { getComments, addComment, deleteComment, editComment, getReacts } from "../../services/community";
 
 export interface CommentType {
   commentId: number;
@@ -12,9 +12,38 @@ export interface CommentType {
   updatedAt: string | null;
 }
 
+export interface UserReaction {
+  userId: number;
+  userName: string;
+  userPhoto: string | null;
+  reactionType: string;
+}
+
 export function useCommunityInteractions(postId: number) {
   const [comments, setComments] = useState<CommentType[]>([]);
   const [loading, setLoading] = useState(false);
+  const [reactions, setReactions] = useState<UserReaction[]>([]);
+  const [loadingReactions, setLoadingReactions] = useState(false);
+
+  // FETCH REACTIONS
+  const fetchReactions = async () => {
+    setLoadingReactions(true);
+    try {
+      const res = await getReacts(postId);
+      if (!res.success) {
+        throw new Error(res.message);
+      }
+      setReactions(res.data || []);
+    } catch (err: any) {
+      console.error(err);
+      if (err?.response?.data?.message) {
+        throw new Error(err.response.data.message);
+      }
+      throw err;
+    } finally {
+      setLoadingReactions(false);
+    }
+  };
 
   // FETCH COMMENTS
   const fetchComments = async () => {
@@ -119,5 +148,8 @@ export function useCommunityInteractions(postId: number) {
     addNewComment,
     removeComment,
     updateComment,
+    reactions,
+    loadingReactions,
+    fetchReactions,
   };
 }

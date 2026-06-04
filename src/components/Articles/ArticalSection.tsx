@@ -11,6 +11,7 @@ interface Article {
 
 interface ArticlesSectionProps {
   articles: Article[];
+  saved?: boolean;
 }
 
 const ArticleCard = ({ article }: { article: Article }) => {
@@ -51,19 +52,21 @@ const ArticleCard = ({ article }: { article: Article }) => {
   );
 };
 
-const ArticlesSection = ({ articles }: ArticlesSectionProps) => {
+const ArticlesSection = ({ articles, saved }: ArticlesSectionProps) => {
   const { t } = useTranslation();
 
   return (
-    <section className="px-(--space-lg) py-(--space-xl)">
-      <div className="flex justify-between items-center mb-(--space-lg)">
-        <h2 className="text-[25px] font-semibold">{t("Useful articles")}</h2>
+    <section className={`${!saved ? "px-(--space-lg) py-(--space-xl)" : ""}`}>
+      <div className="flex justify-between items-center mb-5">
+        <h2 className="text-[25px] font-semibold">
+          {saved ? t("Your Saved Articles") : t("Useful articles")}
+        </h2>
 
         <Link
           to={"/ExploreArticles"}
           className="text-primary cursor-pointer transition-all duration-200 hover:opacity-70 text-small"
         >
-          {t("View all")}
+          {saved ? "" : t("View all")}
         </Link>
       </div>
 

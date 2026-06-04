@@ -2,6 +2,7 @@ import { FaShieldHeart } from "react-icons/fa6";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { formatDate } from "@/utils/formatDate";
+import { useTranslation } from "react-i18next";
 
 interface NotificationProps {
   title: string;
@@ -12,9 +13,11 @@ interface NotificationProps {
   type?: "order" | "system" | "alert";
   onClick?: () => void;
   deleteNotification?: () => void;
+  markAsRead?: () => void;
 }
 
 function Notification({
+  markAsRead,
   title,
   body,
   date,
@@ -23,9 +26,14 @@ function Notification({
   notificationPage,
   deleteNotification,
 }: NotificationProps) {
+  const { t } = useTranslation();
+
   const handleMarkAsRead = (e: React.MouseEvent) => {
-    e.stopPropagation(); // يمنع تفعيل الـ onClick بتاع الديف الأب
-    if (onClick) onClick();
+    e.stopPropagation();
+
+    if (markAsRead) {
+      markAsRead();
+    }
   };
 
   return (
@@ -37,7 +45,9 @@ function Notification({
     >
       {/* Icon Section */}
       <div
-        className={`aspect-square rounded-full p-2 border-2 ${read ? "text-gray-400 border-gray-200" : "text-primary border-accent"}`}
+        className={`aspect-square rounded-full p-2 border-2 ${
+          read ? "text-gray-400 border-gray-200" : "text-primary border-accent"
+        }`}
       >
         <FaShieldHeart size={20} />
       </div>
@@ -46,7 +56,9 @@ function Notification({
       <div className="w-full space-y-2">
         <div className="flex justify-between items-center w-full">
           <p
-            className={`font-semibold ${read ? "text-gray-600" : "text-gray-900"}`}
+            className={`font-semibold ${
+              read ? "text-gray-600" : "text-gray-900"
+            }`}
           >
             {title}
           </p>
@@ -71,7 +83,7 @@ function Notification({
                 className="text-primary text-sm font-medium flex items-center gap-1 hover:underline underline-offset-4"
               >
                 <IoCheckmarkDoneOutline size={16} />
-                mark as read
+                {t("mark as read")}
               </button>
             )}
 
@@ -84,7 +96,7 @@ function Notification({
                 }} // لمنع فتح الإشعار عند المسح
               >
                 <FaRegTrashCan size={14} />
-                delete
+                {t("delete")}
               </button>
             )}
           </div>

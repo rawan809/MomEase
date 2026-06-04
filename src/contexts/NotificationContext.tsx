@@ -6,6 +6,7 @@ import {
   deleteNotificationAPI,
   makeAllRead,
 } from "../../services/notifications";
+import { useAuth } from "./AuthContext";
 
 interface Notification {
   id: number;
@@ -31,14 +32,21 @@ export const NotificationProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const { isAuthenticated } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
   const refreshNotifications = async () => {
-    const data = await getNotifications();
-    const countData = await getNotificationsRead();
-    setNotifications(data.data);
-    setUnreadCount(countData.count);
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    try {
+      const data = await getNotifications();
+      const countData = await getNotificationsRead();
+      setNotifications(data.data || []);
+      setUnreadCount(countData.count || 0);
+    } catch (error) {
+      console.error("Failed to refresh notifications", error);
+    }
   };
 
   const markedAsRead = async (id: number) => {
@@ -96,11 +104,33 @@ export const NotificationProvider = ({
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return; // ✅ لو مفيش توكن متعملش request
+    if (!isAuthenticated) {
+      setNotifications([]);
+      setUnreadCount(0);
+      return;
+    }
 
+    // Initial fetch when logging in or on mount
     refreshNotifications();
-  }, []);
+
+    // Auto-update/Poll notifications every 10 seconds
+    const intervalId = setInterval(() => {
+      refreshNotifications();
+    }, 10000);
+
+    // Refresh when tab/window gains focus
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        refreshNotifications();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      clearInterval(intervalId);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isAuthenticated]);
 
   return (
     <NotificationContext.Provider

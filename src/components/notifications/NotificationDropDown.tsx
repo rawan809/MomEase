@@ -4,19 +4,33 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { getNotificationRoute } from "@/utils/notificationNavigation";
 import { IoMdNotifications } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Notification from "./Notification";
 import EmptyResponse from "../ui/EmptyResponse";
 import { useNotifs } from "../../contexts/NotificationContext";
+import { useTranslation } from "react-i18next";
 
 function NotificationDropDown() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const notifContext = useNotifs();
 
-  if (!notifContext) return null; 
+  if (!notifContext) return null;
 
   const { notifications, unreadCount, markedAsRead } = notifContext;
   // console.log(notifications);
+
+  const handleNotificationClick = (notify: any) => {
+    markedAsRead(notify.notificationId);
+
+    const route = getNotificationRoute(notify.actionUrl);
+
+    if (route) {
+      navigate(route);
+    }
+  };
 
   return (
     <Popover>
@@ -35,18 +49,18 @@ function NotificationDropDown() {
       >
         <div className="flex items-center justify-between mb-4">
           <PopoverTitle className="font-semibold text-xl">
-            Notifications
+            {t("Notifications")}
           </PopoverTitle>
           {unreadCount > 0 ? (
             <div className="bg-accent py-1 px-2 text-[12px] rounded-full">
-              {unreadCount} new
+              {unreadCount} {t("new")}
             </div>
           ) : null}
         </div>
         {/* empty */}
         {notifications.length === 0 ? (
           <div className="h-40">
-            <EmptyResponse title="No Notifications Found" />
+            <EmptyResponse title={t("No Notifications Found")} />
           </div>
         ) : (
           <div>
@@ -58,8 +72,9 @@ function NotificationDropDown() {
                   body={notify.body}
                   date={notify.createdAt}
                   read={notify.isRead}
-                  onClick={() => markedAsRead(notify.notificationId)}
+                  onClick={() => handleNotificationClick(notify)}
                   notificationPage={false}
+                  markAsRead={() => markedAsRead(notify.notificationId)}
                 />
               ))}
             </div>
@@ -68,7 +83,7 @@ function NotificationDropDown() {
                 className="text-center p-3 text-primary  hover:text-black transition-all duration-75  w-full"
                 to={"/notifications"}
               >
-                View All Notifications
+                {t("View All Notifications")}
               </Link>
             </div>
           </div>

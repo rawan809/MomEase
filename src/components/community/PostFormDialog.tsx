@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import type { Post } from "./PostCard";
+import { useTranslation } from "react-i18next";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -40,6 +41,7 @@ type PostFormDialogProps = CreateMode | EditMode;
 // ─── Component ───────────────────────────────────────────────────────────────
 
 function PostFormDialog(props: PostFormDialogProps) {
+  const { t } = useTranslation();
   const isEdit = props.mode === "edit";
 
   const [open, setOpen] = useState(false);
@@ -111,14 +113,14 @@ function PostFormDialog(props: PostFormDialogProps) {
         mediaFiles,
         mediaIdsToDelete,
       });
-      toast.success(isEdit ? "Post updated" : "Post created");
+      toast.success(isEdit ? t("Post updated") : t("Post created"));
       // reset
       setText("");
       setMediaFiles([]);
       setPreviewUrls([]);
       handleOpenChange(false);
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || t("Something went wrong"));
     } finally {
       setIsSubmitting(false);
     }
@@ -130,7 +132,7 @@ function PostFormDialog(props: PostFormDialogProps) {
     <DialogContent className="sm:max-w-md rounded-xl p-6 border-none shadow-xl bg-white gap-6 [&>button]:hidden">
       <DialogHeader className="flex flex-row items-center relative border-b-0 space-y-0 p-0 m-0">
         <DialogTitle className="text-center flex-1 text-xl font-bold text-black m-0">
-          {isEdit ? "Edit Post" : "Create Post"}
+          {isEdit ? t("Edit Post") : t("Create Post")}
         </DialogTitle>
       </DialogHeader>
 
@@ -145,7 +147,7 @@ function PostFormDialog(props: PostFormDialogProps) {
               className="grid grid-cols-3 gap-2 w-full mt-2"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* 🟢 الصور القديمة */}
+              {/* الصور القديمة */}
               {existingMedia.map((media) => (
                 <div
                   key={media.mediaId}
@@ -171,7 +173,7 @@ function PostFormDialog(props: PostFormDialogProps) {
                 </div>
               ))}
 
-              {/*  الصور الجديدة */}
+              {/* الصور الجديدة */}
               {previewUrls.map((url, index) => (
                 <div
                   key={index}
@@ -191,14 +193,13 @@ function PostFormDialog(props: PostFormDialogProps) {
                 </div>
               ))}
 
-              {/*  زرار add more */}
+              {/* زرار add more */}
               <div
-                className="aspect-square border-2 border-dashed flex flex-col gap-1 items-center justify-center cursor-pointe border-primary/50 rounded-xl text-primary hover:bg-primary/10 "
+                className="aspect-square border-2 border-dashed flex flex-col gap-1 items-center justify-center cursor-pointer border-primary/50 rounded-xl text-primary hover:bg-primary/10 "
                 onClick={() => fileInputRef.current?.click()}
               >
                 <ImagePlus size={30} />
-                <span>Add More</span>
-                
+                <span>{t("Add More")}</span>
               </div>
             </div>
           ) : (
@@ -207,7 +208,7 @@ function PostFormDialog(props: PostFormDialogProps) {
                 <ImagePlus className="text-primary stroke-2" size={28} />
               </div>
               <span className="font-semibold text-black text-base">
-                Add a Photo
+                {t("Add a Photo")}
               </span>
             </div>
           )}
@@ -225,23 +226,23 @@ function PostFormDialog(props: PostFormDialogProps) {
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder="Share your story or your thoughts..."
+          placeholder={t("Share your story or your thoughts...")}
           className="w-full min-h-30 p-4 rounded-xl border border-primary/20 bg-white placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-primary/50 focus:border-primary/50 resize-none text-[15px]"
         />
 
         {/* Submit Button */}
         <button
           onClick={handleSubmit}
-          disabled={(!text.trim() && mediaFiles.length === 0) || isSubmitting}
+          disabled={(!text.trim() && mediaFiles.length === 0 && existingMedia.length === 0) || isSubmitting}
           className="w-full bg-primary/90 hover:bg-primary text-white font-semibold py-3.5 rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm text-base mt-2 cursor-pointer"
         >
           {isSubmitting
             ? isEdit
-              ? "Saving..."
-              : "Posting..."
+              ? t("Saving...")
+              : t("Posting...")
             : isEdit
-              ? "Save Changes"
-              : "Post"}
+              ? t("Save Changes")
+              : t("Post")}
         </button>
 
         {/* Cancel Button (edit mode only) */}
@@ -251,13 +252,13 @@ function PostFormDialog(props: PostFormDialogProps) {
             disabled={isSubmitting}
             className="w-full bg-gray-100 hover:bg-gray-200 text-gray-600 font-semibold py-3 rounded-xl transition-colors text-base cursor-pointer"
           >
-            Cancel
+            {t("Cancel")}
           </button>
         )}
 
         {!isEdit && (
           <p className="text-center text-xs text-gray-400 font-medium">
-            Share your moment with community
+            {t("Share your moment with community")}
           </p>
         )}
       </div>
@@ -279,7 +280,7 @@ function PostFormDialog(props: PostFormDialogProps) {
       <DialogTrigger className="w-full">
         <div className="bg-primary/80 rounded-xl text-white py-2 cursor-pointer hover:bg-primary transition-all w-full flex items-center justify-center gap-1">
           <CirclePlus size={20} />
-          <span>Create post</span>
+          <span>{t("Create post")}</span>
         </div>
       </DialogTrigger>
       {dialogContent}

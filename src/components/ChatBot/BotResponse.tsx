@@ -1,10 +1,13 @@
-import React from "react";
 import botIcon from "../../assets/images/ChatIcon.svg";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+// import ReactMarkdown from "react-markdown";
+// import remarkGfm from "remark-gfm";
+import { useTranslation } from "react-i18next";
 
 function BotResponse({ text, createdAt }: { text: string; createdAt: string }) {
-  const fallbackText = `I'm here for you 🤍 Tell me more so I can support you better.`;
+  const { t } = useTranslation();
+  const fallbackText = t(
+    "I'm here for you 🤍 Tell me more so I can support you better.",
+  );
 
   return (
     <div className=" gap-3 items-start mb-4">
@@ -13,10 +16,10 @@ function BotResponse({ text, createdAt }: { text: string; createdAt: string }) {
       </div>
 
       {/* Message Content */}
-      <div className="flex items-start flex-col ml-5 self-start">
+      <div className="flex items-start flex-col ms-5 self-start" >
         {/* Bubble */}
-        <div className="p-3 bg-accent rounded-3xl md:max-w-[70%]">
-          <ReactMarkdown
+        <div className="p-3 bg-accent rounded-3xl md:max-w-[70%]" dir="auto">
+          {/* <ReactMarkdown
             remarkPlugins={[remarkGfm]}
             components={{
               h2: ({ children }) => (
@@ -37,7 +40,8 @@ function BotResponse({ text, createdAt }: { text: string; createdAt: string }) {
             }}
           >
             {text || fallbackText}
-          </ReactMarkdown>
+          </ReactMarkdown> */}
+          {text || fallbackText}
         </div>
 
         {/* Time */}

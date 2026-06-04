@@ -182,6 +182,10 @@ export function useGrowth(childId: number | null) {
     editRecord,
     deleteRecord,
     fetchRecords,
+    fetchStatistics,
+    fetchWeekly,
+    fetchMonthly,
+    fetchChart,
 
     // analytics
     statistics,

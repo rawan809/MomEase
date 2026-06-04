@@ -1,10 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import {
-  Moon, TrendingUp, TrendingDown, Star, AlertTriangle,
-  Clock, BarChart2, Zap, Activity
+  Moon,
+  TrendingUp,
+  TrendingDown,
+  Star,
+  AlertTriangle,
+  Clock,
+  BarChart2,
+  Zap,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-type Status = "Good" | "Normal" | "Poor" | "Unknown";
+type Status = "Good" | "Normal" | "Poor" | "Unknown" | "No Reference";
 
 type SleepStatisticsType = {
   totalRecords?: number;
@@ -48,21 +55,94 @@ const sleepData: SleepStatisticsType = {
     recommendedMinHours: 14,
     recommendedMaxHours: 17,
     actualAverageHours: 5.5,
-    message: "Sleep duration is significantly below recommended. Please consult with a pediatrician.",
+    message:
+      "Sleep duration is significantly below recommended. Please consult with a pediatrician.",
   },
 };
 
 const statusConfig = {
-  Good: { color: "text-green-500", bg: "bg-green-50", border: "border-green-200", icon: Star },
-  Normal: { color: "text-yellow-500", bg: "bg-yellow-50", border: "border-yellow-200", icon: Zap },
-  Poor: { color: "text-[#ff3381]", bg: "bg-pink-50", border: "border-pink-200", icon: AlertTriangle },
-  Unknown: { color: "text-gray-400", bg: "bg-gray-100", border: "border-gray-200", icon: AlertTriangle },
-};
+  Good: {
+    labelKey: "Good",
+    color: "text-green-500",
+    bg: "bg-green-50",
+    border: "border-green-200",
+    icon: Star,
+  },
+  جيد: {
+    labelKey: "جيد",
+    color: "text-green-500",
+    bg: "bg-green-50",
+    border: "border-green-200",
+    icon: Star,
+  },
+  Normal: {
+    labelKey: "Normal",
+    color: "text-yellow-500",
+    bg: "bg-yellow-50",
+    border: "border-yellow-200",
+    icon: Zap,
+  },
+  عادي: {
+    labelKey: "عادي",
+    color: "text-yellow-500",
+    bg: "bg-yellow-50",
+    border: "border-yellow-200",
+    icon: Zap,
+  },
+  Poor: {
+    labelKey: "Poor",
+    color: "text-[#ff3381]",
+    bg: "bg-pink-50",
+    border: "border-pink-200",
+    icon: AlertTriangle,
+  },
+  سيء: {
+    labelKey: "سيء",
+    color: "text-[#ff3381]",
+    bg: "bg-pink-50",
+    border: "border-pink-200",
+    icon: AlertTriangle,
+  },
+  Unknown: {
+    labelKey: "Unknown",
+    color: "text-gray-400",
+    bg: "bg-gray-100",
+    border: "border-gray-200",
+    icon: AlertTriangle,
+  },
+  "غير محدد": {
+    labelKey: "غير محدد",
+    color: "text-gray-400",
+    bg: "bg-gray-100",
+    border: "border-gray-200",
+    icon: AlertTriangle,
+  },
+  "No Reference": {
+    labelKey: "No Reference",
+    color: "text-gray-400",
+    bg: "bg-gray-100",
+    border: "border-gray-200",
+    icon: AlertTriangle,
+  },
+  "لا توجد مرجعية": {
+    labelKey: "لا توجد مرجعية",
+    color: "text-gray-400",
+    bg: "bg-gray-100",
+    border: "border-gray-200",
+    icon: AlertTriangle,
+  },
+} as const;
 
-export default function SleepStatistics({ data = sleepData }: { data?: SleepStatisticsType }) {
+export default function SleepStatistics({
+  data = sleepData,
+}: {
+  data?: SleepStatisticsType;
+}) {
+  const { t } = useTranslation();
   const safe = data ?? sleepData;
 
-  const status = (safe.currentSleepStatus ?? "Unknown") as keyof typeof statusConfig;
+  const status = (safe.currentSleepStatus ??
+    "Unknown") as keyof typeof statusConfig;
   const config = statusConfig[status] ?? statusConfig.Unknown;
   const StatusIcon = config.icon;
 
@@ -74,18 +154,18 @@ export default function SleepStatistics({ data = sleepData }: { data?: SleepStat
 
   return (
     <div className="grid grid-cols-2 gap-3">
-
+      {/* Average Sleep Card */}
       <Card className="rounded-xl hover:shadow-md transition-all duration-300 border bg-gray-100">
         <CardContent className="space-y-2 pt-4">
           <div className="flex items-center gap-2 text-[#ff3381]">
             <Moon className="w-4 h-4" />
-            <h3 className="font-semibold text-sm">Average Sleep</h3>
+            <h3 className="font-semibold text-sm">{t("Average Sleep")}</h3>
           </div>
           <p className="text-2xl font-bold">
             {safe.averageSleepHoursFormatted ?? "0h"}
           </p>
           <p className="text-xs text-muted-foreground">
-            Last 7 days:{" "}
+            {t("Last 7 days:")}{" "}
             <span className="font-medium text-foreground">
               {safe.last7DaysAverageFormatted ?? "0h"}
             </span>
@@ -93,39 +173,54 @@ export default function SleepStatistics({ data = sleepData }: { data?: SleepStat
         </CardContent>
       </Card>
 
-      <Card className={`rounded-xl hover:shadow-md transition-all duration-300 border ${config.bg} ${config.border}`}>
+      {/* Sleep Status Card */}
+      <Card
+        className={`rounded-xl hover:shadow-md transition-all duration-300 border ${config.bg} ${config.border}`}
+      >
         <CardContent className="space-y-2 pt-4">
           <div className={`flex items-center gap-2 ${config.color}`}>
             <StatusIcon className="w-4 h-4" />
-            <h3 className="font-semibold text-sm">Sleep Status</h3>
+            <h3 className="font-semibold text-sm">{t("Sleep Status")}</h3>
           </div>
           <p className={`text-2xl font-bold ${config.color}`}>
-            {safe.currentSleepStatus ?? "Unknown"}
+            {config.labelKey}
           </p>
           <p className="text-xs text-muted-foreground">
-            Most common:{" "}
+            {t("Most common:")}{" "}
             <span className="font-medium text-foreground">
-              {safe.mostCommonStatus ?? "Unknown"}
+              {t(safe.mostCommonStatus ?? "Unknown")}
             </span>
           </p>
         </CardContent>
       </Card>
 
+      {/* Recommended Comparison Card */}
       <Card className="rounded-xl hover:shadow-md transition-all duration-300 border bg-gray-100">
         <CardContent className="space-y-2 pt-4">
           <div className="flex items-center gap-2 text-[#ff3381]">
-            <Activity className="w-4 h-4" />
-            <h3 className="font-semibold text-sm">vs Recommended</h3>
+            <Moon className="w-4 h-4" />{" "}
+            {/* تماثلاً مع الأيقونة السابقة أو احتفظ بـ Activity */}
+            <h3 className="font-semibold text-sm">{t("vs Recommended")}</h3>
           </div>
           <div className="space-y-1">
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{actualH}h actual</span>
-              <span>{minH}–{maxH}h goal</span>
+              <span>
+                {actualH}
+                {t("h actual")}
+              </span>
+              <span>
+                {minH}–{maxH}
+                {t("h goal")}
+              </span>
             </div>
             <div className="h-2 rounded-full bg-gray-200 overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
-                  status === "Good" ? "bg-green-400" : status === "Normal" ? "bg-yellow-400" : "bg-[#ff3381]"
+                  status === "Good"
+                    ? "bg-green-400"
+                    : status === "Normal"
+                      ? "bg-yellow-400"
+                      : "bg-[#ff3381]"
                 }`}
                 style={{ width: `${progressPct}%` }}
               />
@@ -133,46 +228,60 @@ export default function SleepStatistics({ data = sleepData }: { data?: SleepStat
           </div>
           {status === "Poor" && (
             <p className="text-xs text-[#ff3381]">
-              {safe.comparisonWithReference?.message ?? ""}
+              {safe.comparisonWithReference?.message
+                ? t(safe.comparisonWithReference.message)
+                : ""}
             </p>
           )}
         </CardContent>
       </Card>
 
+      {/* Quality Breakdown Card */}
       <Card className="rounded-xl hover:shadow-md transition-all duration-300 border bg-gray-100">
         <CardContent className="space-y-2 pt-4">
           <div className="flex items-center gap-2 text-[#ff3381]">
             <BarChart2 className="w-4 h-4" />
-            <h3 className="font-semibold text-sm">Quality Breakdown</h3>
+            <h3 className="font-semibold text-sm">{t("Quality Breakdown")}</h3>
           </div>
-          <div className="flex gap-1 text-xs">
+          <div className="flex gap-1 text-xs flex-wrap">
             <div className="flex-1 bg-green-100 text-green-700 rounded-md px-1 py-1 text-center">
-              <div className="font-bold">{safe.goodSleepDays ?? 0}d</div>
-              <div>Good</div>
+              <div className="font-bold">
+                {safe.goodSleepDays ?? 0}
+                {t("d")}
+              </div>
+              <div>{t("Good")}</div>
             </div>
             <div className="flex-1 bg-yellow-100 text-yellow-700 rounded-md px-1 py-1 text-center">
-              <div className="font-bold">{safe.normalSleepDays ?? 0}d</div>
-              <div>Normal</div>
+              <div className="font-bold">
+                {safe.normalSleepDays ?? 0}
+                {t("d")}
+              </div>
+              <div>{t("Normal")}</div>
             </div>
             <div className="flex-1 bg-pink-100 text-[#ff3381] rounded-md px-1 py-1 text-center">
-              <div className="font-bold">{safe.poorSleepDays ?? 0}d</div>
-              <div>Poor</div>
+              <div className="font-bold">
+                {safe.poorSleepDays ?? 0}
+                {t("d")}
+              </div>
+              <div>{t("Poor")}</div>
             </div>
           </div>
-          <div className="flex justify-between text-xs text-muted-foreground pt-1 border-t">
-            <span className="flex items-center gap-1">
-              <TrendingDown className="w-3 h-3" /> {(safe.minSleepHours ?? "00:00").slice(0, 5)}
+          <div className="flex justify-between text-xs text-muted-foreground pt-1 border-t flex-wrap gap-2">
+            {/* <span className="flex items-center gap-1">
+              <TrendingDown className="w-3 h-3" />{" "}
+              {(safe.minSleepHours ?? "00:00").slice(0, 5)}
             </span>
             <span className="flex items-center gap-1">
-              <TrendingUp className="w-3 h-3" /> {(safe.maxSleepHours ?? "00:00").slice(0, 5)}
-            </span>
+              <TrendingUp className="w-3 h-3" />{" "}
+              {(safe.maxSleepHours ?? "00:00").slice(0, 5)}
+            </span> */}
             <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3" /> {safe.totalRecords ?? 0} records
+              <Clock className="w-3 h-3" /> {safe.totalRecords ?? 0}{" "}
+              {t("records")}
             </span>
           </div>
         </CardContent>
       </Card>
-
     </div>
   );
 }

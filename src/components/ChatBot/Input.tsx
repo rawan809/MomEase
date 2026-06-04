@@ -1,6 +1,7 @@
 import React from "react";
 import { IoSend } from "react-icons/io5";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 function Input({
   onSend,
@@ -9,25 +10,31 @@ function Input({
   onSend: (text: string) => void;
   loading: boolean;
 }) {
+  const { t } = useTranslation();
   const [text, setText] = useState("");
   const disabled = !text.trim() || loading;
 
-  const handleSend = (e: { key: string; }) => {
-    if (e.key && e.key !== "Enter") return;
+  const handleSend = () => {
     if (!text.trim()) return;
     if (disabled) return;
+
     onSend(text);
     setText("");
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleSend();
+    }
+  };
   return (
     <div className="relative rounded-xl w-full ">
       <input
         type="text"
-        onKeyDown={handleSend}
+        onKeyDown={handleKeyDown}
         onChange={(e) => setText(e.target.value)}
         value={text}
-        placeholder="Type your message here..."
+        placeholder={t("Type your message here...")}
         className="rounded-xl border-2 border-accent px-5 pr-12 py-2 focus:border-primary outline-none transition-all duration-75 w-full h-20 bg-white"
       />
       <button onClick={handleSend} disabled={disabled}>

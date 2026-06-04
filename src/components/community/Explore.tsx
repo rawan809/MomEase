@@ -1,46 +1,44 @@
-import React from "react";
 import { House, Bookmark, SquarePen } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-function Explore({
-  activeTap,
-  setActiveTap,
-}: {
-  activeTap: string;
-  setActiveTap: any;
-}) {
+function Explore() {
+  const { t } = useTranslation();
+
   return (
     <div className="w-full bg-white rounded-xl p-2 ">
       <div className="border-b-2 ">
-        <p className="font-semibold mb-1">Explore</p>
+        <p className="font-semibold mb-1">{t("Explore")}</p>
       </div>
       <div className="mt-2 space-y-2">
-        <div
-          className={`${activeTap === "feed" ? "bg-accent/60 text-primary" : null} px-2 py-1 rounded cursor-pointer  hover:text-primary transition-all flex items-center gap-1`}
-          onClick={() => {
-            setActiveTap("feed");
-          }}
+        <NavLink
+          to="/community"
+          end
+          className={({ isActive }) =>
+            `${isActive ? "bg-accent/60 text-primary font-medium" : "text-foreground"} px-2 py-1 rounded cursor-pointer hover:text-primary transition-all flex items-center gap-1`
+          }
         >
           <House size={18} />
-          <span>feed</span>
-        </div>
-        <div
-          className={`${activeTap === "saved" ? "bg-accent/60 text-primary" : null} px-2 py-1 rounded cursor-pointer hover:text-primary transition-all flex items-center gap-1 `}
-          onClick={() => {
-            setActiveTap("saved");
-          }}
+          <span>{t("feed")}</span>
+        </NavLink>
+        <NavLink
+          to="/community/saved"
+          className={({ isActive }) =>
+            `${isActive ? "bg-accent/60 text-primary font-medium" : "text-foreground"} px-2 py-1 rounded cursor-pointer hover:text-primary transition-all flex items-center gap-1`
+          }
         >
           <Bookmark size={18}/>
-          <span>saved</span>
-        </div>
-        <div
-          className={`${activeTap === "myPosts" ? "bg-accent/60 text-primary" : null} px-2 py-1 rounded cursor-pointer   hover:text-primary transition-all flex items-center gap-1`}
-          onClick={() => {
-            setActiveTap("myPosts");
-          }}
+          <span>{t("saved")}</span>
+        </NavLink>
+        <NavLink
+          to="/community/my-posts"
+          className={({ isActive }) =>
+            `${isActive ? "bg-accent/60 text-primary font-medium" : "text-foreground"} px-2 py-1 rounded cursor-pointer hover:text-primary transition-all flex items-center gap-1`
+          }
         >
           <SquarePen size={18} />
-          <span>my posts</span>
-        </div>
+          <span>{t("my posts")}</span>
+        </NavLink>
       </div>
     </div>
   );

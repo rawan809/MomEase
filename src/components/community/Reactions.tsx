@@ -1,10 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Heart, ThumbsUp, HandFist, Lightbulb } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useReactions } from "@/hooks/useReactions";
+import { useTranslation } from "react-i18next";
 
 const REACTION_TYPES = [
-  { type: "LIKE", emoji: <ThumbsUp size={18} />, label: "Like"},
+  { type: "LIKE", emoji: <ThumbsUp size={18} />, label: "Like" },
   { type: "LOVE", emoji: <Heart size={18} />, label: "Love" },
   { type: "SUPPORT", emoji: <HandFist size={18} />, label: "Support" },
   { type: "HELPFUL", emoji: <Lightbulb size={18} />, label: "Helpful" },
@@ -14,15 +15,18 @@ interface ReactionsProps {
   postId: number;
   initialCount: number;
   myReaction: string | null;
+  onReactionChange?: (newCount: number) => void;
 }
 
 const Reactions: React.FC<ReactionsProps> = ({
   postId,
   initialCount,
   myReaction,
+  onReactionChange,
 }) => {
+  const { t } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<any>(null);
   const isLongPress = useRef(false);
 
   const { currentReaction, count, react, remove } = useReactions(
@@ -30,6 +34,10 @@ const Reactions: React.FC<ReactionsProps> = ({
     initialCount,
     myReaction
   );
+
+  useEffect(() => {
+    onReactionChange?.(count);
+  }, [count, onReactionChange]);
 
   const activeReaction = REACTION_TYPES.find((r) => r.type === currentReaction);
 
@@ -108,7 +116,7 @@ const Reactions: React.FC<ReactionsProps> = ({
                 whileTap={{ scale: 0.8 }}
                 onClick={() => handleReactionClick(reactItem.type)}
                 className="hover:drop-shadow-md transition-all cursor-pointer text-pink-500 p-1"
-                title={reactItem.label}
+                title={t(reactItem.label)}
               >
                 {reactItem.emoji}
               </motion.button>
@@ -137,7 +145,7 @@ const Reactions: React.FC<ReactionsProps> = ({
         </div>
 
         <span className="font-medium text-sm sm:inline-block hidden">
-          {currentReaction ? currentReaction : count}
+          {currentReaction ? t(currentReaction) : count}
         </span>
       </button>
     </div>

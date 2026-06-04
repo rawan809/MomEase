@@ -2,6 +2,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { MdError } from "react-icons/md";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 interface ReportPostProps {
   open: boolean;
@@ -11,8 +12,8 @@ interface ReportPostProps {
 }
 
 function ReportPost({ open, onClose, report, postId }: ReportPostProps) {
+  const { t } = useTranslation();
   const [reason, setReason] = useState("");
-
   const [isReporting, setIsReporting] = useState(false);
 
   const handleSubmet = async () => {
@@ -20,15 +21,16 @@ function ReportPost({ open, onClose, report, postId }: ReportPostProps) {
     try {
       setIsReporting(true);
       await report(postId, reason);
-      toast.success("Post reported successfully");
+      toast.success(t("Post reported successfully"));
       onClose();
     } catch (err: any) {
-      toast.error(err.message || "Failed to report post");
+      toast.error(err.message || t("Failed to report post"));
     } finally {
       setIsReporting(false);
     }
     setReason("");
   };
+
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent>
@@ -38,7 +40,7 @@ function ReportPost({ open, onClose, report, postId }: ReportPostProps) {
           </div>
           <div>
             <p className="font-semibold text-xl">
-              Why are you reporting this ?
+              {t("Why are you reporting this ?")}
             </p>
           </div>
           <div>
@@ -55,14 +57,14 @@ function ReportPost({ open, onClose, report, postId }: ReportPostProps) {
               className="border-2 rounded-xl px-3 py-2  hover:border-primary transition-all cursor-pointer"
               onClick={onClose}
             >
-              Cancel
+              {t("Cancel")}
             </button>
             <button
               className="bg-primary/80 rounded-xl px-3 py-2 text-white hover:bg-primary transition-all cursor-pointer"
               onClick={handleSubmet}
               disabled={isReporting || !reason.trim()}
             >
-              {isReporting ? "Sending..." : "Send"}
+              {isReporting ? t("Sending...") : t("Send")}
             </button>
           </div>
         </div>

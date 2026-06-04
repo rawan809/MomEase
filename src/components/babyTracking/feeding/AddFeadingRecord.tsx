@@ -8,38 +8,54 @@ import {
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { MdOutlineEdit } from "react-icons/md";
+import { useTranslation } from "react-i18next";
 
 type FeedingFormData = {
   feedingDate: string;
-  feedingTimesPerDay: number;
+  feedingTimesPerDay: string;
   feedingTypeForBaby: string;
   notes: string;
 };
 
 type Props = {
-  onSubmit: (data: FeedingFormData) => Promise<void>;
-  initialData?: FeedingFormData;
+  onSubmit: (data: {
+    feedingDate: string;
+    feedingTimesPerDay: number;
+    feedingTypeForBaby: string;
+    notes: string;
+  }) => Promise<void>;
+  initialData?: {
+    feedingDate: string;
+    feedingTimesPerDay: number;
+    feedingTypeForBaby: string;
+    notes: string;
+  };
   mode?: "add" | "edit";
 };
 
 function AddFeadingRecord({ onSubmit, initialData, mode }: Props) {
+  const { t } = useTranslation();
+
   const [open, setOpen] = useState(false);
+
   const [form, setForm] = useState<FeedingFormData>({
     feedingDate: initialData?.feedingDate || "",
-    feedingTimesPerDay: initialData?.feedingTimesPerDay || 1,
+    feedingTimesPerDay: String(initialData?.feedingTimesPerDay || 1),
     feedingTypeForBaby: initialData?.feedingTypeForBaby || "Breastfeeding",
     notes: initialData?.notes || "",
   });
+
   useEffect(() => {
     if (initialData) {
       setForm({
         feedingDate: initialData.feedingDate?.split("T")[0] || "",
-        feedingTimesPerDay: initialData.feedingTimesPerDay || 1,
+        feedingTimesPerDay: String(initialData.feedingTimesPerDay || 1),
         feedingTypeForBaby: initialData.feedingTypeForBaby || "Breastfeeding",
         notes: initialData.notes || "",
       });
     }
   }, [initialData]);
+
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
@@ -51,38 +67,47 @@ function AddFeadingRecord({ onSubmit, initialData, mode }: Props) {
 
     setForm((prev) => ({
       ...prev,
-      [id]: id === "feedingTimesPerDay" ? Number(value) : value,
+      [id]: value,
     }));
   };
 
   const handleSubmit = async () => {
     if (!form.feedingDate) {
-      toast.error("Please select a date");
+      toast.error(t("Please select a date"));
+      return;
+    }
+
+    const feedingTimes = Number(form.feedingTimesPerDay);
+
+    if (!feedingTimes || feedingTimes <= 0) {
+      toast.error(t("Please enter valid feeding times"));
       return;
     }
 
     try {
       setLoading(true);
+
       const formattedDate = new Date(
         form.feedingDate + "T12:00:00",
       ).toISOString();
 
       await onSubmit({
         ...form,
+        feedingTimesPerDay: feedingTimes,
         feedingDate: formattedDate,
       });
 
       toast.success(
         mode === "edit"
-          ? "Feeding record updated successfully"
-          : "Feeding record added successfully",
+          ? t("Feeding record updated successfully")
+          : t("Feeding record added successfully"),
       );
 
       setTimeout(() => {
         setOpen(false);
       }, 1000);
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || t("Something went wrong"));
     } finally {
       setLoading(false);
     }
@@ -93,15 +118,15 @@ function AddFeadingRecord({ onSubmit, initialData, mode }: Props) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           {mode === "add" && (
-            <button className="bg-primary/80 text-white rounded-xl px-3 py-2 cursor-pointer hover:bg-primary transition-all md:text-[16px] text-sm">
-              Add Feeding Record
-            </button>
+            <div className="bg-primary/80 text-white rounded-xl px-3 py-2 cursor-pointer hover:bg-primary transition-all md:text-[16px] text-sm">
+              {t("Add Feeding Record")}
+            </div>
           )}
 
           {mode === "edit" && (
             <MdOutlineEdit
               size={20}
-              className="aspect-square  w-7 flex items-center justify-center rounded-full hover:bg-gray-200 transition-all"
+              className="aspect-square w-7 flex items-center justify-center rounded-full hover:bg-gray-200 transition-all"
             />
           )}
         </DialogTrigger>
@@ -109,13 +134,16 @@ function AddFeadingRecord({ onSubmit, initialData, mode }: Props) {
         <DialogContent>
           <DialogHeader className="border-b pb-5">
             <DialogTitle>
-              {mode === "edit" ? "Edit Feeding Record" : "Add Feeding Record"}
+              {mode === "edit"
+                ? t("Edit Feeding Record")
+                : t("Add Feeding Record")}
             </DialogTitle>
           </DialogHeader>
 
           <div className="space-y-3 flex flex-col">
             <div className="flex flex-col gap-2">
-              <label htmlFor="feedingDate">feeding Date</label>
+              <label htmlFor="feedingDate">{t("feeding Date")}</label>
+
               <input
                 id="feedingDate"
                 type="date"
@@ -126,7 +154,10 @@ function AddFeadingRecord({ onSubmit, initialData, mode }: Props) {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="feedingTimesPerDay">feeding Times Per Day</label>
+              <label htmlFor="feedingTimesPerDay">
+                {t("feeding Times Per Day")}
+              </label>
+
               <input
                 id="feedingTimesPerDay"
                 type="number"
@@ -137,27 +168,31 @@ function AddFeadingRecord({ onSubmit, initialData, mode }: Props) {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="feedingTypeForBaby">Feeding Type</label>
+              <label htmlFor="feedingTypeForBaby">{t("Feeding Type")}</label>
+
               <select
                 id="feedingTypeForBaby"
                 className="border px-3 py-2 rounded-md"
                 value={form.feedingTypeForBaby}
                 onChange={handleChange}
               >
-                <option value="Breastfeeding">Breastfeeding</option>
-                <option value="Formula">Formula</option>
-                <option value="SolidFood">SolidFood</option>
+                <option value={t("Breastfeeding")}>{t("Breastfeeding")}</option>
+
+                <option value={t("Formula")}>{t("Formula")}</option>
+
+                <option value={t("SolidFood")}>{t("SolidFood")}</option>
               </select>
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="notes">Notes (optional)</label>
+              <label htmlFor="notes">{t("Notes (optional)")}</label>
+
               <textarea
                 id="notes"
                 value={form.notes}
                 onChange={handleChange}
                 className="border px-3 py-2 rounded-md"
-              ></textarea>
+              />
             </div>
 
             <button
@@ -167,11 +202,11 @@ function AddFeadingRecord({ onSubmit, initialData, mode }: Props) {
             >
               {loading
                 ? mode === "edit"
-                  ? "Updating..."
-                  : "Adding..."
+                  ? t("Updating...")
+                  : t("Adding...")
                 : mode === "edit"
-                  ? "Update Record"
-                  : "Add Record"}
+                  ? t("Update Record")
+                  : t("Add Record")}
             </button>
           </div>
         </DialogContent>

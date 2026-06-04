@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 
 type Vaccine = {
   childVaccineId: number;
@@ -29,13 +29,6 @@ type Props = {
   onStatusChange: (id: number, status: "Pending" | "Missed") => void;
 };
 
-const formatDate = (date: string) =>
-  new Date(date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
-
 const statusStyles: Record<string, string> = {
   Done: "bg-green-100 text-green-600",
   Pending: "bg-yellow-100 text-yellow-600",
@@ -50,17 +43,28 @@ export default function VaccinationList({
   onMarkTaken,
   onStatusChange,
 }: Props) {
+  const { t, i18n } = useTranslation();
+
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString(i18n.language, {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+
   if (!data || data.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 py-10 text-center">
-        <p className="text-sm text-gray-400">No vaccination data available</p>
+        <p className="text-sm text-gray-400">
+          {t("No vaccination data available")}
+        </p>
       </div>
     );
   }
 
   return (
     <div>
-      <p className="text-xl font-semibold mb-5">Vaccination Schedule</p>
+      <p className="text-xl font-semibold mb-5">{t("Vaccination Schedule")}</p>
 
       <Tabs defaultValue={data[0]?.ageLabel}>
         {/* Tabs Header */}
@@ -71,23 +75,20 @@ export default function VaccinationList({
               value={group.ageLabel}
               className="md:p-2 text-xs bg"
             >
-              {group.ageLabel}
+              {t(group.ageLabel)}
             </TabsTrigger>
           ))}
         </TabsList>
 
         {/* Tabs Content */}
         {data.map((group) => (
-          <TabsContent
-            key={group.ageLabel}
-            value={group.ageLabel}
-          >
+          <TabsContent key={group.ageLabel} value={group.ageLabel}>
             <div className="rounded-xl border border-primary bg-white overflow-hidden">
               {/* Group header */}
               <div className="flex justify-between items-center px-4 py-3 bg-[#fff0f5]">
                 <div>
                   <p className="font-semibold text-sm text-[#ff3381]">
-                    {group.ageLabel}
+                    {t(group.ageLabel)}
                   </p>
                   <p className="text-xs text-gray-400">
                     {formatDate(group.scheduledDate)}
@@ -95,7 +96,7 @@ export default function VaccinationList({
                 </div>
 
                 <span className="text-xs bg-[#ffc8dd] text-[#ff3381] px-3 py-1 rounded-full">
-                  {group.vaccines?.length ?? 0} vaccines
+                  {group.vaccines?.length ?? 0} {t("vaccines")}
                 </span>
               </div>
 
@@ -115,10 +116,10 @@ export default function VaccinationList({
                       <span
                         className={cn(
                           "text-xs px-2 py-1 rounded-full",
-                          statusStyles[vaccine.status]
+                          statusStyles[vaccine.status],
                         )}
                       >
-                        {vaccine.status}
+                        {t(vaccine.status)}
                       </span>
                     </div>
 
@@ -127,18 +128,21 @@ export default function VaccinationList({
                       <p>
                         {vaccine.doseTiming} · {vaccine.diseasePrevented}
                       </p>
-                      <p>Dosage: {vaccine.dosage}</p>
+                      <p>
+                        {t("Dosage")}: {vaccine.dosage}
+                      </p>
+                      <p className="font-semibold">{vaccine.vaccinationWay}</p>
                     </div>
 
                     {/* Dates */}
                     <div className="flex justify-between text-xs text-gray-400 pt-1 border-t border-gray-100">
                       <span>
-                        Scheduled: {formatDate(vaccine.scheduledDate)}
+                        {t("Scheduled")}: {formatDate(vaccine.scheduledDate)}
                       </span>
                       <span>
                         {vaccine.takenDate
-                          ? `Taken: ${formatDate(vaccine.takenDate)}`
-                          : "Not taken yet"}
+                          ? `${t("Taken")}: ${formatDate(vaccine.takenDate)}`
+                          : t("Not taken yet")}
                       </span>
                     </div>
 
@@ -146,12 +150,10 @@ export default function VaccinationList({
                     <div className="flex gap-2 flex-wrap pt-1">
                       {vaccine.status !== "Done" && (
                         <button
-                          onClick={() =>
-                            onMarkTaken(vaccine.childVaccineId)
-                          }
+                          onClick={() => onMarkTaken(vaccine.childVaccineId)}
                           className="text-xs px-3 py-1.5 rounded-lg bg-[#ff3381] text-white hover:bg-[#e02a70]"
                         >
-                          Mark as Taken
+                          {t("Mark as Taken")}
                         </button>
                       )}
 
@@ -162,16 +164,16 @@ export default function VaccinationList({
                             if (e.target.value)
                               onStatusChange(
                                 vaccine.childVaccineId,
-                                e.target.value as "Pending" | "Missed"
+                                e.target.value as "Pending" | "Missed",
                               );
                           }}
                           className="text-xs px-2 py-1.5 rounded-lg border border-gray-200 bg-white text-gray-700"
                         >
                           <option value="" disabled>
-                            Change status
+                            {t("Change status")}
                           </option>
-                          <option value="Pending">Pending</option>
-                          <option value="Missed">Missed</option>
+                          <option value="Pending">{t("Pending")}</option>
+                          <option value="Missed">{t("Missed")}</option>
                         </select>
                       )}
                     </div>

@@ -10,6 +10,7 @@ import {
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 import { MdOutlineEdit } from "react-icons/md";
 
 type SleepRecord = {
@@ -17,8 +18,14 @@ type SleepRecord = {
   childId: number;
   childName: string;
   sleepDate: string;
-  sleepHoursTotal: string;
-  sleepHoursTotalFormatted: string;
+  sleepStartTime: string;
+  sleepEndTime: string;
+  sleepStartTimeFormatted: string;
+  sleepEndTimeFormatted: string;
+  sleepDuration: string;
+  sleepDurationFormatted: string;
+  quality: string | null;
+  sleepRefId: number | null;
   notes: string;
   status: "Good" | "Normal" | "Poor" | "Unknown";
 };
@@ -27,46 +34,46 @@ type Props = {
   data: SleepRecord;
   onEdit: (
     id: number,
-    data: { sleepDate: string; sleepHoursTotal: string; notes: string },
+    data: {
+      sleepDate: string;
+      sleepStartTime: string;
+      sleepEndTime: string;
+      notes: string;
+    },
   ) => Promise<void>;
 };
 
 function EditSleepRecord({ data, onEdit }: Props) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const [hours, setHours] = useState(0);
-  const [minutes, setMinutes] = useState(0);
-
   const [form, setForm] = useState({
     sleepDate: "",
+    sleepStartTime: "",
+    sleepEndTime: "",
     notes: "",
   });
 
-  // preload data
   useEffect(() => {
     if (data && open) {
-      const [h, m] = data.sleepHoursTotal.split(":").map(Number);
-
-      setHours(h || 0);
-      setMinutes(m || 0);
-
       setForm({
         sleepDate: data.sleepDate?.split("T")[0] || "",
+        sleepStartTime: data.sleepStartTime?.slice(0, 5) || "",
+        sleepEndTime: data.sleepEndTime?.slice(0, 5) || "",
         notes: data.notes || "",
       });
     }
   }, [data, open]);
 
-  const formatSleepDuration = () => {
-    const h = String(hours).padStart(2, "0");
-    const m = String(minutes).padStart(2, "0");
-    return `${h}:${m}:00`;
-  };
-
   const handleSubmit = async () => {
     if (!form.sleepDate) {
-      toast.error("Please select a date");
+      toast.error(t("Please select a date"));
+      return;
+    }
+
+    if (!form.sleepStartTime || !form.sleepEndTime) {
+      toast.error(t("Please select sleep start and end times"));
       return;
     }
 
@@ -74,20 +81,20 @@ function EditSleepRecord({ data, onEdit }: Props) {
       setLoading(true);
 
       const formattedDate = new Date(
-        form.sleepDate + "T12:00:00",
+        `${form.sleepDate}T12:00:00`,
       ).toISOString();
 
       await onEdit(data.recordId, {
         sleepDate: formattedDate,
-        sleepHoursTotal: formatSleepDuration(),
+        sleepStartTime: form.sleepStartTime,
+        sleepEndTime: form.sleepEndTime,
         notes: form.notes,
       });
 
-      toast.success("Sleep record updated");
-
+      toast.success(t("Sleep record updated"));
       setOpen(false);
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || t("Something went wrong"));
     } finally {
       setLoading(false);
     }
@@ -98,19 +105,18 @@ function EditSleepRecord({ data, onEdit }: Props) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           <div className="w-7 rounded-full hover:bg-gray-200 p-1 cursor-pointer">
-  
             <MdOutlineEdit size={20} />
           </div>
         </DialogTrigger>
 
         <DialogContent>
           <DialogHeader className="border-b pb-5">
-            <DialogTitle>Edit Sleep Record</DialogTitle>
+            <DialogTitle>{t("Edit Sleep Record")}</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-3 flex flex-col">
             <div className="flex flex-col gap-2">
-              <label htmlFor="sleepDate">Sleep Date</label>
+              <label htmlFor="sleepDate">{t("Sleep Date")}</label>
               <input
                 id="sleepDate"
                 type="date"
@@ -123,38 +129,39 @@ function EditSleepRecord({ data, onEdit }: Props) {
             </div>
 
             <div className="flex flex-col gap-2">
-              <label>Sleep Duration</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  value={hours}
-                  min={0}
-                  max={24}
-                  onChange={(e) =>
-                    setHours(Math.min(24, Math.max(0, Number(e.target.value))))
-                  }
-                  className="border px-3 py-2 rounded-md w-20 text-center"
-                />
-                <span>hr</span>
-
-                <input
-                  type="number"
-                  value={minutes}
-                  min={0}
-                  max={59}
-                  onChange={(e) =>
-                    setMinutes(
-                      Math.min(59, Math.max(0, Number(e.target.value))),
-                    )
-                  }
-                  className="border px-3 py-2 rounded-md w-20 text-center"
-                />
-                <span>min</span>
-              </div>
+              <label htmlFor="sleepStartTime">{t("Sleep Start Time")}</label>
+              <input
+                id="sleepStartTime"
+                type="time"
+                value={form.sleepStartTime}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    sleepStartTime: e.target.value,
+                  }))
+                }
+                className="border px-3 py-2 rounded-md"
+              />
             </div>
 
             <div className="flex flex-col gap-2">
-              <label htmlFor="notes">Notes</label>
+              <label htmlFor="sleepEndTime">{t("Sleep End Time")}</label>
+              <input
+                id="sleepEndTime"
+                type="time"
+                value={form.sleepEndTime}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    sleepEndTime: e.target.value,
+                  }))
+                }
+                className="border px-3 py-2 rounded-md"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label htmlFor="notes">{t("Notes")}</label>
               <textarea
                 id="notes"
                 value={form.notes}
@@ -170,7 +177,7 @@ function EditSleepRecord({ data, onEdit }: Props) {
               disabled={loading}
               className="bg-primary/80 text-white rounded-xl px-3 py-2 hover:bg-primary transition-all text-sm"
             >
-              {loading ? "Updating..." : "Update Record"}
+              {loading ? t("Updating...") : t("Update Record")}
             </button>
           </div>
         </DialogContent>

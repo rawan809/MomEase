@@ -1,4 +1,5 @@
 import AddChild from "./AddChild";
+import { useTranslation } from "react-i18next";
 
 type ChildPayload = {
   fullName: string;
@@ -14,12 +15,13 @@ type ChildrenHeaderProps = {
 };
 
 function ChildrenHeader({ onAdd, onUpload }: ChildrenHeaderProps) {
+  const { t } = useTranslation();
   return (
     <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
       <div>
-        <h1 className="text-xl font-bold">My Babies</h1>
+        <h1 className="text-xl font-bold">{t("My Babies")}</h1>
         <p className="text-gray-500 mt-2">
-          Manage your babies information and health details
+          {t("Manage your babies information and health details")}
         </p>
       </div>
 

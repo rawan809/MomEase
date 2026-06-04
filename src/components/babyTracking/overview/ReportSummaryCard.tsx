@@ -2,6 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, CheckCircle, Clock, TrendingUp } from "lucide-react";
 import type { GrowthReportSummary } from "./types";
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 type Props = {
   summary?: GrowthReportSummary;
@@ -40,26 +42,26 @@ const DEFAULT_STATUS: StatusConfig = {
   icon: <Clock size={14} />,
 };
 
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
-}
-
 export default function ReportSummaryCard({
   summary,
-  childName,
   periodStart,
   periodEnd,
 }: Props) {
+  const { t } = useTranslation();
+  const { language } = useLanguage();
+
+  const formatDate = (date: string) =>
+    new Date(date).toLocaleDateString(language === "ar" ? "ar-EG" : "en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   if (!summary) {
     return (
       <Card className="border-0 shadow-md bg-(--card)">
         <CardContent className="p-5">
           <p className="text-sm text-gray-400 text-center py-6">
-            No report summary available.
+            {t("No report summary available.")}
           </p>
         </CardContent>
       </Card>
@@ -74,13 +76,13 @@ export default function ReportSummaryCard({
       <div className="flex flex-col gap-1 border-b border-gray-100 pb-5">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900 tracking-tight">
-            Growth Report Summary
+            {t("Growth Report Summary")}
           </h2>
           <Badge
             className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border-0 ${config.bg} ${config.color}`}
           >
             {config.icon}
-            {summary.overallStatus}
+            {t(summary.overallStatus)}
           </Badge>
         </div>
 
@@ -91,7 +93,7 @@ export default function ReportSummaryCard({
               {formatDate(periodStart)} – {formatDate(periodEnd)}
             </span>
             <span className="text-[10px] bg-gray-100 px-2 py-0.5 rounded-full uppercase font-bold tracking-wider">
-              {summary.totalDays} Days
+              {t("{{count}} Days", { count: summary.totalDays })}
             </span>
           </div>
         )}
@@ -107,10 +109,16 @@ export default function ReportSummaryCard({
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3">
-          <StatItem label="Growth Records" value={summary.growthRecordsCount} />
-          <StatItem label="Sleep Records" value={summary.sleepRecordsCount} />
           <StatItem
-            label="Feeding Records"
+            label={t("Growth Records")}
+            value={summary.growthRecordsCount}
+          />
+          <StatItem
+            label={t("Sleep Records")}
+            value={summary.sleepRecordsCount}
+          />
+          <StatItem
+            label={t("Feeding Records")}
             value={summary.feedingRecordsCount}
           />
         </div>

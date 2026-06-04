@@ -13,6 +13,7 @@ import DeletePostDialog from "./DeletePostDialog";
 import ReportPost from "./ReportPost";
 import PostFormDialog from "./PostFormDialog";
 import type { Post } from "./PostCard";
+import { useTranslation } from "react-i18next";
 
 interface PostOptionsProps {
   post: Post;
@@ -29,10 +30,11 @@ interface PostOptionsProps {
   isMyPost: boolean;
 }
 
-function PostOptions({ post, onDelete, onUpdate, report,isMyPost }: PostOptionsProps) {
+function PostOptions({ post, onDelete, onUpdate, report, isMyPost }: PostOptionsProps) {
   // const { user } = useAuth();
   // const isMyPost = user?.userId === post.userId;
 
+  const { t } = useTranslation();
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -56,7 +58,7 @@ function PostOptions({ post, onDelete, onUpdate, report,isMyPost }: PostOptionsP
                   className="flex items-center gap-2 hover:bg-gray-100 rounded-md p-2 cursor-pointer transition-all"
                 >
                   <FaRegEdit size={16} />
-                  <span>Edit post</span>
+                  <span>{t("Edit post")}</span>
                 </div>
                 <div
                   onClick={() => {
@@ -66,7 +68,7 @@ function PostOptions({ post, onDelete, onUpdate, report,isMyPost }: PostOptionsP
                   className="flex items-center gap-2 hover:bg-red-50 text-red-500 rounded-md p-2 cursor-pointer transition-all"
                 >
                   <FaRegTrashCan size={16} />
-                  <span>Delete post</span>
+                  <span>{t("Delete post")}</span>
                 </div>
               </>
             ) : (
@@ -78,7 +80,7 @@ function PostOptions({ post, onDelete, onUpdate, report,isMyPost }: PostOptionsP
                 className="flex items-center gap-2 hover:bg-gray-100 rounded-md p-2 cursor-pointer transition-all"
               >
                 <MdError size={16} />
-                <span>Report post</span>
+                <span>{t("Report post")}</span>
               </div>
             )}
           </div>

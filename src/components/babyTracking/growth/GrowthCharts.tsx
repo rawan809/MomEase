@@ -1,3 +1,5 @@
+"use client";
+
 import { Line, LineChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   Card,
@@ -16,6 +18,7 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart";
 import { Ruler, Scale, Activity } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const COLORS = {
   primary: "#ff3381",
@@ -43,6 +46,8 @@ export function GrowthTrendsChart({
 }: {
   growthData: GrowthChartData | null;
 }) {
+  const { t, i18n } = useTranslation();
+
   if (
     !growthData ||
     (!growthData.weightData?.length && !growthData.heightData?.length)
@@ -50,7 +55,7 @@ export function GrowthTrendsChart({
     return (
       <Card className="w-full bg-gray-100">
         <CardContent className="flex items-center justify-center h-75 text-gray-500">
-          No growth data available yet
+          {t("No growth data available yet")}
         </CardContent>
       </Card>
     );
@@ -59,7 +64,7 @@ export function GrowthTrendsChart({
   //  PREPARE DATA
 
   const formatDate = (date: string) =>
-    new Intl.DateTimeFormat("en-US", {
+    new Intl.DateTimeFormat(i18n.language, {
       month: "short",
       day: "numeric",
     }).format(new Date(date));
@@ -90,8 +95,8 @@ export function GrowthTrendsChart({
   const combinedData = Array.from(map.values());
 
   const chartConfig = {
-    weight: { label: "Weight (kg)", color: COLORS.blue },
-    height: { label: "Height (cm)", color: COLORS.primary },
+    weight: { label: t("Weight (kg)"), color: COLORS.blue },
+    height: { label: t("Height (cm)"), color: COLORS.primary },
   } satisfies ChartConfig;
 
   //  UI
@@ -101,19 +106,19 @@ export function GrowthTrendsChart({
       <Tabs defaultValue="weight" className="w-full">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6">
           <div>
-            <CardTitle className="text-xl font-bold">Growth Trends</CardTitle>
-            <CardDescription>Track weight and height over time</CardDescription>
+            <CardTitle className="text-xl font-bold">{t("Growth Trends")}</CardTitle>
+            <CardDescription>{t("Track weight and height over time")}</CardDescription>
           </div>
 
           <TabsList className="bg-slate-100 p-1">
             <TabsTrigger value="weight" className="gap-2">
-              <Scale className="h-4 w-4" /> Weight
+              <Scale className="h-4 w-4" /> {t("Weight")}
             </TabsTrigger>
             <TabsTrigger value="height" className="gap-2">
-              <Ruler className="h-4 w-4" /> Height
+              <Ruler className="h-4 w-4" /> {t("Height")}
             </TabsTrigger>
             <TabsTrigger value="combined" className="gap-2">
-              <Activity className="h-4 w-4" /> Combined
+              <Activity className="h-4 w-4" /> {t("Combined")}
             </TabsTrigger>
           </TabsList>
         </CardHeader>
@@ -125,7 +130,7 @@ export function GrowthTrendsChart({
               data={weightPoints}
               dataKey="weight"
               color={COLORS.blue}
-              unit="kg"
+              unit={t("kg")}
               config={chartConfig}
             />
           </TabsContent>
@@ -136,14 +141,14 @@ export function GrowthTrendsChart({
               data={heightPoints}
               dataKey="height"
               color={COLORS.primary}
-              unit="cm"
+              unit={t("cm")}
               config={chartConfig}
             />
           </TabsContent>
 
           {/* Combined */}
           <TabsContent value="combined">
-            <ChartContainer config={chartConfig} className="h-[300px] w-full">
+            <ChartContainer config={chartConfig} className="h-75 w-full">
               <LineChart data={combinedData}>
                 <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
                 <XAxis dataKey="date" />
@@ -192,16 +197,18 @@ function GrowthLineChart({
   unit,
   config,
 }: LineChartProps) {
+  const { t } = useTranslation();
+
   if (!data?.length) {
     return (
-      <div className="h-[300px] flex items-center justify-center text-gray-500">
-        No data
+      <div className="h-75 flex items-center justify-center text-gray-500">
+        {t("No data")}
       </div>
     );
   }
 
   return (
-    <ChartContainer config={config} className="h-[300px] w-full">
+    <ChartContainer config={config} className="h-75 w-full">
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
         <XAxis dataKey="date" />
@@ -210,6 +217,7 @@ function GrowthLineChart({
             value: unit,
             angle: -90,
             position: "insideLeft",
+            offset: 0
           }}
         />
         <ChartTooltip content={<ChartTooltipContent hideLabel />} />

@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import VaccinationList from "./VaccinationList";
 import { useChild } from "@/contexts/ChildContext";
 import { useVaccination } from "@/hooks/useVaccine";
@@ -6,6 +7,10 @@ import VaccinationProgress from "./VaccinationProgress";
 import OverdueList from "./OverdueList";
 import UpcomingTimeline from "./UpcomingTimeline";
 import { toast } from "sonner";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import LoadingState from "../../../components/ui/LoadingState";
 
 type Vaccine = {
   childVaccineId: number;
@@ -22,14 +27,8 @@ type Vaccine = {
   status: "Pending" | "Done" | "Missed";
 };
 
-type VaccinationGroup = {
-  ageInMonths: number;
-  ageLabel: string;
-  scheduledDate: string;
-  vaccines: Vaccine[];
-};
-
-const groupUpcoming = (list: Vaccine[]) => {
+// تم تعديل الدالة لتدعم الترجمة الذكية للشهور بناءً على العدد بدلاً من كلمة Months الثابتة
+const groupUpcoming = (list: Vaccine[], t: any) => {
   const map = new Map();
 
   list.forEach((v) => {
@@ -37,7 +36,7 @@ const groupUpcoming = (list: Vaccine[]) => {
 
     if (!map.has(key)) {
       map.set(key, {
-        ageLabel: `${v.ageInMonths} Months`,
+        ageLabel: t("{{count}} Months", { count: v.ageInMonths }),
         scheduledDate: v.scheduledDate,
         vaccines: [],
       });
@@ -50,27 +49,36 @@ const groupUpcoming = (list: Vaccine[]) => {
 };
 
 function Vaccination() {
+  const { language } = useLanguage();
+  const { t } = useTranslation();
   const { selectedChildId } = useChild();
   const {
     records,
     loading,
     updateStatus,
     markAsTaken,
-    deleteVaccination,
-    getSingleVaccination,
     fetchRecords,
     upcoming,
     overdue,
-    completed,
+    fetchUpcoming,
+    fetchOverdue,
   } = useVaccination(selectedChildId);
-  const groupedUpcoming = groupUpcoming(upcoming);
+  
+  // تمرير دالة الترجمة لتنسيق النصوص داخل تجميع المجموعات
+  const groupedUpcoming = groupUpcoming(upcoming, t);
+
+  useEffect(() => {
+    fetchRecords();
+    fetchUpcoming();
+    fetchOverdue();
+  }, [language]);
 
   const handleMarkTaken = async (id: number) => {
     try {
       await markAsTaken(id);
-      toast.success("marked as taken");
+      toast.success(t("Marked as taken successfully"));
     } catch (err: any) {
-      toast.error(err.message || " failed");
+      toast.error(err.message || t("Operation failed"));
     }
   };
 
@@ -79,34 +87,36 @@ function Vaccination() {
     status: "Pending" | "Missed",
   ) => {
     try {
-      updateStatus(id, {
+      await updateStatus(id, {
         status: status,
         takenDate: new Date().toISOString(),
       });
-      toast.success("Updated successfully ");
+      toast.success(t("Updated successfully"));
     } catch (err: any) {
-      toast.error(err.message || " failed");
+      toast.error(err.message || t("Operation failed"));
     }
   };
 
   if (loading) {
     return (
-      <div className="h-40 flex items-center justify-center text-gray-400 text-sm">
-        Loading vaccinations...
+      <div className="h-[60vh] flex items-center justify-center text-gray-400 text-sm">
+        <LoadingState />
       </div>
     );
   }
+
   return (
     <div className="space-y-5">
       <div>
-        <p className="text-xl font-semibold">Vaccination</p>
-        <p className="text-sm text-gray-500">Track your baby's Vaccination</p>
+        <p className="text-xl font-semibold">{t("Vaccination")}</p>
+        <p className="text-sm text-gray-500">
+          {t("Track your baby's Vaccination")}
+        </p>
       </div>
       <div>
         <VaccinationProgress data={records} />
       </div>
       <div>
-        {" "}
         {overdue && overdue.length > 0 && (
           <OverdueList data={overdue} onMarkTaken={handleMarkTaken} />
         )}

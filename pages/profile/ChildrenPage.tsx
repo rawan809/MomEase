@@ -5,8 +5,10 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useChildren } from "@/hooks/useChildren";
 import LoadingState from "@/components/ui/LoadingState";
+import { useTranslation } from "react-i18next";
 
 function ChildrenPage() {
+  const { t } = useTranslation();
   const {
     loading,
     children,
@@ -23,7 +25,7 @@ function ChildrenPage() {
           to="/myprofile"
           className="text-sm text-primary font-semibold  flex items-center gap-1 mb-3"
         >
-          <ArrowLeft size={16} /> Back to Profile
+          <ArrowLeft size={16} /> {t("Back to Profile")}
         </Link>
         <ChildrenHeader onAdd={addChild} onUpload={uploadPhoto} />
         {loading ? (
@@ -41,7 +43,7 @@ function ChildrenPage() {
         )}
         {children.length === 0 && !loading && (
           <div className="mt-10">
-            <EmptyResponse title="Add your baby to start tracking growth and care." />
+            <EmptyResponse title={t("Add your baby to start tracking growth and care.")} />
           </div>
         )}
       </div>

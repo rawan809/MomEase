@@ -2,18 +2,17 @@ import api from "./instance";
 
 // sleep
 type sleepRecord = {
-  childId: number;
   sleepDate: string;
-  sleepHoursTotal: string;
+  sleepStartTime: string;
+  sleepEndTime: string;
+  quality?: string;
   notes: string;
 };
 
 // sleep
-export const AddSleepRecord = async (
-  childId: number,
-  data: sleepRecord,
-) => {
+export const AddSleepRecord = async (childId: number, data: sleepRecord) => {
   const response = await api.post(`/children/${childId}/sleep-records`, data);
+
   return response.data;
 };
 
@@ -40,9 +39,7 @@ export const EditSleepRecord = async (
 };
 
 export const DeleteSleepRecord = async (childId: number, id: number) => {
-  const response = await api.delete(
-    `/children/${childId}/sleep-records/${id}`,
-  );
+  const response = await api.delete(`/children/${childId}/sleep-records/${id}`);
   return response.data;
 };
 
@@ -59,8 +56,6 @@ export const GetSleepWeekly = async (childId: number) => {
 };
 
 export const GetSleepMonthly = async (childId: number) => {
-  const response = await api.get(
-    `/children/${childId}/sleep-records/monthly`,
-  );
+  const response = await api.get(`/children/${childId}/sleep-records/monthly`);
   return response.data;
 };

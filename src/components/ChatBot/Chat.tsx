@@ -1,4 +1,3 @@
-import React from "react";
 import BotResponse from "./BotResponse";
 import UserMessage from "./UserMessage";
 import Loader from "./Loader";

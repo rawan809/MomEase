@@ -109,11 +109,11 @@ export const GetGrowthReportById = async (
   return response.data;
 };
 
-export const GetLatestGrowthReport = async (childId: number) => {
-  const response = await api.get(`/children/${childId}/growth-reports/latest`);
+// export const GetLatestGrowthReport = async (childId: number) => {
+//   const response = await api.get(`/children/${childId}/growth-reports/latest`);
 
-  return response.data;
-};
+//   return response.data;
+// };
 
 export const DeleteGrowthReport = async (childId: number, reportId: number) => {
   const response = await api.delete(

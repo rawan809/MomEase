@@ -4,36 +4,13 @@ import {
   AddGrowthReport,
   GetGrowthReports,
   GetGrowthReportById,
-  GetLatestGrowthReport,
+  // GetLatestGrowthReport,
   DeleteGrowthReport,
 } from "../../services/growthReport";
 import type { GrowthReport } from "@/components/babyTracking/overview/types";
 
 
 
-//   reportId: number;
-//   childId: number;
-//   childName: string;
-
-//   periodStart: string;
-//   periodEnd: string;
-
-//   growthStatus: string;
-//   createdAt: string;
-
-//   reportContent: {
-//     summary: {
-//       overallStatus: string;
-//       totalDays: number;
-//       growthRecordsCount: number;
-//       sleepRecordsCount: number;
-//       feedingRecordsCount: number;
-//       keyInsight: string;
-//     };
-
-//     recommendations: string[];
-//   };
-// };
 
 type AddReportPayload = {
   periodStart?: string;
@@ -44,8 +21,8 @@ type AddReportPayload = {
 
 export function useGrowthReports(childId: number | null) {
   const [reports, setReports] = useState<GrowthReport[]>([]);
-  const [latestReport, setLatestReport] =
-    useState<GrowthReport | null>(null);
+  // const [latestReport, setLatestReport] =
+  //   useState<GrowthReport | null>(null);
 
   const [selectedReport, setSelectedReport] =
     useState<GrowthReport | null>(null);
@@ -88,24 +65,24 @@ export function useGrowthReports(childId: number | null) {
   };
 
 
-  const fetchLatestReport = async () => {
-    if (!childId) return;
+  // const fetchLatestReport = async () => {
+  //   if (!childId) return;
 
-    try {
-      const res = await GetLatestGrowthReport(
-        childId,
-      );
+  //   try {
+  //     const res = await GetLatestGrowthReport(
+  //       childId,
+  //     );
 
-      setLatestReport(res.data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //     setLatestReport(res.data);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
 
   useEffect(() => {
     fetchReports();
-    fetchLatestReport();
+    // fetchLatestReport();
   }, [childId]);
 
 
@@ -126,7 +103,7 @@ export function useGrowthReports(childId: number | null) {
 
       setReports((prev) => [res.data, ...prev]);
 
-      setLatestReport(res.data);
+      // setLatestReport(res.data);
 
       return res.data;
     } catch (err: any) {
@@ -160,9 +137,9 @@ export function useGrowthReports(childId: number | null) {
         ),
       );
 
-      if (latestReport?.reportId === reportId) {
-        fetchLatestReport();
-      }
+      // if (latestReport?.reportId === reportId) {
+      //   fetchLatestReport();
+      // }
     } catch (err: any) {
       if (err?.response?.data?.message) {
         throw new Error(err.response.data.message);
@@ -175,7 +152,7 @@ export function useGrowthReports(childId: number | null) {
 
   return {
     reports,
-    latestReport,
+    // latestReport,
     selectedReport,
 
     loading,
@@ -183,7 +160,7 @@ export function useGrowthReports(childId: number | null) {
     // fetch
     fetchReports,
     fetchReportById,
-    fetchLatestReport,
+    // fetchLatestReport,
 
     // actions
     addReport,

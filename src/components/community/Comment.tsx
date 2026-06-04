@@ -9,8 +9,10 @@ import { useCommunityInteractions } from "@/hooks/useCommunityInteractions";
 import CommentOptions from "./CommentOptions";
 import { useAuth } from "@/contexts/AuthContext";
 import { toRelativeUrl } from "@/utils/imgBaseURL";
+import { useTranslation } from "react-i18next";
 
 interface CommentProps {
+  isMypost?: boolean;
   postId: number;
   commentCount: number;
   onCommentAdd?: () => void;
@@ -42,11 +44,13 @@ interface CommentProps {
 // ];
 
 function Comment({
+  isMypost,
   postId,
   commentCount,
   onCommentAdd,
-  postUserId,
+  // postUserId,
 }: CommentProps) {
+  const { t } = useTranslation();
   const {
     comments,
     loading,
@@ -85,7 +89,7 @@ function Comment({
         {/* Header */}
         <div className="p-6 pb-2 sticky top-0 bg-white z-10">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-gray-800">Comments</h2>
+            <h2 className="text-2xl font-bold text-gray-800">{t("Comments")}</h2>
             <span className="text-gray-500 font-semibold">
               {comments.length}
             </span>
@@ -132,17 +136,18 @@ function Comment({
 
                         {comment.updatedAt ? (
                           <p className="text-[10px] text-primary">
-                            updated {formatDate(comment.updatedAt)}
+                            {t("updated")} {formatDate(comment.updatedAt)}
                           </p>
                         ) : (
                           ""
                         )}
                       </div>
-                      {user?.userId === comment.userId && (
+                      {(user?.userId === comment.userId || isMypost) && (
                         <CommentOptions
                           comment={comment}
                           onDelete={removeComment}
                           onUpdate={updateComment}
+                          canEdit={user?.userId === comment.userId}
                         />
                       )}
                     </div>
@@ -159,7 +164,7 @@ function Comment({
           ) : (
             <div className="h-full flex flex-col items-center justify-center text-gray-400 mt-20">
               <MessageCircle size={48} className="mb-2 opacity-20" />
-              <p>No comments yet. Be the first!</p>
+              <p>{t("No comments yet. Be the first!")}</p>
             </div>
           )}
         </ScrollArea>
@@ -168,7 +173,7 @@ function Comment({
         <div className="p-4 border-t bg-white rounded-xl sticky bottom-0 z-10">
           <div className="relative flex items-center bg-pink-50 rounded-full px-4 py-1 border border-pink-100">
             <Input
-              placeholder="Write a comment..."
+              placeholder={t("Write a comment...")}
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendComment()}

@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import {
   Bar,
   BarChart,
@@ -26,6 +25,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useTranslation } from "react-i18next";
 
 // الألوان المطلوبة
 const COLORS = {
@@ -36,9 +36,12 @@ const COLORS = {
 
 /* 1. Weekly Feeding Trend Chart (Bar Chart)*/
 export function WeeklyFeedingChart({ weeklyData }: { weeklyData: any }) {
+  const { t, i18n } = useTranslation();
+
   const chartData =
     weeklyData?.dailyRecords?.map((record: any) => ({
-      day: new Intl.DateTimeFormat("en-US", {
+      // تم التحسين: استخدام لغة التطبيق الحالية i18n.language لترجمة الأيام تلقائياً
+      day: new Intl.DateTimeFormat(i18n.language, {
         weekday: "short",
       }).format(new Date(record.date)),
       times:
@@ -50,7 +53,7 @@ export function WeeklyFeedingChart({ weeklyData }: { weeklyData: any }) {
 
   const chartConfig = {
     times: {
-      label: "Times per Day",
+      label: t("Times per Day"),
       color: COLORS.primary,
     },
   } satisfies ChartConfig;
@@ -59,15 +62,15 @@ export function WeeklyFeedingChart({ weeklyData }: { weeklyData: any }) {
     <Card className="w-full bg-gray-100 gap-1 h-auto">
       <CardHeader className="flex flex-row items-center justify-between pb-8 flex-wrap gap-4">
         <div className="grid gap-1">
-          <CardTitle className="font-bold">Weekly Feeding Trend</CardTitle>
+          <CardTitle className="font-bold">{t("Weekly Feeding Trend")}</CardTitle>
 
-          <CardDescription>Last 7 days feeding times per day</CardDescription>
+          <CardDescription>{t("Last 7 days feeding times per day")}</CardDescription>
         </div>
 
         <div className="rounded-xl bg-accent/20 px-3 py-1 text-sm font-medium text-[#ff3381]">
-          Weekly Avg:{" "}
+          {t("Weekly Avg")}:{" "}
           <span className="font-bold">
-            {weeklyData?.weeklyAverage || 0} times/day
+            {weeklyData?.weeklyAverage || 0} {t("times/day")}
           </span>
         </div>
       </CardHeader>
@@ -112,7 +115,7 @@ export function WeeklyFeedingChart({ weeklyData }: { weeklyData: any }) {
                 strokeDasharray="3 3"
                 label={{
                   position: "right",
-                  value: "Avg",
+                  value: t("Avg"),
                   fill: COLORS.primary,
                   fontSize: 12,
                 }}

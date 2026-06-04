@@ -218,6 +218,9 @@ export function useVaccination(childId: number | null) {
   return {
     records,
     loading,
+    
+    fetchUpcoming,
+    fetchOverdue,
 
     // actions
     updateStatus,

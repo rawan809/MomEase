@@ -8,6 +8,7 @@ import { LuMilk } from "react-icons/lu";
 import { useChildren } from "@/hooks/useChildren";
 import { toast } from "sonner";
 import type { Child } from "@/hooks/useChildren";
+import { useTranslation } from "react-i18next";
 
 type Props = {
   child?: Child;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
+  const { t } = useTranslation();
   const { addChild, uploadPhoto } = useChildren();
   const isEditMode = !!child && !!onEdit;
 
@@ -70,7 +72,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
         } else if (removePhoto) {
           await onDeletePhoto(child.childId);
         }
-        toast.success("Baby updated successfully");
+        toast.success(t("Baby updated successfully"));
       } else {
         const newChild = await addChild({
           fullName,
@@ -87,11 +89,11 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
         setFeedingTypeForBaby("Breastfeeding");
         setPhoto(null);
         setPreview(null);
-        toast.success("Baby added successfully");
+        toast.success(t("Baby added successfully"));
       }
       setOpen(false);
     } catch (err: any) {
-      toast.error(err.message || "Something went wrong");
+      toast.error(err.message || t("Something went wrong"));
     } finally {
       setLoading(false);
     }
@@ -113,20 +115,20 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
         <div className=" px-5 py-3 space-y-2">
           {/* name */}
           <div className="flex flex-col gap-2">
-            <label className="font-medium">Baby Name</label>
+            <label className="font-medium">{t("Baby Name")}</label>
 
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              placeholder="Enter baby name"
+              placeholder={t("Enter baby name")}
               className="border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary transition-all"
             />
           </div>
 
           {/* gender */}
           <div className="space-y-3">
-            <label className="font-medium">Gender</label>
+            <label className="font-medium">{t("Gender")}</label>
 
             <div className="grid grid-cols-2 gap-4">
               <button
@@ -142,7 +144,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
                   <CgBoy />
                 </div>
 
-                <span className="font-semibold">Boy</span>
+                <span className="font-semibold">{t("Boy")}</span>
               </button>
 
               <button
@@ -158,7 +160,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
                   <CgGirl />
                 </div>
 
-                <span className="font-semibold">Girl</span>
+                <span className="font-semibold">{t("Girl")}</span>
               </button>
             </div>
           </div>
@@ -167,7 +169,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
           <div className="flex flex-col gap-2">
             <label className="font-medium flex items-center gap-2">
               <FiCalendar />
-              Birth Date
+              {t("Birth Date")}
             </label>
 
             <input
@@ -182,7 +184,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
             <div className="space-y-3 flex-1 ">
               <label className="font-medium flex items-center gap-2">
                 <FiHeart />
-                Delivery Type
+                {t("Delivery Type")}
               </label>
               <select
                 name="deliveryType"
@@ -193,15 +195,15 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
                 }
                 className="border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary transition-all w-full"
               >
-                <option value="Normal">Normal</option>
-                <option value="Cesarean">Cesarean</option>
+                <option value="Normal">{t("Normal")}</option>
+                <option value="Cesarean">{t("Cesarean")}</option>
               </select>
             </div>
 
             <div className="space-y-3 flex-1">
               <label className="font-medium flex items-center gap-2">
                 <LuMilk />
-                Feeding Type
+                {t("Feeding Type")}
               </label>
               <select
                 value={feedingTypeForBaby}
@@ -214,9 +216,9 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
                 id="feedingType"
                 className="border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-primary transition-all w-full"
               >
-                <option value="Breastfeeding">Breastfeeding</option>
-                <option value="Formula">Formula</option>
-                <option value="SolidFood">Solid Food</option>
+                <option value="Breastfeeding">{t("Breastfeeding")}</option>
+                <option value="Formula">{t("Formula")}</option>
+                <option value="SolidFood">{t("Solid Food")}</option>
               </select>
             </div>
           </div>
@@ -242,7 +244,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
                   }}
                   className="mt-1 text-red-500 text-sm hover:underline"
                 >
-                  Remove photo
+                  {t("Remove photo")}
                 </button>
               </div>
             ) : (
@@ -254,7 +256,7 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
                   <MdOutlineAddPhotoAlternate />
                 </div>
 
-                <p className="font-medium">Upload Baby Photo</p>
+                <p className="font-medium">{t("Upload Baby Photo")}</p>
 
                 <input
                   type="file"
@@ -283,11 +285,11 @@ function EditBaby({ child, onEdit, onDeletePhoto, onUploadPhoto }: Props) {
           >
             {loading
               ? isEditMode
-                ? "Saving..."
-                : "Adding..."
+                ? t("Saving...")
+                : t("Adding...")
               : isEditMode
-                ? "Save Changes"
-                : "Add Baby"}
+                ? t("Save Changes")
+                : t("Add Baby")}
           </button>
         </div>
       </DialogContent>

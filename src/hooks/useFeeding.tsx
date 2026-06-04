@@ -161,5 +161,6 @@ export function useFeeding(childId: number | null) {
     statistics,
     weeklyData,
     monthlyData,
+   fetchStatistics, 
   };
 }

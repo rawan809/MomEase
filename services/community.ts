@@ -14,6 +14,11 @@ export const GetPosts = async ({
   return response.data;
 };
 
+export const GetPost = async (id: number) => {
+  const response = await api.get(`/community/posts/${id}`);
+  return response.data;
+};
+
 export const createPost = async ({
   text,
   mediaFile,
@@ -139,6 +144,11 @@ export const updateReact = async (postId: number, reactionType: string) => {
 
 export const deleteReact = async (postId: number) => {
   const response = await api.delete(`/community/posts/${postId}/reactions`);
+  return response.data;
+};
+
+export const getReacts = async (postId: number) => {
+  const response = await api.get(`/community/posts/${postId}/reactions`);
   return response.data;
 };
 
