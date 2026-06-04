@@ -12,7 +12,7 @@ export function HealthTools() {
   const { t } = useTranslation();
 
   const isActiveLink =
-    location.pathname.includes("/hg") ||
+    location.pathname.includes("/cryAnalysis") ||
     location.pathname.toLowerCase().includes("/skindiagnoses") ||
     location.pathname.toLowerCase().includes("/depression");
 
@@ -38,7 +38,7 @@ export function HealthTools() {
                     : ""
               }`
             }
-            to="hg"
+            to="cryAnalysis"
           >
             <Droplet size={15} /> {t("Cry Analysis")}
           </NavLink>

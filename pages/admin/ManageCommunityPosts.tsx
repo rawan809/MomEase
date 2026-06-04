@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toRelativeUrl } from "@/utils/imgBaseURL";
 import {
   Search,
   Eye,
@@ -60,7 +61,7 @@ const UserAvatar = ({
   if (photo) {
     return (
       <img
-        src={photo}
+        src={toRelativeUrl(photo)}
         alt={name}
         className="rounded-full object-cover shrink-0"
         style={{ width: size, height: size }}
@@ -275,10 +276,7 @@ const ManageCommunityPosts = () => {
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-(--space-sm)">
-                  <UserAvatar
-                    name={post.userName}
-                    photo={`http://momease.runasp.net${post.userPhoto}`}
-                  />
+                  <UserAvatar name={post.userName} photo={post.userPhoto} />
                   <div>
                     <p
                       className="font-semibold text-gray-800"
@@ -319,7 +317,7 @@ const ManageCommunityPosts = () => {
                   {post.media.slice(0, 3).map((m, idx) => (
                     <img
                       key={idx}
-                      src={m.mediaUrl}
+                      src={toRelativeUrl(m.mediaUrl)}
                       alt="media"
                       className="rounded-xl object-cover"
                       style={{ width: 64, height: 48 }}
@@ -419,7 +417,7 @@ const ManageCommunityPosts = () => {
               <div className="flex items-center gap-(--space-sm) mb-(--space-md)">
                 <UserAvatar
                   name={selectedPost.userName}
-                  photo={`http://momease.runasp.net${selectedPost.userPhoto}`}
+                  photo={selectedPost.userPhoto}
                   size={40}
                 />
                 <div>
@@ -451,7 +449,7 @@ const ManageCommunityPosts = () => {
                   {selectedPost.media.map((m, idx) => (
                     <img
                       key={idx}
-                      src={m.mediaUrl}
+                      src={toRelativeUrl(m.mediaUrl)}
                       alt="media"
                       className="rounded-xl object-cover"
                       style={{ width: 100, height: 80 }}

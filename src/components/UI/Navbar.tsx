@@ -133,7 +133,7 @@ function Navbar() {
             {[
               { to: "/home", label: t("Home"), isNav: true },
               { to: "/depression", label: t("Depression"), isNav: true },
-              { to: "jh", label: t("Crying Analysis"), isNav: false },
+              { to: "/cryAnalysis", label: t("Crying Analysis"), isNav: true },
               { to: "/babytracking", label: t("Baby tracking"), isNav: true },
               { to: "/community", label: t("Community"), isNav: true },
               { to: "/skindiagnoses", label: t("Skin Analysis"), isNav: true },

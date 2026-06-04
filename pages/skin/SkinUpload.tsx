@@ -82,7 +82,7 @@ const SkinUpload = () => {
         className="text-center mb-(--space-lg)"
       >
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/SkinDiagnoses")}
           className="text-primary font-semibold mb-(--space-sm) flex items-center gap-1 mx-auto hover:opacity-70 transition"
         >
           ‹ {t("Skin Diagnosis")}

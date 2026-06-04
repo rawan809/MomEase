@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Eye, Pencil, Ban, Trash2, Search, Filter, X } from "lucide-react";
+import { Eye, Pencil, Trash2, Search, Filter, X } from "lucide-react";
 import {
   getUsers,
   deleteUser,
   updateUserRole,
-  updateUserStatus,
   updateUser,
 } from "../../services/admin";
 
@@ -16,7 +15,6 @@ interface User {
   email: string;
   phone: string;
   role: string;
-  isActive: boolean;
   createdAt: string;
 }
 
@@ -36,32 +34,19 @@ const getRoleBadge = (role: string) => {
   );
 };
 
-const getStatusBadge = (isActive: boolean) => (
-  <span
-    className="px-3 py-1 rounded-full text-xs font-semibold"
-    style={{
-      background: isActive ? "#f0fdf4" : "#fff3f3",
-      color: isActive ? "#4caf50" : "#f44336",
-      border: isActive ? "1px solid #bbf7d0" : "1px solid #fecaca",
-    }}
-  >
-    {isActive ? "Active" : "Blocked"}
-  </span>
-);
-
 const ManageAccounts = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [filtered, setFiltered] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState("All Roles");
-  const [statusFilter, setStatusFilter] = useState("All Status");
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [editUser, setEditUser] = useState<User | null>(null);
   const [editForm, setEditForm] = useState({
     firstName: "",
     lastName: "",
     phone: "",
+    role: "",
   });
   const [deleteConfirm, setDeleteConfirm] = useState<number | null>(null);
 
@@ -94,21 +79,13 @@ const ManageAccounts = () => {
           u.email?.toLowerCase().includes(search.toLowerCase()),
       );
     }
-
     if (roleFilter !== "All Roles") {
       result = result.filter(
         (u) => u.role?.toLowerCase().trim() === roleFilter.toLowerCase().trim(),
       );
     }
-
-    if (statusFilter !== "All Status") {
-      result = result.filter((u) =>
-        statusFilter === "Active" ? u.isActive : !u.isActive,
-      );
-    }
-
     setFiltered(result);
-  }, [search, roleFilter, statusFilter, users]);
+  }, [search, roleFilter, users]);
 
   const handleDelete = async (id: number) => {
     try {
@@ -120,20 +97,17 @@ const ManageAccounts = () => {
     }
   };
 
-  const handleToggleStatus = async (user: User) => {
-    await updateUserStatus(user.userId, !user.isActive);
-
-    setUsers((prev) =>
-      prev.map((u) =>
-        u.userId === user.userId ? { ...u, isActive: !u.isActive } : u,
-      ),
-    );
-  };
-
   const handleEditSave = async () => {
     if (!editUser) return;
     try {
-      await updateUser(editUser.userId, editForm);
+      await updateUser(editUser.userId, {
+        firstName: editForm.firstName,
+        lastName: editForm.lastName,
+        phone: editForm.phone,
+      });
+      if (editForm.role && editForm.role !== editUser.role) {
+        await updateUserRole(editUser.userId, editForm.role);
+      }
       setEditUser(null);
       fetchUsers();
     } catch (err) {
@@ -151,13 +125,11 @@ const ManageAccounts = () => {
 
   return (
     <div className="flex flex-col gap-(--space-md)">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-bold text-2xl text-gray-800">Manage Accounts</h1>
-          <p className="text-sm mt-1" style={{ color: "var(--color-muted)" }}>
-            View and manage user accounts
-          </p>
-        </div>
+      <div>
+        <h1 className="font-bold text-2xl text-gray-800">Manage Accounts</h1>
+        <p className="text-sm mt-1" style={{ color: "var(--color-muted)" }}>
+          View and manage user accounts
+        </p>
       </div>
 
       <div
@@ -201,32 +173,13 @@ const ManageAccounts = () => {
             <option>MOTHER</option>
           </select>
         </div>
-
-        <div className="flex items-center gap-2">
-          <Filter size={14} style={{ color: "var(--color-muted)" }} />
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 rounded-xl text-sm outline-none"
-            style={{
-              background: "var(--color-background)",
-              border: "1px solid #ffc8dd",
-              color: "var(--color-muted)",
-              fontSize: 13,
-            }}
-          >
-            <option>All Status</option>
-            <option>Active</option>
-            <option>Blocked</option>
-          </select>
-        </div>
       </div>
 
       <div
-        className="bg-white rounded-2xl overflow-hidden"
+        className="bg-white rounded-2xl overflow-hidden overflow-x-auto"
         style={{ boxShadow: "var(--shadow-md)" }}
       >
-        <table className="w-full">
+        <table className="w-full min-w-150">
           <thead>
             <tr style={{ borderBottom: "1px solid #ffe5ef" }}>
               {[
@@ -234,7 +187,6 @@ const ManageAccounts = () => {
                 "Name",
                 "Email",
                 "Role",
-                "Status",
                 "Registration Date",
                 "Actions",
               ].map((h) => (
@@ -284,9 +236,6 @@ const ManageAccounts = () => {
                 <td className="px-(--space-md) py-3">
                   {getRoleBadge(user.role)}
                 </td>
-                <td className="px-(--space-md) py-3">
-                  {getStatusBadge(user.isActive)}
-                </td>
                 <td className="px-(--space-md) py-3 text-sm text-gray-500">
                   {user.createdAt
                     ? new Date(user.createdAt).toLocaleDateString("en-US")
@@ -308,22 +257,13 @@ const ManageAccounts = () => {
                           firstName: user.firstName,
                           lastName: user.lastName,
                           phone: user.phone || "",
+                          role: user.role || "",
                         });
                       }}
                       className="p-1.5 rounded-lg hover:bg-gray-100 transition"
                       title="Edit"
                     >
                       <Pencil size={15} className="text-gray-400" />
-                    </button>
-                    <button
-                      onClick={() => handleToggleStatus(user)}
-                      className="p-1.5 rounded-lg hover:bg-gray-100 transition"
-                      title={user.isActive ? "Block" : "Unblock"}
-                    >
-                      <Ban
-                        size={15}
-                        style={{ color: user.isActive ? "#ff9800" : "#4caf50" }}
-                      />
                     </button>
                     <button
                       onClick={() => setDeleteConfirm(user.userId)}
@@ -352,7 +292,7 @@ const ManageAccounts = () => {
       <AnimatePresence>
         {selectedUser && (
           <div
-            className="fixed inset-0 flex items-center justify-center z-50"
+            className="fixed inset-0 flex items-center justify-center z-50 px-(--space-md)"
             style={{ background: "#00000050" }}
           >
             <motion.div
@@ -377,7 +317,6 @@ const ManageAccounts = () => {
                   ["Email", selectedUser.email],
                   ["Phone", selectedUser.phone || "—"],
                   ["Role", selectedUser.role],
-                  ["Status", selectedUser.isActive ? "Active" : "Blocked"],
                 ].map(([label, value]) => (
                   <div
                     key={label}
@@ -399,7 +338,7 @@ const ManageAccounts = () => {
       <AnimatePresence>
         {editUser && (
           <div
-            className="fixed inset-0 flex items-center justify-center z-50"
+            className="fixed inset-0 flex items-center justify-center z-50 px-(--space-md)"
             style={{ background: "#00000050" }}
           >
             <motion.div
@@ -434,6 +373,28 @@ const ManageAccounts = () => {
                     />
                   </div>
                 ))}
+
+                <div>
+                  <label className="text-xs font-semibold text-gray-500 mb-1 block">
+                    Role
+                  </label>
+                  <select
+                    value={editForm.role}
+                    onChange={(e) =>
+                      setEditForm({ ...editForm, role: e.target.value })
+                    }
+                    className="w-full px-4 py-2 rounded-xl text-sm outline-none"
+                    style={{
+                      background: "var(--color-background)",
+                      border: "1px solid #ffc8dd",
+                      fontSize: 13,
+                    }}
+                  >
+                    <option value="MOTHER">MOTHER</option>
+                    <option value="ADMIN">ADMIN</option>
+                  </select>
+                </div>
+
                 <button
                   onClick={handleEditSave}
                   className="w-full py-(--space-sm) rounded-full text-white font-bold mt-(--space-sm) hover:opacity-90 transition"
@@ -450,7 +411,7 @@ const ManageAccounts = () => {
       <AnimatePresence>
         {deleteConfirm !== null && (
           <div
-            className="fixed inset-0 flex items-center justify-center z-50"
+            className="fixed inset-0 flex items-center justify-center z-50 px-(--space-md)"
             style={{ background: "#00000050" }}
           >
             <motion.div
