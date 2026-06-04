@@ -1,5 +1,9 @@
 import "./App.css";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import MainLayout from "./components/layouts/MainLayout";
 import LandingPage from "../pages/LandingPage";
 import Login from "../pages/auth/Login";
@@ -15,6 +19,7 @@ import Articles from "../pages/articles/Articles";
 import Article from "../pages/articles/Article";
 import ChatBot from "../pages/ChatBot";
 import Depression from "../pages/dep/depression";
+import ResultHistory from "../pages/dep/ResultHistory";
 import Assessments from "../pages/dep/Assessments";
 import AssessmentQuestions from "../pages/dep/AssessmentQuestions";
 import AssessmentResult from "../pages/dep/AssessmentResult";
@@ -81,6 +86,7 @@ const router = createBrowserRouter([
           { path: "/cryAnalysis/analyzing", element: <CryAnalyzing /> },
           { path: "/cryAnalysis/result", element: <CryResult /> },
           { path: "/assessments", element: <Assessments /> },
+          { path: "/depression/history", element: <ResultHistory /> },
         ],
       },
     ],
@@ -92,6 +98,7 @@ const router = createBrowserRouter([
 
       { path: "/assessment/:id", element: <AssessmentQuestions /> },
       { path: "/assessment/:id/result", element: <AssessmentResult /> },
+      { path: "/assessment/0/result/:id", element: <AssessmentResult /> },
       {
         path: "/babytracking",
         element: <BabyTracking />,

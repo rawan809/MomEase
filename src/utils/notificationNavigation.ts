@@ -29,6 +29,12 @@ export const getNotificationRoute = (
     return "/depression";
   }
 
+  // Assessment Results
+  const assessmentResultMatch = actionUrl.match(/^\/assessments\/results\/(\d+)/);
+  if (assessmentResultMatch) {
+    return `/assessment/0/result?resultId=${assessmentResultMatch[1]}`;
+  }
+
   // Assessments
   if (
     actionUrl === "/assessments" ||

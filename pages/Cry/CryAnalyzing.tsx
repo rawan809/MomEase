@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { MapPin, Clock, Target } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const CryAnalyzing = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { t } = useTranslation();
   const audioFile = state?.audioFile;
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [duration, setDuration] = useState("00:00s");
+  const [duration, setDuration] = useState(`00:00${t("s")}`);
 
   const steps = [
     { label: "Loading audio", done: false },
@@ -29,11 +31,11 @@ const CryAnalyzing = () => {
         const m = Math.floor(secs / 60);
         const s = secs % 60;
         setDuration(
-          `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}s`,
+          `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}${t("s")}`,
         );
       };
     }
-  }, [audioFile]);
+  }, [audioFile, t]);
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
@@ -62,7 +64,7 @@ const CryAnalyzing = () => {
     timers.push(navTimer);
 
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [navigate, audioFile]);
 
   const fileSizeKb = audioFile
     ? (audioFile.size / 1024).toFixed(1) + " KB"
@@ -80,7 +82,7 @@ const CryAnalyzing = () => {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-(--space-lg)"
+      className="min-h-screen flex items-center justify-center px-(--space-lg) pt-20"
       style={{ background: "var(--color-background)" }}
     >
       <div className="w-full max-w-4xl mx-auto flex flex-col lg:flex-row gap-(--space-lg) items-start">
@@ -92,21 +94,21 @@ const CryAnalyzing = () => {
         >
           <button
             onClick={() => navigate(-1)}
-            className="self-start text-sm font-semibold flex items-center gap-1 hover:opacity-70 transition"
+            className="self-start text-sm font-semibold flex items-center gap-1 hover:opacity-70 transition cursor-pointer"
             style={{ color: "var(--color-primary)" }}
           >
-            ‹ Cancel Analysis
+            ‹ {t("Cancel Analysis")}
           </button>
 
           <p
             className="font-bold text-xs tracking-widest uppercase flex items-center gap-1"
             style={{ color: "var(--color-primary)" }}
           >
-            ✦ AI Precision Engine
+            ✦ {t("AI Precision Engine")}
           </p>
 
           <h1 className="font-bold text-center" style={{ fontSize: 28 }}>
-            Analyzing Crying Condition
+            {t("Analyzing Crying Condition")}
           </h1>
 
           <p
@@ -118,9 +120,9 @@ const CryAnalyzing = () => {
               maxWidth: 360,
             }}
           >
-            Our AI is carefully examining the unique sound patterns, frequency,
-            and intensity of the baby's cry to provide you with meaningful
-            insights.
+            {t(
+              "Our AI is carefully examining the unique sound patterns, frequency, and intensity of the baby's cry to provide you with meaningful insights.",
+            )}
           </p>
 
           <div className="flex items-center gap-1 my-(--space-sm)">
@@ -159,8 +161,8 @@ const CryAnalyzing = () => {
               style={{ fontSize: 12, color: "var(--color-primary)" }}
             >
               {stepStates.every(Boolean)
-                ? "Analysis Complete!"
-                : "Processing Audio Waveform..."}
+                ? t("Analysis Complete!")
+                : t("Processing Audio Waveform...")}
             </p>
           </motion.div>
 
@@ -179,7 +181,7 @@ const CryAnalyzing = () => {
                   style={{ color: "var(--color-primary)" }}
                 />
                 <p style={{ fontSize: 11, color: "var(--color-muted)" }}>
-                  {stat.label}
+                  {t(stat.label)}
                 </p>
                 <p className="font-bold" style={{ fontSize: 13 }}>
                   {stat.value}
@@ -212,7 +214,7 @@ const CryAnalyzing = () => {
               className="font-bold text-sm mb-(--space-md)"
               style={{ color: "var(--color-primary)" }}
             >
-              Analysis Progress
+              {t("Analysis Progress")}
             </p>
             {steps.map((step, i) => (
               <div key={i} className="flex items-center gap-3 mb-3">
@@ -233,6 +235,7 @@ const CryAnalyzing = () => {
                         stroke="white"
                         strokeWidth="1.5"
                         strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   ) : (
@@ -257,7 +260,7 @@ const CryAnalyzing = () => {
                     fontWeight: stepStates[i] ? 600 : 400,
                   }}
                 >
-                  {step.label}
+                  {t(step.label)}
                 </p>
               </div>
             ))}
@@ -292,7 +295,7 @@ const CryAnalyzing = () => {
               className="font-bold text-xs mb-(--space-sm) flex items-center gap-1"
               style={{ color: "var(--color-primary)" }}
             >
-              💡 Parenting Pro-Tip
+              💡 {t("Parenting Pro-Tip")}
             </p>
             <p
               style={{
@@ -301,9 +304,9 @@ const CryAnalyzing = () => {
                 lineHeight: 1.6,
               }}
             >
-              While we analyze, remember to take a deep breath. You're doing a
-              great job. Sometimes a gentle hum or a change in lighting can help
-              soothe both you and the baby.
+              {t(
+                "While we analyze, remember to take a deep breath. You're doing a great job. Sometimes a gentle hum or a change in lighting can help soothe both you and the baby.",
+              )}
             </p>
           </motion.div>
         </div>

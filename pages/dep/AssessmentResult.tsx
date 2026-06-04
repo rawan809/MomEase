@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useState, useEffect } from "react";
+import { getAssessmentResults } from "../../services/dep";
+import LoadingState from "@/components/ui/LoadingState";
 
 interface AssessmentResultData {
   levelName?: string;
@@ -86,17 +89,90 @@ const getSeverityColor = (level?: string): string => {
 // };
 
 const AssessmentResult = () => {
+  const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const resultId = searchParams.get("resultId");
   const { language } = useLanguage();
   const { t } = useTranslation();
   const { state } = useLocation();
   const navigate = useNavigate();
 
-  const result = state?.result?.data as AssessmentResultData;
+  const [result, setResult] = useState<AssessmentResultData | null>(
+    state?.result?.data || null
+  );
+  const [loading, setLoading] = useState(!state?.result?.data);
   const maxScore = state?.maxScore;
-  const severityColor = getSeverityColor(result?.levelName);
 
-  // const message = getSeverityMessage(result?.levelName, t);
-  const recommendations = result.recommendations;
+  useEffect(() => {
+    if (result) return;
+
+    const fetchResult = async () => {
+      try {
+        setLoading(true);
+        const res = await getAssessmentResults();
+        if (res.success && Array.isArray(res.data)) {
+          if (resultId) {
+            const specificResult = res.data.find(
+              (r: any) => String(r.resultId) === String(resultId)
+            );
+            if (specificResult) {
+              setResult(specificResult);
+              return;
+            }
+          }
+
+          const assessmentResults = res.data.filter(
+            (r: any) => String(r.assessmentId) === String(id)
+          );
+          if (assessmentResults.length > 0) {
+            assessmentResults.sort(
+              (a: any, b: any) =>
+                new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime()
+            );
+            setResult(assessmentResults[0]);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch assessment results:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchResult();
+  }, [id, resultId, result]);
+
+  const severityColor = getSeverityColor(result?.levelName);
+  const recommendations = result?.recommendations || [];
+
+  if (loading) {
+    return (
+      <div
+        className="h-screen flex items-center justify-center"
+        style={{ background: "var(--color-background)" }}
+      >
+        <LoadingState />
+      </div>
+    );
+  }
+
+  if (!result) {
+    return (
+      <div
+        className="h-screen flex flex-col items-center justify-center gap-4"
+        style={{ background: "var(--color-background)" }}
+      >
+        <p className="text-gray-500 font-semibold">{t("No result found")}</p>
+        <button
+          onClick={() => navigate("/home")}
+          className="px-6 py-2 rounded-full text-white font-bold"
+          style={{ background: "var(--color-primary)" }}
+        >
+          {t("Back to Home")}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div

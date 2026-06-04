@@ -42,7 +42,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
         </h3>
 
         <Link
-          to={`/Article/${article.articleId}`}
+          to={`/Article/:${article.articleId}`}
           className="bg-white text-black py-2 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105 text-center"
         >
           {t("View full article")}

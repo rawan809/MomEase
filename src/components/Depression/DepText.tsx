@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Calendar } from "lucide-react";
 
 const DepText = () => {
   const { t } = useTranslation();
@@ -17,23 +18,39 @@ const DepText = () => {
       </h2>
 
       <p className=" text-muted max-w-xl">
-        {t("This is a safe, private space to reflect on how you've been feeling. There are no wrong answers.")}
+        {t(
+          "This is a safe, private space to reflect on how you've been feeling. There are no wrong answers.",
+        )}
       </p>
-      <div className="flex gap-(--space-md) justify-center">
+      <div className="flex gap-(--space-md) justify-center flex-wrap">
         <button
           onClick={() => navigate("/assessments")}
           className="
-            border-2 border-primary
-            text-primary
+            text-white
             px-(--space-xl)
             py-(--space-sm)
             rounded-lg
             transition-(--transition-fast)
-            hover:bg-primary
-            hover:text-white
+            bg-primary
+            hover:bg-primary/90
           "
         >
           {t("Start Check-in")}{" "}
+        </button>{" "}
+        <button
+          onClick={() => navigate("/depression/history")}
+          className="
+          flex items-center gap-2
+            px-(--space-xl)
+            py-(--space-sm)
+            rounded-lg
+            transition-(--transition-fast)
+            border-2 border-primary
+            hover:bg-accent/50
+          "
+        >
+          <Calendar size={15}/>
+          {t("View History")}{" "}
         </button>
       </div>
     </motion.div>

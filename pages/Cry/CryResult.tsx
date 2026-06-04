@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { CheckCircle, Mic } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const mockResult = {
   condition: "Discomfort",
@@ -16,10 +17,11 @@ const mockResult = {
 
 const CryResult = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl)"
+      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl) pt-20"
       style={{ background: "var(--color-background)" }}
     >
       <div className="max-w-xl w-full mx-auto flex flex-col lg:flex-row gap-(--space-lg) items-start">
@@ -38,12 +40,12 @@ const CryResult = () => {
             </div>
 
             <p style={{ fontSize: 18, color: "var(--color-muted)" }}>
-              Baby Might Be:{" "}
+              {t("Baby Might Be:")}{" "}
               <span
                 className="font-bold"
                 style={{ color: "var(--color-primary)" }}
               >
-                {mockResult.condition}
+                {t(mockResult.condition)}
               </span>
             </p>
 
@@ -55,7 +57,7 @@ const CryResult = () => {
                 maxWidth: 420,
               }}
             >
-              {mockResult.description}
+              {t(mockResult.description)}
             </p>
           </div>
 
@@ -67,7 +69,7 @@ const CryResult = () => {
               className="font-bold text-sm mb-(--space-sm)"
               style={{ color: "var(--color-primary)" }}
             >
-              Recommended Steps
+              {t("Recommended Steps")}
             </p>
             <ul className="flex flex-col gap-(--space-sm)">
               {mockResult.recommendations.map((rec, i) => (
@@ -85,7 +87,7 @@ const CryResult = () => {
                   >
                     •
                   </span>
-                  {rec}
+                  {t(rec)}
                 </motion.li>
               ))}
             </ul>
@@ -96,25 +98,25 @@ const CryResult = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate("/cryAnalysis/record")}
-              className="flex items-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full text-white font-bold transition hover:opacity-90"
+              className="flex items-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full text-white font-bold transition hover:opacity-90 cursor-pointer"
               style={{ background: "var(--color-primary)", fontSize: 13 }}
             >
               <Mic size={14} />
-              Analyze another cry
+              {t("Analyze another cry")}
             </motion.button>
 
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate("/home")}
-              className="flex items-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full font-bold border-2 transition hover:bg-pink-50"
+              className="flex items-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full font-bold border-2 transition hover:bg-pink-50 cursor-pointer"
               style={{
                 borderColor: "var(--color-primary)",
                 color: "var(--color-primary)",
                 fontSize: 13,
               }}
             >
-              Back to Home
+              {t("Back to Home")}
             </motion.button>
           </div>
         </motion.div>

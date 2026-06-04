@@ -1,14 +1,16 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Mic, Info, CheckCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import HeroImage from "@/components/HeroSection/HeroImage";
 
 const CryAnalysis = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl)"
+      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl) pt-20"
       style={{ background: "var(--color-background)" }}
     >
       <div className="max-w-5xl w-full mx-auto flex flex-col-reverse lg:flex-row items-center gap-(--space-xl)">
@@ -40,7 +42,7 @@ const CryAnalysis = () => {
             className="font-bold text-center lg:text-left leading-tight"
             style={{ fontSize: 36 }}
           >
-            Understanding Baby's Cry
+            {t("Understanding Baby's Cry")}
           </h1>
 
           <p
@@ -51,9 +53,9 @@ const CryAnalysis = () => {
               lineHeight: 1.7,
             }}
           >
-            Let our AI help you understand what your baby might be trying to
-            communicate through their cry. Our clinical-grade analysis provides
-            instant emotional clarity.
+            {t(
+              "Let our AI help you understand what your baby might be trying to communicate through their cry. Our clinical-grade analysis provides instant emotional clarity.",
+            )}
           </p>
 
           <div
@@ -65,7 +67,7 @@ const CryAnalysis = () => {
               style={{ color: "var(--color-primary)" }}
             >
               <Info size={14} />
-              How It Works
+              {t("How It Works")}
             </p>
             {[
               "Record your baby's cry for 5-10 seconds while keeping the device near.",
@@ -79,7 +81,7 @@ const CryAnalysis = () => {
                   style={{ color: "var(--color-primary)" }}
                 />
                 <p style={{ fontSize: 13, color: "var(--color-muted)" }}>
-                  {step}
+                  {t(step)}
                 </p>
               </div>
             ))}
@@ -89,19 +91,20 @@ const CryAnalysis = () => {
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
             onClick={() => navigate("/cryAnalysis/record")}
-            className="flex items-center justify-center gap-2 py-(--space-sm) rounded-full text-white font-bold transition hover:opacity-90"
+            className="flex items-center justify-center gap-2 py-(--space-sm) rounded-full text-white font-bold transition hover:opacity-90 cursor-pointer"
             style={{ background: "var(--color-primary)", fontSize: 15 }}
           >
             <Mic size={16} />
-            Start Recording
+            {t("Start Recording")}
           </motion.button>
 
           <p
             className="text-center italic"
             style={{ fontSize: 12, color: "var(--color-muted)" }}
           >
-            This is guidance, not medical advice. Trust your instincts — you
-            know your baby best.
+            {t(
+              "This is guidance, not medical advice. Trust your instincts — you know your baby best.",
+            )}
           </p>
         </motion.div>
       </div>

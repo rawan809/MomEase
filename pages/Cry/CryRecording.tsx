@@ -2,9 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Mic, MicOff, BarChart2, CheckCircle } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const CryRecording = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isRecording, setIsRecording] = useState(false);
   const [seconds, setSeconds] = useState(0);
   const [isDone, setIsDone] = useState(false);
@@ -52,7 +54,7 @@ const CryRecording = () => {
         setSeconds((s) => s + 1);
       }, 1000);
     } catch (err) {
-      setError("Microphone access denied. Please allow microphone access.");
+      setError(t("Microphone access denied. Please allow microphone access."));
     }
   };
 
@@ -92,7 +94,7 @@ const CryRecording = () => {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl)"
+      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl) pt-20"
       style={{ background: "var(--color-background)" }}
     >
       <div className="max-w-4xl w-full mx-auto flex flex-col lg:flex-row gap-(--space-lg) items-start">
@@ -107,7 +109,7 @@ const CryRecording = () => {
               className="font-bold text-sm mb-(--space-sm)"
               style={{ color: "var(--color-primary)" }}
             >
-              Live Insights
+              {t("Live Insights")}
             </p>
             <p
               style={{
@@ -116,8 +118,7 @@ const CryRecording = () => {
                 lineHeight: 1.6,
               }}
             >
-              Our AI listens for pitch, frequency, and intensity patterns unique
-              to infants.
+              {t("Our AI listens for pitch, frequency, and intensity patterns unique to infants.")}
             </p>
             <div className="flex gap-1 mt-(--space-sm) items-end">
               {[3, 5, 4, 7, 6, 5, 8, 4, 6, 5].map((h, i) => (
@@ -156,7 +157,7 @@ const CryRecording = () => {
               className="font-bold"
               style={{ color: "var(--color-primary)", fontSize: 14 }}
             >
-              Crying Sound Analysis
+              {t("Crying Sound Analysis")}
             </p>
           </div>
 
@@ -199,18 +200,18 @@ const CryRecording = () => {
 
           <p className="font-semibold text-gray-700">
             {isDone
-              ? "Recording Complete!"
+              ? t("Recording Complete!")
               : isRecording
-                ? "Recording in progress..."
-                : "Hold Phone Near Baby"}
+                ? t("Recording in progress...")
+                : t("Hold Phone Near Baby")}
           </p>
 
           <p style={{ fontSize: 13, color: "var(--color-muted)" }}>
             {isDone
-              ? "Click Analyze to get results"
+              ? t("Click Analyze to get results")
               : isRecording
-                ? "Click the mic to stop"
-                : "Tap the button to start recording"}
+                ? t("Click the mic to stop")
+                : t("Tap the button to start recording")}
           </p>
 
           {(isRecording || isDone) && (
@@ -233,7 +234,7 @@ const CryRecording = () => {
                   className="font-semibold tracking-widest"
                   style={{ fontSize: 11, color: "var(--color-primary)" }}
                 >
-                  RECORDING BABY'S CRY...
+                  {t("RECORDING BABY'S CRY...")}
                 </p>
               )}
             </motion.div>
@@ -254,7 +255,7 @@ const CryRecording = () => {
                 onClick={() =>
                   isRecording ? stopRecording() : startRecording()
                 }
-                className="flex items-center justify-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full font-bold border-2 transition hover:bg-pink-50"
+                className="flex items-center justify-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full font-bold border-2 transition hover:bg-pink-50 cursor-pointer"
                 style={{
                   borderColor: "var(--color-primary)",
                   color: "var(--color-primary)",
@@ -262,7 +263,7 @@ const CryRecording = () => {
                 }}
               >
                 {isRecording ? <MicOff size={14} /> : <Mic size={14} />}
-                {isRecording ? "Stop Recording" : "Start Recording"}
+                {isRecording ? t("Stop Recording") : t("Start Recording")}
               </button>
             )}
 
@@ -271,25 +272,25 @@ const CryRecording = () => {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 onClick={handleAnalyze}
-                className="flex items-center justify-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full text-white font-bold transition hover:opacity-90"
+                className="flex items-center justify-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full text-white font-bold transition hover:opacity-90 cursor-pointer"
                 style={{ background: "var(--color-primary)", fontSize: 13 }}
               >
                 <BarChart2 size={14} />
-                Analyze Now
+                {t("Analyze Now")}
               </motion.button>
             )}
 
             {isDone && (
               <button
                 onClick={handleReset}
-                className="flex items-center justify-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full font-bold border-2 transition hover:bg-gray-50"
+                className="flex items-center justify-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full font-bold border-2 transition hover:bg-gray-50 cursor-pointer"
                 style={{
                   borderColor: "#e5e7eb",
                   color: "#6b7280",
                   fontSize: 13,
                 }}
               >
-                Record Again
+                {t("Record Again")}
               </button>
             )}
           </div>
@@ -301,8 +302,7 @@ const CryRecording = () => {
               textAlign: "center",
             }}
           >
-            Tip: Be in a quiet place while you are recording for the most
-            accurate results.
+            {t("Tip: Be in a quiet place while you are recording for the most accurate results.")}
           </p>
         </motion.div>
 
@@ -317,7 +317,7 @@ const CryRecording = () => {
               className="font-bold text-sm mb-(--space-sm)"
               style={{ color: "var(--color-primary)" }}
             >
-              Guidelines
+              {t("Guidelines")}
             </p>
             {guidelines.map((g, i) => (
               <div key={i} className="flex items-center gap-2 mb-2">
@@ -325,7 +325,7 @@ const CryRecording = () => {
                   size={13}
                   style={{ color: "var(--color-primary)" }}
                 />
-                <p style={{ fontSize: 12, color: "var(--color-muted)" }}>{g}</p>
+                <p style={{ fontSize: 12, color: "var(--color-muted)" }}>{t(g)}</p>
               </div>
             ))}
           </motion.div>
@@ -341,7 +341,7 @@ const CryRecording = () => {
               className="font-bold italic"
               style={{ fontSize: 13, color: "var(--color-primary)" }}
             >
-              "Every cry is a conversation."
+              "{t("Every cry is a conversation.")}"
             </p>
           </motion.div>
         </div>

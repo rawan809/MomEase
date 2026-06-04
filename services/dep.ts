@@ -49,3 +49,18 @@ export const getAssessments = async () => {
   const res = await api.get(`/assessments`);
   return res.data;
 };
+
+export const getAssessmentResults = async () => {
+  const res = await api.get(`/assessment-results`);
+  return res.data;
+};
+
+export const getAssessmentResult = async (id:number) => {
+  const res = await api.get(`/assessment-result/${id}`);
+  return res.data;
+};
+
+export const deleteAssessmentResult = async (id: number) => {
+  const res = await api.delete(`/assessment-results/${id}`);
+  return res.data;
+};
