@@ -1,18 +1,16 @@
 import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../../../pages/auth/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   LayoutDashboard,
-  Users,
   FileText,
   MessageSquare,
-  BarChart2,
-  Settings,
   LogOut,
   Menu,
   ShieldCheck,
 } from "lucide-react";
 import NotificationDropDown from "../notifications/NotificationDropDown";
+import ProfileDropDown from "../ui/ProfileDropDown";
 
 const navItems = [
   { label: "Manage Accounts", icon: LayoutDashboard, path: "/admin" },
@@ -188,17 +186,8 @@ const AdminLayout = () => {
                   System Administrator
                 </p>
               </div>
-              <div
-                className="flex items-center justify-center rounded-full text-white font-bold shrink-0"
-                style={{
-                  width: 34,
-                  height: 34,
-                  background: "var(--color-primary)",
-                  fontSize: 13,
-                  boxShadow: "0 2px 8px #ff338140",
-                }}
-              >
-                {user?.firstName?.[0]?.toUpperCase() || "A"}
+              <div className="hidden text-xl text-primary aspect-square w-7 rounded-full md:flex items-center justify-center hover:bg-gray-200 transition-all cursor-pointer">
+                <ProfileDropDown />
               </div>
             </div>
           </div>

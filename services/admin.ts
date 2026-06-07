@@ -61,7 +61,7 @@ export const createArticle = async (data: any) => {
 
 export const updateArticle = async (id: number, data: any) => {
   const res = await adminApi.put(`/Articles/${id}`, data, {
-    validateStatus: (status) => status >= 200 && status < 300, // 👈 add this
+    validateStatus: (status) => status >= 200 && status < 300,
   });
   return res.data;
 };
