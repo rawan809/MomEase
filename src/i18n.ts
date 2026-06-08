@@ -13,7 +13,7 @@ i18n
     lng: savedLang,
     fallbackLng: "en",
     backend: {
-      loadPath: "public/locales/{{lng}}/translation.json",
+      loadPath: "/locales/{{lng}}/translation.json",
     },
     interpolation: {
       escapeValue: false,
