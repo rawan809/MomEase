@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
 import {
   getNotificationsRead,
   getNotifications,
@@ -10,6 +10,7 @@ import { useAuth } from "./AuthContext";
 
 interface Notification {
   id: number;
+  notificationId: number; // تأكدت من استخدامك للاسم ده في الفلترة
   isRead: boolean;
   [key: string]: any;
 }
@@ -23,27 +24,34 @@ interface NotificationContextType {
   deleteNotification: (id: number) => Promise<void>;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined,
-);
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
-export const NotificationProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const NotificationProvider = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  
+  // لضمان عدم حدوث تداخل بين الـ Polling والعمليات اليدوية (المسح والقراءة)
+  const isMutating = useRef(false); 
 
   const refreshNotifications = async () => {
+    // لو بنعمل مسح أو قراءة حالياً، نوقف الـ أوتو ريفريش مؤقتاً عشان ميبوظش الـ State
+    if (isMutating.current) return; 
+
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token || !isAuthenticated) return;
+
     try {
-      const data = await getNotifications();
-      const countData = await getNotificationsRead();
-      setNotifications(data.data || []);
-      setUnreadCount(countData.count || 0);
+      const [notifsRes, countRes] = await Promise.all([
+        getNotifications(),
+        getNotificationsRead()
+      ]);
+      
+      // نتحقق مرة تانية إن مفيش أكشن حصل أثناء ما الـ API كان شغال في السكة
+      if (!isMutating.current) {
+        setNotifications(notifsRes.data || []);
+        setUnreadCount(countRes.count || 0);
+      }
     } catch (error) {
       console.error("Failed to refresh notifications", error);
     }
@@ -51,55 +59,69 @@ export const NotificationProvider = ({
 
   const markedAsRead = async (id: number) => {
     const target = notifications.find((n) => n.notificationId === id);
+    if (!target || target.isRead) return;
 
-    if (target?.isRead) return;
+    isMutating.current = true;
+
+    // 1. تحديث الفرونت إند فوراً (Optimistic UI)
     setNotifications((prev) =>
-      prev.map((n) => (n.notificationId === id ? { ...n, isRead: true } : n)),
+      prev.map((n) => (n.notificationId === id ? { ...n, isRead: true } : n))
     );
-
     setUnreadCount((prev) => Math.max(0, prev - 1));
+
     try {
+      // 2. تبلغ السيرفر
       await makeNotificationRead(id);
     } catch (error) {
       console.error("Failed to mark notification as read", error);
+      // في حالة الفشل، نرجع الداتا زي ما كانت
+      refreshNotifications(); 
+    } finally {
+      isMutating.current = false;
     }
   };
 
   const markedAllAsRead = async () => {
-    const updatedNotifications = notifications.map((n) => ({
-      ...n,
-      isRead: true,
-    }));
-    setNotifications(updatedNotifications);
+    isMutating.current = true;
+    
+    setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })));
+    setUnreadCount(0);
+
     try {
       await makeAllRead();
-
-      setUnreadCount(0);
     } catch (error) {
       console.error("Failed to mark all notifications as read", error);
+      refreshNotifications();
+    } finally {
+      isMutating.current = false;
     }
   };
 
   const deleteNotification = async (id: number) => {
+    isMutating.current = true;
+
     const previousNotifications = [...notifications];
     const previousCount = unreadCount;
-    const filteredNotifications = notifications.filter(
-      (n) => n.notificationId !== id,
-    );
-    const isUnread = notifications.find(
-      (n) => n.notificationId === id && !n.isRead,
-    );
+
+    const filteredNotifications = notifications.filter((n) => n.notificationId !== id);
+    const isUnread = notifications.find((n) => n.notificationId === id && !n.isRead);
+
+    // 1. مسح من الفرونت فوراً
     setNotifications(filteredNotifications);
     if (isUnread) {
       setUnreadCount((prev) => Math.max(0, prev - 1));
     }
 
     try {
+      // 2. طلب المسح من السيرفر
       await deleteNotificationAPI(id);
     } catch (error) {
       console.error("Failed to delete notification", error);
+      // لو السيرفر هنج، رجعي الإشعار تاني
       setNotifications(previousNotifications);
       setUnreadCount(previousCount);
+    } finally {
+      isMutating.current = false;
     }
   };
 
@@ -110,15 +132,15 @@ export const NotificationProvider = ({
       return;
     }
 
-    // Initial fetch when logging in or on mount
+    // أول جلب للبيانات
     refreshNotifications();
 
-    // Auto-update/Poll notifications every 10 seconds
+    // تشغيل الـ Polling بأمان كل 15 ثانية (زودتها شوية عشان ندي مساحة للـ APIs تخلص)
     const intervalId = setInterval(() => {
       refreshNotifications();
-    }, 10000);
+    }, 15000);
 
-    // Refresh when tab/window gains focus
+    // الـ Visibility Change
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         refreshNotifications();

@@ -15,24 +15,23 @@ export const formatDate = (createdAt: string) => {
     date.getDate(),
   );
 
+  const timeOptions: Intl.DateTimeFormatOptions = {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true, 
+  };
+
   if (messageDay.getTime() === today.getTime()) {
-    return date.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    });
+    return date.toLocaleTimeString([], timeOptions);
   }
 
   if (messageDay.getTime() === yesterday.getTime()) {
-    return `Yesterday ${date.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-    })}`;
+    return `Yesterday ${date.toLocaleTimeString([], timeOptions)}`;
   }
 
   return date.toLocaleDateString([], {
     month: "short",
     day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
+    ...timeOptions, // بندمج خيارات الوقت هنا كمان
   });
 };
