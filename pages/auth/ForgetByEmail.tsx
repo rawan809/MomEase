@@ -1,7 +1,7 @@
 // ForgetByEmail.tsx
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { emailSchema } from "./Validation";
-import ForgetPasswordLayout from "../../src/components/ForgetPassword/ForgetPasswordLayout";
+import ForgetPasswordLayout from "@/components/ForgetPassword/ForgetPasswordLayout";
 // import { Link } from "react-router-dom";
 import { useState } from "react";
 import { forgetPassword } from "../../services/auth";

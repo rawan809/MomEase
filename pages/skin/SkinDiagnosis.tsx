@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import SkinImage from "../../src/assets/images/Dep.png";
+import SkinImage from "@/assets/images/Dep.png";
 import { useTranslation } from "react-i18next";
 
 const SkinDiagnosis = () => {
@@ -51,10 +51,14 @@ const SkinDiagnosis = () => {
           <div>
             <p className="text-(--text-small)">
               {t("Welcome to")}{" "}
-              <span className="text-primary font-semibold">{t("Skin Diagnosis")}</span>
+              <span className="text-primary font-semibold">
+                {t("Skin Diagnosis")}
+              </span>
             </p>
             <h1 className="font-bold text-(--text-normal) leading-snug mt-(--space-xs)">
-              {t("Get AI-powered insights about common baby skin conditions and gentle care tips.")}
+              {t(
+                "Get AI-powered insights about common baby skin conditions and gentle care tips.",
+              )}
             </h1>
           </div>
 
@@ -99,7 +103,9 @@ const SkinDiagnosis = () => {
           </motion.button>
 
           <p className="text-muted italic" style={{ fontSize: "13px" }}>
-            {t("This is guidance, not medical advice. Trust your instincts — you know your baby best.")}
+            {t(
+              "This is guidance, not medical advice. Trust your instincts — you know your baby best.",
+            )}
           </p>
         </motion.div>
       </div>

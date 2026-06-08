@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import HomeSection from "../src/components/HeroSection/HomeSection";
-import ArticalSection from "../src/components/Articles/ArticalSection";
-import { useAuth } from "../src/contexts/AuthContext";
+import HomeSection from "@/components/HeroSection/HomeSection";
+import ArticalSection from "@/components/Articles/ArticalSection";
+import { useAuth } from "@/contexts/AuthContext";
 import { AllarticlesApi } from "../services/articles";
 import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";

@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import Navbar from "../src/components/ui/Navbar";
-import StartScreen from "../src/components/ChatBot/StartScreen";
-import Input from "../src/components/ChatBot/Input";
-import Chat from "../src/components/ChatBot/Chat";
+import Navbar from "@/components/ui/Navbar";
+import StartScreen from "@/components/ChatBot/StartScreen";
+import Input from "@/components/ChatBot/Input";
+import Chat from "@/components/ChatBot/Chat";
 import { sendMessage, getHistory } from "../services/chatbot";
-import { useAuth } from "../src/contexts/AuthContext";
+import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
 
 export type Role = "User" | "Bot";

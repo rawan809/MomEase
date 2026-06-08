@@ -1,8 +1,8 @@
-import Navbar from "../src/components/ui/Navbar";
-import PostFormDialog from "../src/components/community/PostFormDialog";
-import Explore from "../src/components/community/Explore";
+import Navbar from "@/components/ui/Navbar";
+import PostFormDialog from "@/components/community/PostFormDialog";
+import Explore from "@/components/community/Explore";
 import { useRef } from "react";
-import { useCommunityPosts } from "../src/hooks/useCommunity";
+import { useCommunityPosts } from "@/hooks/useCommunity";
 import { FaArrowUp } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";

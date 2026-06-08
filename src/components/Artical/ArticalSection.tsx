@@ -1,4 +1,4 @@
-import articleImg from "../../../src/assets/images/articleImg.jpg";
+import articleImg from "@/assets/images/articleImg.jpg";
 
 const articles = [
   { id: 1, title: "7 useful meals for postpartum to...", image: articleImg },

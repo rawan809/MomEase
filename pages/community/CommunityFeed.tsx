@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
-import PostCard from "../../src/components/community/PostCard";
-import PostSkeleton from "../../src/components/community/PostSkeleton";
-import { useAuth } from "../../src/contexts/AuthContext";
-import type { Post } from "../../src/hooks/useCommunity";
+import PostCard from "@/components/community/PostCard";
+import PostSkeleton from "@/components/community/PostSkeleton";
+import { useAuth } from "@/contexts/AuthContext";
+import type { Post } from "@/hooks/useCommunity";
 
 interface CommunityContextType {
   posts: Post[];

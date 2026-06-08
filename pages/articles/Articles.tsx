@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
-import InputSearch from "../../src/components/Articles/InputSearch";
-import ArticleCard from "../../src/components/Articles/ArticleCard";
+import InputSearch from "@/components/Articles/InputSearch";
+import ArticleCard from "@/components/Articles/ArticleCard";
 import { useState, useEffect } from "react";
 import {
   CategoryInfo,
@@ -8,11 +8,10 @@ import {
   AddSavedArticle,
   DeleteSavedArticle,
 } from "../../services/articles";
-import LoadingState from "../../src/components/ui/LoadingState";
-import EmptyResponse from "../../src/components/ui/EmptyResponse";
+import LoadingState from "@/components/ui/LoadingState";
+import EmptyResponse from "@/components/ui/EmptyResponse";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "../../src/contexts/LanguageContext";
-
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface Category {
   name: string;
@@ -110,7 +109,7 @@ function Articles() {
             <div className="mb-5">
               <p className="text-primary font-semibold">
                 <Link to={"/ExploreArticles"} className="text-muted">
-                  {t("Categories /")} {" "}
+                  {t("Categories /")}{" "}
                 </Link>
                 {category?.name}
               </p>

@@ -1,5 +1,5 @@
-import Heading from "../../src/components/ui/Heading";
-import CatigoryCards from "../../src/components/Articles/CatigoryCards";
+import Heading from "@/components/ui/Heading";
+import CatigoryCards from "@/components/Articles/CatigoryCards";
 import { FaBookmark } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import {
@@ -7,12 +7,12 @@ import {
   getSavedArticlesAPI,
   DeleteSavedArticle,
 } from "../../services/articles";
-import ArticleCard from "../../src/components/Articles/ArticleCard";
-import LoadingState from "../../src/components/ui/LoadingState";
-import EmptyResponse from "../../src/components/ui/EmptyResponse";
-import Search from "../../src/components/Articles/Search";
+import ArticleCard from "@/components/Articles/ArticleCard";
+import LoadingState from "@/components/ui/LoadingState";
+import EmptyResponse from "@/components/ui/EmptyResponse";
+import Search from "@/components/Articles/Search";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "../../src/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 function ArticlesCatigories() {
   const { t } = useTranslation();

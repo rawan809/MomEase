@@ -1,10 +1,10 @@
 "use client";
-import NewPass from "../../src/assets/images/newPass.png";
+import NewPass from "@/assets/images/newPass.png";
 import { useFormik } from "formik";
 import { resetPasswordSchema } from "./Validation";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
-import Success from "../../src/components/ui/Success";
+import Success from "@/components/ui/Success";
 import { resetPassword } from "../../services/auth";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -108,7 +108,9 @@ const CreateNewPassword = () => {
           </div>
 
           <p className="text-center text-muted text-sm mb-6">
-            {t("Your new password must be different from previously used password")}
+            {t(
+              "Your new password must be different from previously used password",
+            )}
           </p>
 
           <form onSubmit={formik.handleSubmit} className="space-y-4" dir="ltr">
@@ -202,7 +204,6 @@ const CreateNewPassword = () => {
                   </p>
                 )}
             </div>
-
 
             <button
               type="submit"

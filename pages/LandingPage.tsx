@@ -1,8 +1,8 @@
-import HeroSection from "../src/components/HeroSection/HeroSection";
-import ChallengesSection from "../src/components/ChallengesSection/ChallengesSection";
-import SupportSection from "../src/components/SupportSection/SupportSection";
-import FeatureSection from "../src/components/FeaturesSection/FeatureSection";
-import NextStepSection from "../src/components/NextStepSection/NextStepSection";
+import HeroSection from "@/components/HeroSection/HeroSection";
+import ChallengesSection from "@/components/ChallengesSection/ChallengesSection";
+import SupportSection from "@/components/SupportSection/SupportSection";
+import FeatureSection from "@/components/FeaturesSection/FeatureSection";
+import NextStepSection from "@/components/NextStepSection/NextStepSection";
 
 export default function LandingPage() {
   return (
@@ -10,8 +10,8 @@ export default function LandingPage() {
       <HeroSection />
       <ChallengesSection />
       <SupportSection />
-      <FeatureSection/>
-      <NextStepSection/>
+      <FeatureSection />
+      <NextStepSection />
     </>
   );
 }

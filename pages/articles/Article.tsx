@@ -6,18 +6,18 @@ import {
   ArticlesAPI,
 } from "../../services/articles";
 import { useState } from "react";
-import LoadingState from "../../src/components/ui/LoadingState";
+import LoadingState from "@/components/ui/LoadingState";
 import { useParams, Link } from "react-router-dom";
 import { MdOutlineDateRange } from "react-icons/md";
 import { FaRegClock } from "react-icons/fa";
 import { GoLinkExternal } from "react-icons/go";
-import EmptyResponse from "../../src/components/ui/EmptyResponse";
+import EmptyResponse from "@/components/ui/EmptyResponse";
 import { FaBookmark } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
-import ArticleCard from "../../src/components/Articles/ArticleCard";
+import ArticleCard from "@/components/Articles/ArticleCard";
 import { ImageOff } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useLanguage } from "../../src/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface ArticleType {
   articleId: number;
@@ -181,7 +181,9 @@ function Article() {
             <div className="flex text-muted gap-3 mb-5 flex-wrap">
               <div className="flex gap-1 items-center">
                 <FaRegClock />
-                <p>{articleData?.readingTimeMinutes} {t("min read")}</p>
+                <p>
+                  {articleData?.readingTimeMinutes} {t("min read")}
+                </p>
               </div>
               <div className="flex gap-1 items-center">
                 <MdOutlineDateRange />
@@ -224,7 +226,9 @@ function Article() {
                 ))}
             </div>
             <div>
-              <p className="font-semibold text-xl mb-5">{t("Related Articles")}</p>
+              <p className="font-semibold text-xl mb-5">
+                {t("Related Articles")}
+              </p>
               <div className="mt-10 grid grid-cols-1  md:grid-cols-3 lg:grid-cols-4 sm:grid-cols-2  gap-(--space-lg)">
                 {relatedArticles.map((article) => (
                   <ArticleCard

@@ -1,9 +1,9 @@
 import { type JSX, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Timer from "../../src/assets/icons/timer";
-import ShieldCheck from "../../src/assets/icons/shieldCheck";
-import Lock from "../../src/assets/icons/lock";
+import Timer from "@/assets/icons/timer";
+import ShieldCheck from "@/assets/icons/shieldCheck";
+import Lock from "@/assets/icons/lock";
 import { getAssessments } from "../../services/dep";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";

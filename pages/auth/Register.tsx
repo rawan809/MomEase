@@ -2,9 +2,9 @@
 
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import AuthLayout from "../../src/components/auth/AuthLayout";
-import AuthForm from "../../src/components/auth/AuthForm";
-import SocialLogin from "../../src/components/auth/SocialLogin";
+import AuthLayout from "@/components/auth/AuthLayout";
+import AuthForm from "@/components/auth/AuthForm";
+import SocialLogin from "@/components/auth/SocialLogin";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { validationSchema } from "./Validation";

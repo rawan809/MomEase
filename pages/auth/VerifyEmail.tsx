@@ -6,10 +6,10 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Link, useNavigate } from "react-router-dom";
-import Verifyimg from "../../src/assets/images/verify.png";
+import Verifyimg from "@/assets/images/verify.png";
 import { useState, useEffect } from "react";
 import { RiErrorWarningLine } from "react-icons/ri";
-import Success from "../../src/components/ui/Success";
+import Success from "@/components/ui/Success";
 import { verifyEmail, resendOtp } from "../../services/auth";
 import { PuffLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";

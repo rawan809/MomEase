@@ -1,11 +1,10 @@
 // ForgetByPhone.tsx
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { phoneSchema } from "./Validation";
-import ForgetPasswordLayout from "../../src/components/ForgetPassword/ForgetPasswordLayout";
+import ForgetPasswordLayout from "@/components/ForgetPassword/ForgetPasswordLayout";
 import { Link } from "react-router-dom";
 
 const ForgetByPhone = () => {
-
   return (
     <ForgetPasswordLayout>
       <p className="text-muted text-sm mb-4">

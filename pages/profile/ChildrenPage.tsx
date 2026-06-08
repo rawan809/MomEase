@@ -1,6 +1,6 @@
-import ChildrenHeader from "../../src/components/profile/ChildrenHeader";
-import ChildrenGrid from "../../src/components/profile/ChildrenGrid";
-import EmptyResponse from "../../src/components/ui/EmptyResponse";
+import ChildrenHeader from "@/components/profile/ChildrenHeader";
+import ChildrenGrid from "@/components/profile/ChildrenGrid";
+import EmptyResponse from "@/components/ui/EmptyResponse";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useChildren } from "@/hooks/useChildren";
@@ -43,7 +43,9 @@ function ChildrenPage() {
         )}
         {children.length === 0 && !loading && (
           <div className="mt-10">
-            <EmptyResponse title={t("Add your baby to start tracking growth and care.")} />
+            <EmptyResponse
+              title={t("Add your baby to start tracking growth and care.")}
+            />
           </div>
         )}
       </div>

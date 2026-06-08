@@ -1,5 +1,5 @@
-import DepSection from "../../src/components/Depression/DepSection";
-import DepCards from "../../src/components/Depression/DepCards";
+import DepSection from "@/components/Depression/DepSection";
+import DepCards from "@/components/Depression/DepCards";
 export default function Depression() {
   return (
     <>

@@ -1,4 +1,4 @@
-import TrackingSideBarLayout from "../../src/components/babyTracking/TrackingSideBarLayout";
+import TrackingSideBarLayout from "@/components/babyTracking/TrackingSideBarLayout";
 import Navbar from "@/components/ui/Navbar";
 import { ChildProvider } from "@/contexts/ChildContext";
 import { Outlet } from "react-router-dom";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { IoMdNotifications } from "react-icons/io";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import Notification from "@/components/notifications/Notification";
-import { useNotifs } from "../src/contexts/NotificationContext";
+import { useNotifs } from "@/contexts/NotificationContext";
 import EmptyResponse from "@/components/ui/EmptyResponse";
 import { useNavigate } from "react-router-dom";
 import { getNotificationRoute } from "@/utils/notificationNavigation";
