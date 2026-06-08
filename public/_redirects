@@ -1,0 +1,2 @@
+/api/*      http://momease.runasp.net/api/:splat      200
+/uploads/*  http://momease.runasp.net/uploads/:splat  200
