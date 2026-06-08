@@ -12,6 +12,7 @@ import { useCommunityInteractions } from "@/hooks/useCommunityInteractions";
 import { ThumbsUp, Heart, HandFist, Lightbulb } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { toRelativeUrl } from "@/utils/imgBaseURL";
 
 export interface PostMedia {
   mediaId: number;
@@ -142,7 +143,7 @@ const PostCard: React.FC<PostCardProps> = ({
         <div className="flex items-center gap-3">
           {post.userPhoto ? (
             <img
-              src={post.userPhoto}
+              src={toRelativeUrl(post.userPhoto)}
               alt={post.userName}
               className="w-12 aspect-square rounded-full object-cover border"
             />
