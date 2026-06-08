@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/UI/card";
 import { TrendingUp, TrendingDown, Minus, Scale } from "lucide-react";
 import type { GrowthAnalysis } from "./types";
 import { useTranslation } from "react-i18next";

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { ThumbsUp, Heart, HandFist, Lightbulb } from "lucide-react";
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Dialog, DialogContent } from "@/components/UI/dialog";
+import { ScrollArea } from "@/components/UI/scroll-area";
 import { useCommunityInteractions } from "@/hooks/useCommunityInteractions";
 import { toRelativeUrl } from "@/utils/imgBaseURL";
 import { useTranslation } from "react-i18next";

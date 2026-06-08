@@ -3,7 +3,7 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/UI/popover";
 import { MoreVertical } from "lucide-react";
 import { MdError } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";

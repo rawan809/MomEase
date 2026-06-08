@@ -5,7 +5,7 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
-} from "@/components/ui/sidebar";
+} from "@/components/UI/sidebar";
 import { MdOutlineTableChart } from "react-icons/md";
 import { LuMilk } from "react-icons/lu";
 import { GrLineChart } from "react-icons/gr";

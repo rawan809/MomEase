@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/UI/card";
 import { Moon } from "lucide-react";
 import type { SleepAnalysis } from "./types";
 import { useTranslation } from "react-i18next";

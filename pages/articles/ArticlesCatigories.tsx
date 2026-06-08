@@ -1,4 +1,4 @@
-import Heading from "@/components/ui/Heading";
+import Heading from "@/components/UI/Heading";
 import CatigoryCards from "@/components/Articles/CatigoryCards";
 import { FaBookmark } from "react-icons/fa6";
 import { useState, useEffect } from "react";
@@ -8,8 +8,8 @@ import {
   DeleteSavedArticle,
 } from "../../services/articles";
 import ArticleCard from "@/components/Articles/ArticleCard";
-import LoadingState from "@/components/ui/LoadingState";
-import EmptyResponse from "@/components/ui/EmptyResponse";
+import LoadingState from "@/components/UI/LoadingState";
+import EmptyResponse from "@/components/UI/EmptyResponse";
 import Search from "@/components/Articles/Search";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";

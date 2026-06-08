@@ -10,7 +10,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import NotificationDropDown from "../notifications/NotificationDropDown";
-import ProfileDropDown from "../ui/ProfileDropDown";
+import ProfileDropDown from "../UI/ProfileDropDown";
 
 const navItems = [
   { label: "Manage Accounts", icon: LayoutDashboard, path: "/admin" },

@@ -1,4 +1,4 @@
-import Heading from "../ui/Heading";
+import Heading from "../UI/Heading";
 import { LockIcon, CheckIcon, HeartIcon } from "../../assets/icons/icons";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";

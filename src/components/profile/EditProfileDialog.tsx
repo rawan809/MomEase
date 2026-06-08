@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/UI/dialog";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { PuffLoader } from "react-spinners";

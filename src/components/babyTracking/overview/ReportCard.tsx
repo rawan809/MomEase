@@ -6,8 +6,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+} from "@/components/UI/card";
+import { Badge } from "@/components/UI/badge";
 import { Eye } from "lucide-react";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { toast } from "sonner";

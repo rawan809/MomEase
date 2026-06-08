@@ -3,11 +3,11 @@ import { IoMdNotifications } from "react-icons/io";
 import { IoCheckmarkDoneOutline } from "react-icons/io5";
 import Notification from "@/components/notifications/Notification";
 import { useNotifs } from "@/contexts/NotificationContext";
-import EmptyResponse from "@/components/ui/EmptyResponse";
+import EmptyResponse from "@/components/UI/EmptyResponse";
 import { useNavigate } from "react-router-dom";
 import { getNotificationRoute } from "@/utils/notificationNavigation";
 import { useTranslation } from "react-i18next";
-// import LoadingState from "@/components/ui/LoadingState";
+// import LoadingState from "@/components/UI/LoadingState";
 
 function Notifications() {
   const { t } = useTranslation();

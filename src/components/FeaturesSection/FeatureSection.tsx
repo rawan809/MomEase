@@ -1,5 +1,5 @@
 import FeatureCard from "./FeatureCard";
-import Heading from "../ui/Heading";
+import Heading from "../UI/Heading";
 import { FeatureData } from "./FeatureData";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";

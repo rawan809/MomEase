@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useState, useEffect } from "react";
 import { getAssessmentResults } from "../../services/dep";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 
 interface AssessmentResultData {
   levelName?: string;

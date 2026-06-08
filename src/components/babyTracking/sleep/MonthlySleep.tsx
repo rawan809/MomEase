@@ -1,5 +1,5 @@
 import { Calendar } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/UI/card";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 

@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
-import LoadingState from "../../../components/ui/LoadingState";
+import LoadingState from "../../../components/UI/LoadingState";
 
 type Vaccine = {
   childVaccineId: number;

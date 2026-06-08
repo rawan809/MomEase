@@ -16,15 +16,15 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "@/components/UI/card";
 
-import type { ChartConfig } from "@/components/ui/chart";
+import type { ChartConfig } from "@/components/UI/chart";
 
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart";
+} from "@/components/UI/chart";
 import { useTranslation } from "react-i18next";
 
 // الألوان المطلوبة

@@ -2,7 +2,7 @@ import AddReport from "./AddReport";
 import ReportCard from "./ReportCard";
 import { useChild } from "@/contexts/ChildContext";
 import { useGrowthReports } from "@/hooks/useGrowthReports";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 import NoReports from "./NoReports";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";

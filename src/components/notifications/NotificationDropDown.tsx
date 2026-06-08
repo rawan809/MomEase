@@ -3,12 +3,12 @@ import {
   PopoverContent,
   PopoverTitle,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/UI/popover";
 import { getNotificationRoute } from "@/utils/notificationNavigation";
 import { IoMdNotifications } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import Notification from "./Notification";
-import EmptyResponse from "../ui/EmptyResponse";
+import EmptyResponse from "../UI/EmptyResponse";
 import { useNotifs } from "../../contexts/NotificationContext";
 import { useTranslation } from "react-i18next";
 

@@ -1,4 +1,4 @@
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/UI/dialog";
 import { MdError } from "react-icons/md";
 import { useState } from "react";
 import { toast } from "sonner";

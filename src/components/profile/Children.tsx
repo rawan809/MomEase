@@ -2,7 +2,7 @@ import { FiEdit } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useChildren } from "../../hooks/useChildren";
 import formatBabyAge from "@/utils/formatBabyAge";
-import LoadingState from "../ui/LoadingState";
+import LoadingState from "../UI/LoadingState";
 import { useTranslation } from "react-i18next";
 
 function Children() {

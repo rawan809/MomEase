@@ -4,7 +4,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/UI/dialog";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next"; // استيراد hook الترجمة

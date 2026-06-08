@@ -10,7 +10,7 @@ import {
   HeartPulse,
 } from "lucide-react";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/UI/card";
 import { useTranslation } from "react-i18next";
 
 //  TYPES

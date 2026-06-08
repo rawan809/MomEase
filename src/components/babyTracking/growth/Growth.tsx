@@ -1,6 +1,6 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/UI/tabs";
 import { GrowthTrendsChart } from "./GrowthCharts";
 import GrowthAddRecord from "./GrowthAddRecord";
 import GrowthStatistics from "./GrowthStatistics";
@@ -9,7 +9,7 @@ import MonthlyGrowth from "./MonthlyGrowth";
 import { useChild } from "@/contexts/ChildContext";
 import { useGrowth } from "@/hooks/useGrowth";
 import GrowthHistoryCard from "./GrowthHistoryCard";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect } from "react";

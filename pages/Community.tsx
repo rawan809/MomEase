@@ -1,4 +1,4 @@
-import Navbar from "@/components/ui/Navbar";
+import Navbar from "@/components/UI/Navbar";
 import PostFormDialog from "@/components/community/PostFormDialog";
 import Explore from "@/components/community/Explore";
 import { useRef } from "react";

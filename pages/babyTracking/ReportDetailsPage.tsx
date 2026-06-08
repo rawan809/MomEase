@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useChild } from "@/contexts/ChildContext";
 import { useGrowthReports } from "@/hooks/useGrowthReports";
 import ReportDetails from "@/components/babyTracking/overview/ReportDetails";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 import { useTranslation } from "react-i18next";
 
 export default function ReportDetailsPage() {

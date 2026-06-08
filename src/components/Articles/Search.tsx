@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { FiSearch, FiX, FiClock } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import LoadingState from "../ui/LoadingState";
-import EmptyResponse from "../ui/EmptyResponse";
+import LoadingState from "../UI/LoadingState";
+import EmptyResponse from "../UI/EmptyResponse";
 import ArticleSearchCard from "./ArticleSearchCard";
 import { useTranslation } from "react-i18next";
 

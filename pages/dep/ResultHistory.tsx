@@ -4,7 +4,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import ResultHistoryCard from "@/components/Depression/ResultHistoryCard";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 import { getAssessmentResults, deleteAssessmentResult } from "../../services/dep"; // عدّل المسار حسب مشروعك
 
 // TYPES

@@ -1,5 +1,5 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/UI/card";
+import { Badge } from "@/components/UI/badge";
 import { AlertCircle, CheckCircle, Clock, TrendingUp } from "lucide-react";
 import type { GrowthReportSummary } from "./types";
 import { useTranslation } from "react-i18next";

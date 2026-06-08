@@ -8,8 +8,8 @@ import {
   AddSavedArticle,
   DeleteSavedArticle,
 } from "../../services/articles";
-import LoadingState from "@/components/ui/LoadingState";
-import EmptyResponse from "@/components/ui/EmptyResponse";
+import LoadingState from "@/components/UI/LoadingState";
+import EmptyResponse from "@/components/UI/EmptyResponse";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";
 

@@ -6,7 +6,7 @@ import {
   getQuestionOptions,
   submitAssessment,
 } from "../../services/dep";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 import { useTranslation } from "react-i18next";
 
 interface Question {

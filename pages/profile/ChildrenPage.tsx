@@ -1,10 +1,10 @@
 import ChildrenHeader from "@/components/profile/ChildrenHeader";
 import ChildrenGrid from "@/components/profile/ChildrenGrid";
-import EmptyResponse from "@/components/ui/EmptyResponse";
+import EmptyResponse from "@/components/UI/EmptyResponse";
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useChildren } from "@/hooks/useChildren";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 import { useTranslation } from "react-i18next";
 
 function ChildrenPage() {

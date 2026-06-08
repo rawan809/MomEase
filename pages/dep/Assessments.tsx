@@ -7,7 +7,7 @@ import Lock from "@/assets/icons/lock";
 import { getAssessments } from "../../services/dep";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 
 interface Assessment {
   assessmentId: number;

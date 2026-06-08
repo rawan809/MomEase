@@ -4,7 +4,7 @@ import FeedingHistoryCard from "./FeedingHistoryCard";
 import { useFeeding } from "@/hooks/useFeeding";
 import { useChild } from "@/contexts/ChildContext";
 import FeedingStatisticsCards from "./FeedingStatisticsCards";
-import LoadingState from "../../ui/LoadingState";
+import LoadingState from "../../UI/LoadingState";
 // import FeedingMonthlyCards from "./FeedingMonthlyCards";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useEffect } from "react";

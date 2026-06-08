@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/UI/dialog";
 import { toRelativeUrl } from "@/utils/imgBaseURL";
 
 interface PostMedia {

@@ -6,12 +6,12 @@ import {
   ArticlesAPI,
 } from "../../services/articles";
 import { useState } from "react";
-import LoadingState from "@/components/ui/LoadingState";
+import LoadingState from "@/components/UI/LoadingState";
 import { useParams, Link } from "react-router-dom";
 import { MdOutlineDateRange } from "react-icons/md";
 import { FaRegClock } from "react-icons/fa";
 import { GoLinkExternal } from "react-icons/go";
-import EmptyResponse from "@/components/ui/EmptyResponse";
+import EmptyResponse from "@/components/UI/EmptyResponse";
 import { FaBookmark } from "react-icons/fa6";
 import { FaRegBookmark } from "react-icons/fa6";
 import ArticleCard from "@/components/Articles/ArticleCard";

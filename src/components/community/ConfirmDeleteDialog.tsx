@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
+} from "@/components/UI/dialog";
 import { useTranslation } from "react-i18next";
 
 interface ConfirmDeleteDialogProps {

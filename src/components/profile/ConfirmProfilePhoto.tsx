@@ -4,7 +4,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/UI/dialog";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { useState } from "react";

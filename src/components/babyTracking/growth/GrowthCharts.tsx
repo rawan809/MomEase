@@ -7,16 +7,16 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import type { ChartConfig } from "@/components/ui/chart";
+} from "@/components/UI/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/UI/tabs";
+import type { ChartConfig } from "@/components/UI/chart";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
   ChartLegend,
   ChartLegendContent,
-} from "@/components/ui/chart";
+} from "@/components/UI/chart";
 import { Ruler, Scale, Activity } from "lucide-react";
 import { useTranslation } from "react-i18next";
 

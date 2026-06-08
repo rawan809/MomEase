@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/UI/dialog";
 import { toast } from "sonner";
 import type { Post } from "./PostCard";
 import { useTranslation } from "react-i18next";

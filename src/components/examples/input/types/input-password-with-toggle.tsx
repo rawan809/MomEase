@@ -2,9 +2,9 @@
 
 import { Eye, EyeOff } from "lucide-react"
 import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Button } from "@/components/UI/button"
+import { Input } from "@/components/UI/input"
+import { Label } from "@/components/UI/label"
 
 const Example = () => {
   const [showPassword, setShowPassword] = useState(false)

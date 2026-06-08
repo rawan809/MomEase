@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { MessageCircle, Send } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/UI/dialog";
+import { ScrollArea } from "@/components/UI/scroll-area";
+import { Button } from "@/components/UI/button";
+import { Input } from "@/components/UI/input";
 import { formatDate } from "@/utils/formatDate";
 import { useCommunityInteractions } from "@/hooks/useCommunityInteractions";
 import CommentOptions from "./CommentOptions";

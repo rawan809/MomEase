@@ -4,13 +4,13 @@ import { useFormik } from "formik";
 import { resetPasswordSchema } from "./Validation";
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
-import Success from "@/components/ui/Success";
+import Success from "@/components/UI/Success";
 import { resetPassword } from "../../services/auth";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 import { Eye, EyeOff } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/UI/button";
 import { PuffLoader } from "react-spinners";
 import { useTranslation } from "react-i18next";
 
