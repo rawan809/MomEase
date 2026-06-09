@@ -712,5 +712,20 @@
   "Severe": "شديد",
   "EPDS": "مقياس إدنبرة",
   "PHQ-9": "استبيان الصحة النفسية",
-  "GAD-7": "مقياس القلق العام"
+  "GAD-7": "مقياس القلق العام",
+  "Select Baby": "اختيار طفل",
+  "Choose a baby to analyze their cry": "اختر طفلاً لتحليل بكائه",
+  "No babies found": "لم يتم العثور على أطفال",
+  "Please add a baby in your profile settings to use this feature.": "يرجى إضافة طفل في إعدادات الملف الشخصي لاستخدام هذه الميزة.",
+  "Go to Profile": "الذهاب للملف الشخصي",
+  "Analyzing cry for:": "تحليل بكاء الطفل:",
+  "Recording cry for {{name}}": "تسجيل صوت بكاء {{name}}",
+  "Analyzing {{name}}'s cry": "جاري تحليل صوت بكاء {{name}}",
+  "{{name}} Might Be:": "قد يكون {{name}}:",
+  "Analysis Result For": "نتيجة التحليل لـ",
+  "Change": "تغيير",
+  "Selected Baby": "الطفل المحدد",
+  "No baby selected": "لم يتم اختيار طفل",
+  "Select a baby to start analysis": "يرجى اختيار طفل لبدء التحليل",
+  "Select Baby & Start": "اختيار طفل والبدء"
 }

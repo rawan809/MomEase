@@ -1,17 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
-import { MapPin, Clock, Target } from "lucide-react";
+import { MapPin, Clock } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useChild } from "@/contexts/ChildContext";
+import { useCryAnalysis } from "@/hooks/useBabyCry"; // 1. استيراد الهوك
 
 const CryAnalyzing = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const { t } = useTranslation();
+  const { children, selectedChildId } = useChild();
+
+  // استدعاء الهوك الخاص بالـ API
+  const { performCryAnalysis, loading } = useCryAnalysis();
+
+  const selectedChild = children.find((c) => c.childId === selectedChildId);
   const audioFile = state?.audioFile;
 
   const [currentStep, setCurrentStep] = useState(0);
   const [duration, setDuration] = useState(`00:00${t("s")}`);
+  const [error, setError] = useState<string | null>(null);
+
+  // لحفظ نتيجة الـ API مؤقتاً حتى ينتهي الأنميشن المرئي
+  const apiResponseRef = useRef<any>(null);
+  const animationDoneRef = useRef<boolean>(false);
 
   const steps = [
     { label: "Loading audio", done: false },
@@ -22,6 +35,7 @@ const CryAnalyzing = () => {
 
   const [stepStates, setStepStates] = useState(steps.map(() => false));
 
+  // حساب مدة الملف الصوتي
   useEffect(() => {
     if (audioFile) {
       const url = URL.createObjectURL(audioFile);
@@ -37,11 +51,18 @@ const CryAnalyzing = () => {
     }
   }, [audioFile, t]);
 
+  // 2. تفعيل الأنميشن المتتالي + إرسال طلب الـ API الفعلي
   useEffect(() => {
+    if (!audioFile || !selectedChildId) {
+      setError(t("Missing audio file or child selection."));
+      return;
+    }
+
     const timers: ReturnType<typeof setTimeout>[] = [];
 
+    // أنميشن الخطوات الوهمي الجميل (كل خطوة تأخذ 900ms)
     steps.forEach((_, i) => {
-      const t = setTimeout(
+      const tId = setTimeout(
         () => {
           setStepStates((prev) => {
             const updated = [...prev];
@@ -52,19 +73,55 @@ const CryAnalyzing = () => {
         },
         (i + 1) * 900,
       );
-      timers.push(t);
+      timers.push(tId);
     });
 
-    const navTimer = setTimeout(
-      () => {
-        navigate("/cryAnalysis/result", { state: { audioFile } });
-      },
-      steps.length * 900 + 500,
-    );
-    timers.push(navTimer);
+    // دالة استدعاء الـ API في الخلفية
+    const startAnalysis = async () => {
+      try {
+        const response = await performCryAnalysis({
+          childId: selectedChildId,
+          audioFile: audioFile,
+        });
+
+        // حفظ النتيجة في المرجع (Ref) لعدم تدمير الأنميشن
+        apiResponseRef.current = response;
+
+        // لو الأنميشن خلص والـ API رجع، انقل فوراً
+        if (animationDoneRef.current) {
+          goToResultPage(response);
+        }
+      } catch (err: any) {
+        setError(err.message || t("Analysis failed. Please try again."));
+      }
+    };
+
+    startAnalysis();
+
+    // مؤقت انتهاء الأنميشن بالكامل
+    const totalAnimationTime = steps.length * 900 + 500;
+    const finalTimer = setTimeout(() => {
+      animationDoneRef.current = true;
+      // لو الـ API خلص بالفعل قبل الأنميشن، انقل فوراً
+      if (apiResponseRef.current) {
+        goToResultPage(apiResponseRef.current);
+      }
+    }, totalAnimationTime);
+
+    timers.push(finalTimer);
 
     return () => timers.forEach(clearTimeout);
-  }, [navigate, audioFile]);
+  }, [audioFile, selectedChildId]);
+
+  // دالة مشتركة للانتقال لصفحة النتائج مع تمرير البيانات الحقيقية
+  const goToResultPage = (resultData: any) => {
+    navigate("/cryAnalysis/result", {
+      state: {
+        audioFile,
+        resultData, // الداتا الحقيقية القادمة من السيرفر
+      },
+    });
+  };
 
   const fileSizeKb = audioFile
     ? (audioFile.size / 1024).toFixed(1) + " KB"
@@ -73,24 +130,18 @@ const CryAnalyzing = () => {
   const stats = [
     { icon: MapPin, label: "Frequency Map", value: "44.1kHz" },
     { icon: Clock, label: "Duration", value: duration },
-    {
-      icon: Target,
-      label: "Confidence",
-      value: `${Math.min(94, currentStep * 25)}%`,
-    },
   ];
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-(--space-lg) pt-20"
+      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-lg) pt-20"
       style={{ background: "var(--color-background)" }}
     >
-      <div className="w-full max-w-4xl mx-auto flex flex-col lg:flex-row gap-(--space-lg) items-start">
+      <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-(--space-lg) items-start">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex-1 bg-white rounded-3xl p-(--space-xl) flex flex-col items-center gap-(--space-md)"
-          style={{ boxShadow: "var(--shadow-md)" }}
+          className="flex-1  flex flex-col items-center gap-(--space-md)"
         >
           <button
             onClick={() => navigate(-1)}
@@ -100,15 +151,53 @@ const CryAnalyzing = () => {
             ‹ {t("Cancel Analysis")}
           </button>
 
-          <p
-            className="font-bold text-xs tracking-widest uppercase flex items-center gap-1"
-            style={{ color: "var(--color-primary)" }}
-          >
-            ✦ {t("AI Precision Engine")}
-          </p>
+          {/* عرض رسالة الخطأ إن وجدت */}
+          {error && (
+            <div className="w-full text-center text-red-500 bg-red-50 p-3 rounded-xl border border-red-200 text-sm">
+              {error}
+            </div>
+          )}
+
+          {selectedChild && (
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="flex flex-col items-center gap-2"
+            >
+              <div className="relative">
+                {selectedChild.photoUrl ? (
+                  <img
+                    src={selectedChild.photoUrl}
+                    alt={selectedChild.fullName}
+                    className={`w-20 h-20 rounded-full object-cover border-4 shadow-sm ${
+                      selectedChild.gender === "Boy"
+                        ? "border-blue-100"
+                        : "border-pink-100"
+                    }`}
+                  />
+                ) : (
+                  <div
+                    className={`w-20 h-20 rounded-full border-4 flex items-center justify-center font-bold text-2xl bg-white shadow-sm ${
+                      selectedChild.gender === "Boy"
+                        ? "border-blue-100 text-blue-500"
+                        : "border-pink-100 text-pink-500"
+                    }`}
+                  >
+                    {selectedChild.fullName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+                <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 border border-white"></span>
+                </span>
+              </div>
+            </motion.div>
+          )}
 
           <h1 className="font-bold text-center" style={{ fontSize: 28 }}>
-            {t("Analyzing Crying Condition")}
+            {selectedChild
+              ? t("Analyzing {{name}}'s cry", { name: selectedChild.fullName })
+              : t("Analyzing Crying Condition")}
           </h1>
 
           <p
@@ -125,22 +214,26 @@ const CryAnalyzing = () => {
             )}
           </p>
 
-          <div className="flex items-center gap-1 my-(--space-sm)">
-            {[4, 7, 5, 9, 6, 8, 5, 7, 4, 8, 6, 9, 5, 7, 4].map((h, i) => (
+          {/* Sound Waves Animation */}
+          <div
+            className="flex gap-1 mt-(--space-sm) items-end"
+            style={{ height: 28 }}
+          >
+            {[3, 5, 4, 7, 6, 5, 8, 4, 6, 5].map((h, i) => (
               <motion.div
                 key={i}
-                animate={{ scaleY: [1, h / 3, 1] }}
+                animate={{ scaleY: [1, h / 4, 1] }}
                 transition={{
-                  duration: 0.6,
+                  duration: 0.5,
                   repeat: Infinity,
-                  delay: i * 0.08,
+                  delay: i * 0.1,
                 }}
                 className="rounded-full"
                 style={{
                   width: 5,
-                  height: h * 4,
+                  height: h * 3,
                   background: "var(--color-primary)",
-                  transformOrigin: "center",
+                  transformOrigin: "bottom",
                 }}
               />
             ))}
@@ -160,13 +253,16 @@ const CryAnalyzing = () => {
               className="font-semibold"
               style={{ fontSize: 12, color: "var(--color-primary)" }}
             >
-              {stepStates.every(Boolean)
-                ? t("Analysis Complete!")
-                : t("Processing Audio Waveform...")}
+              {/* لو الـ API طول والأنميشن خلص، يفضل يكتب للحارس جاري الاستخراج */}
+              {loading && stepStates.every(Boolean)
+                ? t("Finalizing deep analysis...")
+                : stepStates.every(Boolean)
+                  ? t("Analysis Complete!")
+                  : t("Processing Audio Waveform...")}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-3 gap-(--space-md) w-full">
+          <div className="grid grid-cols-2 gap-(--space-md) w-full">
             {stats.map((stat, i) => (
               <motion.div
                 key={i}
@@ -196,120 +292,12 @@ const CryAnalyzing = () => {
               style={{ background: "var(--color-background)", fontSize: 12 }}
             >
               <span style={{ color: "var(--color-muted)" }}>
-                📁 {audioFile.name}
+                {audioFile.name}
               </span>
               <span style={{ color: "var(--color-muted)" }}>{fileSizeKb}</span>
             </div>
           )}
         </motion.div>
-
-        <div className="flex flex-col gap-(--space-md) w-full lg:w-72 shrink-0">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-white rounded-2xl p-(--space-md)"
-            style={{ boxShadow: "var(--shadow-md)" }}
-          >
-            <p
-              className="font-bold text-sm mb-(--space-md)"
-              style={{ color: "var(--color-primary)" }}
-            >
-              {t("Analysis Progress")}
-            </p>
-            {steps.map((step, i) => (
-              <div key={i} className="flex items-center gap-3 mb-3">
-                <div
-                  className="flex items-center justify-center rounded-full shrink-0"
-                  style={{
-                    width: 20,
-                    height: 20,
-                    background: stepStates[i]
-                      ? "var(--color-primary)"
-                      : "#f3f4f6",
-                  }}
-                >
-                  {stepStates[i] ? (
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path
-                        d="M2 5L4 7L8 3"
-                        stroke="white"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  ) : (
-                    <motion.div
-                      animate={{ opacity: [1, 0.3, 1] }}
-                      transition={{
-                        duration: 1,
-                        repeat: Infinity,
-                        delay: i * 0.3,
-                      }}
-                      className="w-2 h-2 rounded-full"
-                      style={{ background: "var(--color-primary)" }}
-                    />
-                  )}
-                </div>
-                <p
-                  className="text-sm"
-                  style={{
-                    color: stepStates[i]
-                      ? "var(--color-primary)"
-                      : "var(--color-muted)",
-                    fontWeight: stepStates[i] ? 600 : 400,
-                  }}
-                >
-                  {t(step.label)}
-                </p>
-              </div>
-            ))}
-
-            <div
-              className="w-full rounded-full mt-(--space-sm)"
-              style={{ height: 6, background: "#f3f4f6" }}
-            >
-              <motion.div
-                animate={{ width: `${(currentStep / steps.length) * 100}%` }}
-                transition={{ duration: 0.5 }}
-                className="h-full rounded-full"
-                style={{ background: "var(--color-primary)" }}
-              />
-            </div>
-            <p
-              className="text-right mt-1"
-              style={{ fontSize: 11, color: "var(--color-muted)" }}
-            >
-              {Math.round((currentStep / steps.length) * 100)}%
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="rounded-2xl p-(--space-md)"
-            style={{ background: "#fff0f6", boxShadow: "var(--shadow-md)" }}
-          >
-            <p
-              className="font-bold text-xs mb-(--space-sm) flex items-center gap-1"
-              style={{ color: "var(--color-primary)" }}
-            >
-              💡 {t("Parenting Pro-Tip")}
-            </p>
-            <p
-              style={{
-                fontSize: 12,
-                color: "var(--color-muted)",
-                lineHeight: 1.6,
-              }}
-            >
-              {t(
-                "While we analyze, remember to take a deep breath. You're doing a great job. Sometimes a gentle hum or a change in lighting can help soothe both you and the baby.",
-              )}
-            </p>
-          </motion.div>
-        </div>
       </div>
     </section>
   );

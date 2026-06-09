@@ -1,11 +1,11 @@
 import TrackingSideBarLayout from "@/components/babyTracking/TrackingSideBarLayout";
 import Navbar from "@/components/UI/Navbar";
-import { ChildProvider } from "@/contexts/ChildContext";
+// import { ChildProvider } from "@/contexts/ChildContext";
 import { Outlet } from "react-router-dom";
 
 function BabyTracking() {
   return (
-    <ChildProvider>
+    // <ChildProvider>
       <section className=" ">
         <Navbar />
         <div className="w-full md:max-w-7xl sm:mx-auto  py-20 ">
@@ -16,7 +16,7 @@ function BabyTracking() {
           </TrackingSideBarLayout>
         </div>
       </section>
-    </ChildProvider>
+    // </ChildProvider>
   );
 }
 
