@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useChild } from "@/contexts/ChildContext";
+import { useChildren } from "@/hooks/useChildren";
+import { useEffect } from "react";
 
 interface SkinAnalysisResult {
   skinanalysisId: number;
@@ -85,6 +88,15 @@ const SkinResult = () => {
   const navigate = useNavigate();
   const { state } = useLocation() as { state: LocationState };
 
+  const { selectedChildId } = useChild();
+  const { fetchChildById, children, selectedChild } = useChildren();
+
+  useEffect(() => {
+    if (children.length > 0 && selectedChildId !== null) {
+      fetchChildById(selectedChildId);
+    }
+  }, [children, selectedChildId]);
+
   const result = state?.result;
 
   const prediction: string = result?.data?.diseaseName || "Unknown";
@@ -114,6 +126,52 @@ const SkinResult = () => {
         transition={{ duration: 0.5 }}
         className="flex flex-col h-full max-w-2xl mx-auto w-full gap-(--space-md)"
       >
+        {/* Header Profile Section */}
+        {selectedChild && (
+          <div className="w-full flex items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-4 shrink-0">
+            <div className="flex items-center gap-3">
+              <div className="relative shrink-0">
+                {selectedChild.photoUrl ? (
+                  <img
+                    src={selectedChild.photoUrl}
+                    alt={selectedChild.fullName}
+                    className={`w-12 h-12 rounded-full object-cover border-2 ${
+                      selectedChild.gender === "Boy"
+                        ? "border-blue-400"
+                        : "border-primary"
+                    }`}
+                  />
+                ) : (
+                  <div
+                    className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-lg bg-white ${
+                      selectedChild.gender === "Boy"
+                        ? "border-blue-400 text-blue-500"
+                        : "border-primary text-primary"
+                    }`}
+                  >
+                    {selectedChild.fullName.charAt(0).toUpperCase()}
+                  </div>
+                )}
+              </div>
+
+              <div className="text-start">
+                <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 block">
+                  {t("Analysis Result For")}
+                </span>
+                <p className="font-bold text-base text-gray-800 leading-tight">
+                  {selectedChild.fullName}
+                </p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => navigate("/skin-diagnosis/upload")}
+              className="px-4 py-1.5 text-xs font-semibold rounded-full border border-gray-200 hover:bg-gray-50 text-gray-600 transition cursor-pointer"
+            >
+              {t("Back")}
+            </button>
+          </div>
+        )}
         <div className="flex flex-col items-center text-center gap-(--space-xs) ">
           <div
             className="flex items-center justify-center rounded-full mb-(--space-xs)"

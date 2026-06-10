@@ -1,171 +1,3 @@
-// import { motion } from "framer-motion";
-// import { useNavigate } from "react-router-dom";
-// import { CheckCircle, Mic } from "lucide-react";
-// import { useTranslation } from "react-i18next";
-// import { useChild } from "@/contexts/ChildContext";
-
-// const mockResult = {
-//   condition: "Discomfort",
-//   description:
-//     "The cry sounds suggest your baby might be uncomfortable. This could be due to a wet diaper, room temperature, or restrictive clothing.",
-//   recommendations: [
-//     "Take small moments for yourself, even 5 minutes of quiet time.",
-//     "Connect with loved ones or join a mother's support group.",
-//     "If you're concerned, reach out to your healthcare provider.",
-//     "Remember: asking for help is a sign of strength, not weakness.",
-//   ],
-// };
-
-// const CryResult = () => {
-//   const navigate = useNavigate();
-//   const { t } = useTranslation();
-//   const { children, selectedChildId } = useChild();
-//   const selectedChild = children.find((c) => c.childId === selectedChildId);
-
-//   return (
-//     <section
-//       className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl) pt-20"
-//       style={{ background: "var(--color-background)" }}
-//     >
-//       <div className="max-w-xl w-full mx-auto flex flex-col lg:flex-row gap-(--space-lg) items-start">
-//         <motion.div
-//           initial={{ opacity: 0, y: 30 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           className="flex-1 bg-white rounded-3xl p-(--space-lg) flex flex-col gap-(--space-md)"
-//           style={{ boxShadow: "var(--shadow-md)" }}
-//         >
-//           {selectedChild && (
-//             <div
-//               className="flex items-center gap-3 p-3 bg-gray-50/60 rounded-2xl border border-gray-100"
-//             >
-//               <div className="relative shrink-0">
-//                 {selectedChild.photoUrl ? (
-//                   <img
-//                     src={selectedChild.photoUrl}
-//                     alt={selectedChild.fullName}
-//                     className={`w-10 h-10 rounded-full object-cover border-2 ${
-//                       selectedChild.gender === "Boy" ? "border-blue-400" : "border-pink-400"
-//                     }`}
-//                   />
-//                 ) : (
-//                   <div
-//                     className={`w-10 h-10 rounded-full border-2 flex items-center justify-center font-bold text-base bg-white ${
-//                       selectedChild.gender === "Boy"
-//                         ? "border-blue-400 text-blue-500"
-//                         : "border-pink-400 text-pink-500"
-//                     }`}
-//                   >
-//                     {selectedChild.fullName.charAt(0).toUpperCase()}
-//                   </div>
-//                 )}
-//               </div>
-//               <div className="text-start">
-//                 <span className="text-[10px] text-gray-400 uppercase font-bold tracking-wider block">
-//                   {t("Analysis Result For")}
-//                 </span>
-//                 <p className="font-bold text-gray-850 text-sm leading-none mt-0.5">
-//                   {selectedChild.fullName}
-//                 </p>
-//               </div>
-//             </div>
-//           )}
-
-//           <div className="flex flex-col items-center text-center gap-(--space-sm)">
-//             <div
-//               className="flex items-center justify-center rounded-full"
-//               style={{ width: 64, height: 64, background: "#f0fdf4" }}
-//             >
-//               <CheckCircle size={32} style={{ color: "#4caf50" }} />
-//             </div>
-
-//             <p style={{ fontSize: 18, color: "var(--color-muted)" }}>
-//               {selectedChild ? t("{{name}} Might Be:", { name: selectedChild.fullName }) : t("Baby Might Be:")}{" "}
-//               <span
-//                 className="font-bold"
-//                 style={{ color: "var(--color-primary)" }}
-//               >
-//                 {t(mockResult.condition)}
-//               </span>
-//             </p>
-
-//             <p
-//               style={{
-//                 fontSize: 14,
-//                 color: "var(--color-muted)",
-//                 lineHeight: 1.7,
-//                 maxWidth: 420,
-//               }}
-//             >
-//               {t(mockResult.description)}
-//             </p>
-//           </div>
-
-//           <div
-//             className="rounded-2xl p-(--space-md)"
-//             style={{ background: "var(--color-background)" }}
-//           >
-//             <p
-//               className="font-bold text-sm mb-(--space-sm)"
-//               style={{ color: "var(--color-primary)" }}
-//             >
-//               {t("Recommended Steps")}
-//             </p>
-//             <ul className="flex flex-col gap-(--space-sm)">
-//               {mockResult.recommendations.map((rec, i) => (
-//                 <motion.li
-//                   key={i}
-//                   initial={{ opacity: 0, x: -10 }}
-//                   animate={{ opacity: 1, x: 0 }}
-//                   transition={{ delay: i * 0.1 }}
-//                   className="flex items-start gap-2"
-//                   style={{ fontSize: 13, color: "var(--color-muted)" }}
-//                 >
-//                   <span
-//                     className="shrink-0 mt-0.5"
-//                     style={{ color: "var(--color-primary)" }}
-//                   >
-//                     •
-//                   </span>
-//                   {t(rec)}
-//                 </motion.li>
-//               ))}
-//             </ul>
-//           </div>
-
-//           <div className="flex gap-(--space-sm) flex-wrap">
-//             <motion.button
-//               whileHover={{ scale: 1.03 }}
-//               whileTap={{ scale: 0.97 }}
-//               onClick={() => navigate("/cryAnalysis/record")}
-//               className="flex items-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full text-white font-bold transition hover:opacity-90 cursor-pointer"
-//               style={{ background: "var(--color-primary)", fontSize: 13 }}
-//             >
-//               <Mic size={14} />
-//               {t("Analyze another cry")}
-//             </motion.button>
-
-//             <motion.button
-//               whileHover={{ scale: 1.03 }}
-//               whileTap={{ scale: 0.97 }}
-//               onClick={() => navigate("/home")}
-//               className="flex items-center gap-2 px-(--space-lg) py-(--space-sm) rounded-full font-bold border-2 transition hover:bg-pink-50 cursor-pointer"
-//               style={{
-//                 borderColor: "var(--color-primary)",
-//                 color: "var(--color-primary)",
-//                 fontSize: 13,
-//               }}
-//             >
-//               {t("Back to Home")}
-//             </motion.button>
-//           </div>
-//         </motion.div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default CryResult;
-
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CheckCircle, Mic } from "lucide-react";
@@ -249,7 +81,7 @@ const CryResult = () => {
 
             <div>
               <span className="text-[10px] uppercase font-bold tracking-wider text-gray-400 block">
-                {t("Analysis Result")}
+                {t("Analysis Result For")}
               </span>
               <p className="font-bold text-base text-gray-800">
                 {selectedChild.fullName}
@@ -385,7 +217,7 @@ const CryResult = () => {
                 >
                   <div className="flex justify-between mb-1.5">
                     <span className="font-semibold text-xs text-gray-700 capitalize">
-                      {item.label.replace("_", " ")}
+                      {t(item.label.replace("_", " "))}
                     </span>
                     <span
                       className="font-bold text-xs"

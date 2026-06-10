@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useChild } from "@/contexts/ChildContext";
+import { useChildren } from "@/hooks/useChildren";
+import formatBabyAge from "@/utils/formatBabyAge";
 
 const SkinUpload = () => {
   const { t } = useTranslation();
@@ -14,6 +17,15 @@ const SkinUpload = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { language } = useLanguage();
+
+  const { selectedChildId } = useChild();
+  const { fetchChildById, children, selectedChild } = useChildren();
+
+  useEffect(() => {
+    if (children.length > 0 && selectedChildId !== null) {
+      fetchChildById(selectedChildId);
+    }
+  }, [children, selectedChildId]);
 
   const handleFile = (f: File) => {
     if (!f.type.startsWith("image/")) return;
@@ -43,6 +55,9 @@ const SkinUpload = () => {
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("image", file);
+      if (selectedChildId) {
+        formData.append("childId", selectedChildId.toString());
+      }
 
       const res = await fetch("/api/skin-analysis/analyze", {
         method: "POST",
@@ -75,20 +90,73 @@ const SkinUpload = () => {
       className="min-h-screen flex flex-col items-center justify-center px-(--space-lg) py-(--space-xl) pt-20"
       style={{ background: "var(--color-background)" }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-(--space-lg)"
-      >
-        <button
-          onClick={() => navigate("/SkinDiagnoses")}
-          className="text-primary font-semibold mb-(--space-sm) flex items-center gap-1 mx-auto hover:opacity-70 transition"
+      {selectedChild ? (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className={`w-full max-w-lg flex items-center justify-between p-4 mb-(--space-md) rounded-2xl border shadow-sm bg-white ${selectedChild.gender === "Boy" ? "border-blue-400" : "border-primary"} `}
         >
-          ‹ {t("Skin Diagnosis")}
-        </button>
-        <h1 className="font-bold text-h2">{t("Analyze Baby's Skin")}</h1>
-      </motion.div>
+          <div className="flex items-center gap-3">
+            <div className="relative shrink-0">
+              {selectedChild.photoUrl ? (
+                <img
+                  src={selectedChild.photoUrl}
+                  alt={selectedChild.fullName}
+                  className={`w-12 h-12 rounded-full object-cover border-2 ${
+                    selectedChild.gender === "Boy"
+                      ? "border-blue-400"
+                      : "border-primary"
+                  }`}
+                />
+              ) : (
+                <div
+                  className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-lg bg-white ${
+                    selectedChild.gender === "Boy"
+                      ? "border-blue-400 text-blue-500"
+                      : "border-primary text-primary"
+                  }`}
+                >
+                  {selectedChild.fullName.charAt(0).toUpperCase()}
+                </div>
+              )}
+            </div>
+            <div className="text-start">
+              <p className="font-bold text-gray-800 text-base leading-tight">
+                {t("Analyzing skin for {{name}}", {
+                  name: selectedChild.fullName,
+                })}
+              </p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {formatBabyAge({
+                  ageInDays: selectedChild.ageInDays,
+                  ageInMonths: selectedChild.ageInMonths,
+                })}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => navigate("/SkinDiagnoses")}
+            className="px-4 py-1.5 text-xs font-semibold rounded-full border border-gray-200 hover:bg-gray-50 text-gray-600 transition cursor-pointer"
+          >
+            {t("Back")}
+          </button>
+        </motion.div>
+      ) : (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center mb-(--space-lg)"
+        >
+          <button
+            onClick={() => navigate("/SkinDiagnoses")}
+            className="text-primary font-semibold mb-(--space-sm) flex items-center gap-1 mx-auto hover:opacity-70 transition"
+          >
+            ‹ {t("Skin Diagnosis")}
+          </button>
+          <h1 className="font-bold text-h2">{t("Analyze Baby's Skin")}</h1>
+        </motion.div>
+      )}
 
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}

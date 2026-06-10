@@ -727,5 +727,9 @@
   "Selected Baby": "الطفل المحدد",
   "No baby selected": "لم يتم اختيار طفل",
   "Select a baby to start analysis": "يرجى اختيار طفل لبدء التحليل",
-  "Select Baby & Start": "اختيار طفل والبدء"
+  "Select Baby & Start": "اختيار طفل والبدء",
+  "Every cry is a conversation": "كل بكاء هو بمثابة حديث متبادل",
+  "Your baby is happy and laughing! This is a wonderful sound. Enjoy this moment and continue the interaction that made them laugh.": "طفلك سعيد ويضحك! هذا الصوت يبعث على البهجة. استمتعي بهذه اللحظة وواصلي التفاعل الذي جعله يبتسم.",
+  "Analyzing skin for:": "تحليل بشرة الطفل:",
+  "Analyzing skin for {{name}}": "تحليل بشرة الطفل {{name}}"
 }
