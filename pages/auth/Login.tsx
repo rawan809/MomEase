@@ -28,7 +28,7 @@ const Login = () => {
     },
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      console.log("Form submitted", values);
+      // console.log("Form submitted", values);
       setLoading(true);
       try {
         const res = await login(values);

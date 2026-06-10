@@ -6,13 +6,20 @@ import {
 import { IoIosArrowDown } from "react-icons/io";
 import { useChild } from "@/contexts/ChildContext";
 import formatBabyAge from "@/utils/formatBabyAge";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function BabyDropDown() {
-  const { children, selectedChildId, setSelectedChildId } = useChild();
+  const { children, selectedChildId, setSelectedChildId, fetchChildren } =
+    useChild();
   const [open, setOpen] = useState(false);
   const currentChild =
     children.find((child) => child.childId === selectedChildId) || children[0];
+
+  useEffect(() => {
+    async () => {
+      await fetchChildren();
+    };
+  });
 
   if (!currentChild) {
     return (

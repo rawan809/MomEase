@@ -4,10 +4,16 @@ import { useChildren } from "../../hooks/useChildren";
 import formatBabyAge from "@/utils/formatBabyAge";
 import LoadingState from "../UI/LoadingState";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 function Children() {
   const { t } = useTranslation();
-  const { children, loading } = useChildren();
+  const { children, loading, fetchChildren } = useChildren();
+  useEffect(() => {
+    async () => {
+      await fetchChildren();
+    };
+  });
   return (
     <div>
       <div className="flex justify-between mb-5">

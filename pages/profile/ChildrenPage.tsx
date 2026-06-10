@@ -6,6 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import { useChildren } from "@/hooks/useChildren";
 import LoadingState from "@/components/UI/LoadingState";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 function ChildrenPage() {
   const { t } = useTranslation();
@@ -17,7 +18,13 @@ function ChildrenPage() {
     addChild,
     uploadPhoto,
     deletePhoto,
+    fetchChildren,
   } = useChildren();
+  useEffect(() => {
+    async () => {
+      await fetchChildren();
+    };
+  });
   return (
     <section className="py-20 min-h-screen">
       <div className="max-w-7xl mx-auto px-(--space-lg)">
