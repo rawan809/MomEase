@@ -42,7 +42,7 @@ type ChildContextType = {
   addChild: (data: ChildPayload) => Promise<Child>;
   editChild: (id: number, data: ChildPayload) => Promise<Child>;
   deleteChild: (id: number) => Promise<void>;
-  uploadPhoto: (id: number, photo: File) => Promise<Child>;
+  uploadPhoto: (id: number, photo: File) => Promise<void>;
   deletePhoto: (id: number) => Promise<void>;
 };
 
@@ -105,9 +105,8 @@ export function ChildProvider({ children }: { children: React.ReactNode }) {
 
   // Initial fetch
   useEffect(() => {
-    console.log(isAuthenticated)
+    console.log(isAuthenticated);
     if (isAuthenticated) {
-      
       fetchChildren();
     }
   }, [isAuthenticated]);
@@ -215,7 +214,7 @@ export function ChildProvider({ children }: { children: React.ReactNode }) {
           prev ? { ...prev, photoUrl: updatedPhotoUrl || prev.photoUrl } : null,
         );
       }
-      return res.data;
+      // return res.data;
     } catch (err: any) {
       console.error(err);
       if (err?.response?.data?.message) {
