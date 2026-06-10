@@ -120,7 +120,7 @@ export function ChildProvider({ children }: { children: React.ReactNode }) {
         throw new Error(res.message);
       }
       const newChild = res.data;
-      setChildrenList((prev) => [newChild, ...prev]);
+      // setChildrenList((prev) => [newChild, ...prev]);
 
       // If it was the first baby, auto-select it
       setChildrenList((prev) => {
