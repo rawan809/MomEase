@@ -28,7 +28,7 @@ function Community() {
         className="bg-accent/50 overflow-auto hide-scrollbar"
       >
         <Navbar />
-        <div className="w-full md:max-w-7xl sm:mx-auto py-20 px-(--space-lg) ">
+        <div className="w-full md:max-w-10xl sm:mx-auto py-20 px-(--space-lg) ">
           <div className="h-[calc(100vh-10rem)]  ">
             {/* DESKTOP SIDEBAR */}
             <div className="fixed top-20 right-[max(2rem,calc((100vw-80rem)/2))] h-[calc(100vh-5rem)] lg:w-50 md:w-40 hidden md:flex pt-5 justify-start items-center flex-col gap-5">

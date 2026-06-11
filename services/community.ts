@@ -165,3 +165,50 @@ export const getSavedPosts = async () => {
   const response = await api.get(`/community/saved-posts`);
   return response.data;
 };
+
+// replies
+
+export const addCommentReply = async (
+  postId: number,
+  commentId: number,
+  { text }: { text: string },
+) => {
+  const response = await api.post(
+    `/community/posts/${postId}/comments/${commentId}/replies`,
+    {
+      text,
+    },
+  );
+  return response.data;
+};
+
+export const getCommentReplies = async (postId: number, commentId: number) => {
+  const response = await api.get(
+    `/community/posts/${postId}/comments/${commentId}/replies`,
+  );
+  return response.data;
+};
+export const editCommentReply = async (
+  postId: number,
+  commentId: number,
+  replyId: number,
+  { text }: { text: string },
+) => {
+  const response = await api.put(
+    `/community/posts/${postId}/comments/${commentId}/replies/${replyId}`,
+    {
+      text,
+    },
+  );
+  return response.data;
+};
+export const deleteCommentReply = async (
+  postId: number,
+  commentId: number,
+  replyId: number,
+) => {
+  const response = await api.delete(
+    `/community/posts/${postId}/comments/${commentId}/replies/${replyId}`,
+  );
+  return response.data;
+};

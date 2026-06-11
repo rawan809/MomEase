@@ -134,10 +134,10 @@ const CryAnalyzing = () => {
 
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-lg) pt-20"
+      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-lg) pt-24"
       style={{ background: "var(--color-background)" }}
     >
-      <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-(--space-lg) items-start">
+      <div className="w-full max-w-10xl mx-auto flex flex-col lg:flex-row gap-(--space-lg) items-start">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

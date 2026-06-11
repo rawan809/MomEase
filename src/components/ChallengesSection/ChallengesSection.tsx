@@ -14,7 +14,7 @@ const ChallengesSection = () => {
       ref={sectionRef}
       className="w-full bg-background py-(--space-xl) overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-(--space-lg)">
+      <div className="max-w-10xl mx-auto px-(--space-lg)">
         {/* Animated Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

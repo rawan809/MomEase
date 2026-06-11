@@ -56,7 +56,7 @@ function MotherProfile() {
 
   return (
     <section className="py-20">
-      <div className="max-w-7xl mx-auto px-(--space-lg)">
+      <div className="max-w-10xl mx-auto px-(--space-lg)">
         <div className="space-y-10">
           <div>
             <div className="mb-5">

@@ -89,8 +89,8 @@ function ArticlesCatigories() {
 
   return (
     <div>
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-(--space-lg) flex flex-col items-center ">
+      <section className="py-24">
+        <div className="max-w-10xl mx-auto px-(--space-lg) flex flex-col items-center ">
           <div className="mt-5">
             <Heading
               title={t("Explore Article Categories")}

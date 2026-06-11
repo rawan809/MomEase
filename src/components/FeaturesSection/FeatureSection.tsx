@@ -9,7 +9,7 @@ function FeatureSection() {
 
   return (
     <section className="py-(--space-xl)">
-      <div className="px-(--space-lg) max-w-7xl mx-auto">
+      <div className="px-(--space-lg) max-w-10xl mx-auto">
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}

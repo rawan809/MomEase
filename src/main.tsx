@@ -7,8 +7,9 @@ import App from "./App.tsx";
 import "./i18n.js";
 import { LanguageProvider } from "./contexts/LanguageContext.tsx";
 import { ChildProvider } from "@/contexts/ChildContext";
-
+// document.documentElement.classList.add("dark");
 createRoot(document.getElementById("root")!).render(
+  
   // <StrictMode>
   <LanguageProvider>
     <AuthProvider>

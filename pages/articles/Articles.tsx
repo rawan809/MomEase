@@ -94,8 +94,8 @@ function Articles() {
   };
 
   return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-(--space-lg) flex flex-col items-center ">
+    <section className="py-24">
+      <div className="max-w-10xl mx-auto px-(--space-lg) flex flex-col items-center ">
         {loading ? (
           <div className="h-[70vh]">
             <LoadingState />

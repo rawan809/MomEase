@@ -53,7 +53,7 @@ const CryResult = () => {
     >
       {/* Header Profile Section */}
       {selectedChild && (
-        <div className="max-w-7xl w-full mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-6 shrink-0">
+        <div className="max-w-10xl w-full mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 pb-4 mb-6 shrink-0">
           <div className="flex items-center gap-3">
             <div className="relative shrink-0">
               {selectedChild.photoUrl ? (
@@ -106,7 +106,7 @@ const CryResult = () => {
       )}
 
       {/* Main Professional Layout Grid */}
-      <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-0 lg:overflow-hidden mb-6">
+      <div className="max-w-10xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 min-h-0 lg:overflow-hidden mb-6">
         {/* Left Column: Main Result & Confidence */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

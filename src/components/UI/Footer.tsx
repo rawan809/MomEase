@@ -11,7 +11,7 @@ const Footer = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: false }}
         transition={{ duration: 0.6 }}
-        className="max-w-7xl mx-auto px-6"
+        className="max-w-10xl mx-auto px-6"
       >
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-10">
           <div className="space-y-4">

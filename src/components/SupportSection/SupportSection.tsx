@@ -18,7 +18,7 @@ const SupportSection = () => {
         {t("HOW WE SUPPORT YOU")}
       </motion.h2>
 
-      <div className="max-w-7xl mx-auto px-6 space-y-(--space-xl)">
+      <div className="max-w-10xl mx-auto px-6 space-y-(--space-xl)">
         {supportData.map((item, index) => (
           <SupportItem key={index} {...item} reverse={index % 2 !== 0} />
         ))}

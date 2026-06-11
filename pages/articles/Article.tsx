@@ -117,7 +117,7 @@ function Article() {
 
   return (
     <section className="py-20">
-      <div className="max-w-7xl mx-auto px-(--space-lg)">
+      <div className="max-w-10xl mx-auto px-(--space-lg)">
         {loading ? (
           <div className="h-[70vh]">
             <LoadingState />

@@ -43,7 +43,7 @@ function Navbar() {
   return (
     <div className="">
       <div className="px-(--space-lg) z-50 fixed w-full bg-white shadow-md">
-        <div className="max-w-7xl flex justify-between mx-auto items-center h-20">
+        <div className="max-w-10xl flex justify-between mx-auto items-center h-20">
           {/* Hamburger */}
           <Mineuicon isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenueOpen} />
 

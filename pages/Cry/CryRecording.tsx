@@ -105,10 +105,10 @@ const CryRecording = () => {
 
   return (
     <section
-      className="min-h-screen px-(--space-lg) py-(--space-xl) pt-20 "
+      className="min-h-screen px-(--space-lg) py-(--space-xl) pt-24"
       style={{ background: "var(--color-background)" }}
     >
-      <div className="max-w-7xl mx-auto flex flex-col gap-(--space-md) ">
+      <div className="max-w-10xl mx-auto flex flex-col gap-(--space-md)">
         {selectedChild ? (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -181,7 +181,7 @@ const CryRecording = () => {
         )}
 
         {/*  Two-column grid  */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--space-md) items-start min-h-[30vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--space-md) items-start min-h-[30vh] ">
           {/*  Left: Record Card  */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}

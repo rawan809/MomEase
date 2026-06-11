@@ -94,7 +94,7 @@ function ChatBot() {
       <Navbar />
 
       <div
-        className={`mt-20 h-[calc(100vh-5rem)] flex flex-col px-(--space-lg) max-w-7xl mx-auto md:w-[50%] sm:w-[70%] w-full overflow-y-auto hide-scrollbar ${
+        className={`mt-20 h-[calc(100vh-5rem)] flex flex-col px-(--space-lg) max-w-10xl mx-auto md:w-[50%] sm:w-[70%] w-full overflow-y-auto hide-scrollbar ${
           messages.length === 0 ? "" : "pb-35"
         }`}
       >
@@ -109,7 +109,7 @@ function ChatBot() {
       </div>
 
       <div className="fixed bottom-0 left-0 flex justify-center w-full px-(--space-lg)">
-        <div className="pb-5 bg-white rounded-t-xl mx-auto md:w-[50%] sm:w-[70%] w-full max-w-7xl">
+        <div className="pb-5 bg-white rounded-t-xl mx-auto md:w-[50%] sm:w-[70%] w-full max-w-10xl">
           <Input onSend={send} loading={loading} />
           <p className="text-muted text-center text-[12px]">
             {t("AI can make mistakes. Please double-check responses.")}

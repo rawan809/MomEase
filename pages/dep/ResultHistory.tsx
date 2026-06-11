@@ -5,7 +5,10 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import ResultHistoryCard from "@/components/Depression/ResultHistoryCard";
 import LoadingState from "@/components/UI/LoadingState";
-import { getAssessmentResults, deleteAssessmentResult } from "../../services/dep"; // عدّل المسار حسب مشروعك
+import {
+  getAssessmentResults,
+  deleteAssessmentResult,
+} from "../../services/dep"; // عدّل المسار حسب مشروعك
 
 // TYPES
 
@@ -48,23 +51,29 @@ function ResultHistory() {
 
   return (
     <section className="py-20 min-h-screen">
-      <div className="max-w-7xl mx-auto px-(--space-lg)">
+      <div className="max-w-10xl mx-auto px-(--space-lg)">
         {/* Back */}
         <Link
           to="/depression"
           className="text-sm text-primary font-semibold flex items-center gap-1 mb-3"
         >
           {language === "en" ? (
-            <><ArrowLeft size={16} /> {t("Back")}</>
+            <>
+              <ArrowLeft size={16} /> {t("Back")}
+            </>
           ) : (
-            <><ArrowRight size={16} /> {t("Back")}</>
+            <>
+              <ArrowRight size={16} /> {t("Back")}
+            </>
           )}
         </Link>
 
         {/* Header */}
         <div className="mb-5">
           <p className="text-2xl font-bold flex items-center gap-2">
-            <span className="text-primary"><Calendar /></span>
+            <span className="text-primary">
+              <Calendar />
+            </span>
             {t("Your Previous Check-ins")}
           </p>
         </div>

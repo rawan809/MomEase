@@ -37,7 +37,7 @@ function Notifications() {
 
   return (
     <section className="py-20">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-10xl mx-auto px-6">
         {/* Header Section */}
         <div className="flex justify-between items-center flex-wrap gap-4">
           <div className="flex gap-4 items-center">

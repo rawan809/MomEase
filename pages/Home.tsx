@@ -25,7 +25,7 @@ export default function Home() {
   }, [language]);
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-10xl mx-auto">
       <HomeSection firstName={firstName} />
       <ArticalSection articles={articles} />
     </div>

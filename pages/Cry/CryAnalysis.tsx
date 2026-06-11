@@ -26,7 +26,7 @@ const CryAnalysis = () => {
   
   return (
     <section
-      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl) pt-20"
+      className="min-h-screen flex items-center justify-center px-(--space-lg) py-(--space-xl) pt-24"
       style={{ background: "var(--color-background)" }}
     >
       <div className="max-w-5xl w-full mx-auto flex flex-col-reverse lg:flex-row items-center gap-(--space-xl)">

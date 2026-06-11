@@ -33,6 +33,7 @@ export interface Post {
   updatedAt: string | null;
   isSaved?: boolean;
   isMyPost?: boolean;
+  repliesCount: number;
 }
 
 export function useCommunityPosts() {

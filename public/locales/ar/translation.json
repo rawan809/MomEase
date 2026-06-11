@@ -731,5 +731,10 @@
   "Every cry is a conversation": "كل بكاء هو بمثابة حديث متبادل",
   "Your baby is happy and laughing! This is a wonderful sound. Enjoy this moment and continue the interaction that made them laugh.": "طفلك سعيد ويضحك! هذا الصوت يبعث على البهجة. استمتعي بهذه اللحظة وواصلي التفاعل الذي جعله يبتسم.",
   "Analyzing skin for:": "تحليل بشرة الطفل:",
-  "Analyzing skin for {{name}}": "تحليل بشرة الطفل {{name}}"
+  "Analyzing skin for {{name}}": "تحليل بشرة الطفل {{name}}",
+  "Reply": "رد",
+  "Hide replies": "إخفاء الردود",
+  "reply": "رد",
+  "replies": "ردود",
+  "Write a reply...": "اكتب ردًا..."
 }

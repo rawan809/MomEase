@@ -8,7 +8,7 @@ function BabyTracking() {
     // <ChildProvider>
       <section className=" ">
         <Navbar />
-        <div className="w-full md:max-w-7xl sm:mx-auto  py-20 ">
+        <div className="w-full md:max-w-10xl sm:mx-auto  py-24 ">
           <TrackingSideBarLayout>
             <div className=" py-5 px-(--space-lg) ">
               <Outlet />

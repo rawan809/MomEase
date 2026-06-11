@@ -20,14 +20,18 @@ function ChildrenPage() {
     deletePhoto,
     fetchChildren,
   } = useChildren();
+
   useEffect(() => {
-    async () => {
+    const loadChildren = async () => {
       await fetchChildren();
     };
-  });
+
+    loadChildren();
+  }, []);
+
   return (
     <section className="py-20 min-h-screen">
-      <div className="max-w-7xl mx-auto px-(--space-lg)">
+      <div className="max-w-10xl mx-auto px-(--space-lg)">
         <Link
           to="/myprofile"
           className="text-sm text-primary font-semibold  flex items-center gap-1 mb-3"
