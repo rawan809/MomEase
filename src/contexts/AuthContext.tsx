@@ -91,7 +91,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   // Login
   const login = async (data: { email: string; password: string }) => {
-    const res = await loginUser(data);
+    const res = await loginUser({
+      ...data,
+      email: data.email.trim(),
+    });
 
     const authData = res.data;
     const userData = mapUserData(authData);
@@ -102,8 +105,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   // Register
+  // const register = async (data: any) => {
+  //   const res = await registerUser(data);
+
+  //   const authData = res.data;
+  //   const userData = mapUserData(authData);
+
+  //   saveAuthData(authData.accessToken, authData.refreshToken, userData);
+  // };
   const register = async (data: any) => {
-    const res = await registerUser(data);
+    const cleanedData = {
+      ...data,
+      email: data.email?.trim(),
+      firstName: data.firstName?.trim(),
+      lastName: data.lastName?.trim(),
+    };
+
+    const res = await registerUser(cleanedData);
 
     const authData = res.data;
     const userData = mapUserData(authData);

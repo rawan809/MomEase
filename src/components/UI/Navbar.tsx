@@ -10,6 +10,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { LanguageButton, LanguageToggleMobile } from "./LanguageSwitcher";
 import { HealthTools } from "./HealthTools";
 import { useTranslation } from "react-i18next";
+// import icon from "../../../public/favicon/apple-touch-icon.png";
 
 function Navbar() {
   const [isMenuOpen, setIsMenueOpen] = useState(false);
@@ -19,6 +20,7 @@ function Navbar() {
   const [loggedIn] = useState(!!authtoken || !!authtoken2);
   const { logout } = useAuth();
   const { t } = useTranslation();
+  const icon = "/favicon/apple-touch-icon.png";
 
   useEffect(() => {
     const handleResize = () => {
@@ -48,12 +50,15 @@ function Navbar() {
           <Mineuicon isMenuOpen={isMenuOpen} setIsMenuOpen={setIsMenueOpen} />
 
           {/* Logo */}
-          <Link
-            to="/"
-            className="text-primary font-brand text-h2 font-bold outline-none"
-          >
-            MomEase
-          </Link>
+          <div className="flex items-end justify-center">
+            <img src={icon} alt="icon" className="w-10" />
+            <Link
+              to="/"
+              className="text-primary font-brand text-2xl font-bold outline-none"
+            >
+              MomEase
+            </Link>
+          </div>
 
           {/* Desktop nav links */}
           <div className="hidden md:block w-140">
